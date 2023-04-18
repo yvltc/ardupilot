@@ -16,7 +16,8 @@ void ModeRManual::update()
     // radio_in values. This means that the results for norm_input would not necessarily
     // be correct for tailsitters, so get_control_in() must be used instead.
     // normalize control_input to [-1,1]
-    const float roll_input = (float)plane.channel_roll->get_control_in() / plane.channel_roll->get_range();
+    // in RMANUAL mode roll is always zero - in reality we want to disable the roll control
+    const float roll_input = 0;
     const float pitch_input = (float)plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range();
 
     // then scale to target angles in centidegrees
