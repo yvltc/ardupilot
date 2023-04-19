@@ -47,7 +47,7 @@ void ModeRManual::run()
     }
 
     // normal QSTABILIZE mode
-    float pilot_throttle_scaled = quadplane.get_pilot_throttle();
+    float pilot_throttle_scaled = quadplane.get_pilot_throttle()/4;
     quadplane.hold_stabilize(pilot_throttle_scaled);
 }
 
