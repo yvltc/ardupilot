@@ -33,6 +33,8 @@ void Plane::failsafe_short_on_event(enum failsafe_state fstype, ModeReason reaso
     case Mode::Number::AUTOTUNE:
     case Mode::Number::FLY_BY_WIRE_B:
     case Mode::Number::CRUISE:
+    case Mode::Number::RMANUAL:
+    case Mode::Number::RDBWA:
     case Mode::Number::TRAINING:  
         if(plane.emergency_landing) {
             set_mode(mode_fbwa, reason); // emergency landing switch overrides normal action to allow out of range landing
@@ -97,8 +99,6 @@ void Plane::failsafe_short_on_event(enum failsafe_state fstype, ModeReason reaso
 #endif
     case Mode::Number::INITIALISING:
         break;
-    case Mode::Number::RMANUAL:
-        break;
     }
     if (failsafe.saved_mode_number != control_mode->mode_number()) {
         gcs().send_text(MAV_SEVERITY_WARNING, "RC Short Failsafe: switched to %s", control_mode->name());
@@ -126,6 +126,8 @@ void Plane::failsafe_long_on_event(enum failsafe_state fstype, ModeReason reason
     case Mode::Number::CIRCLE:
     case Mode::Number::LOITER:
     case Mode::Number::THERMAL:
+    case Mode::Number::RMANUAL:
+    case Mode::Number::RDBWA:
         if(plane.emergency_landing) {
             set_mode(mode_fbwa, reason); // emergency landing switch overrides normal action to allow out of range landing
             break;
@@ -187,8 +189,6 @@ void Plane::failsafe_long_on_event(enum failsafe_state fstype, ModeReason reason
 #endif
     case Mode::Number::TAKEOFF:
     case Mode::Number::INITIALISING:
-        break;
-    case Mode::Number::RMANUAL:
         break;
     }
     gcs().send_text(MAV_SEVERITY_WARNING, "%s Failsafe On: %s", (reason == ModeReason:: GCS_FAILSAFE) ? "GCS" : "RC Long", control_mode->name());

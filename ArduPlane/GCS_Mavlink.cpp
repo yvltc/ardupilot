@@ -39,6 +39,8 @@ MAV_MODE GCS_MAVLINK_Plane::base_mode() const
     case Mode::Number::FLY_BY_WIRE_A:
     case Mode::Number::AUTOTUNE:
     case Mode::Number::FLY_BY_WIRE_B:
+    case Mode::Number::RMANUAL:
+    case Mode::Number::RDBWA:  
 #if HAL_QUADPLANE_ENABLED
     case Mode::Number::QSTABILIZE:
     case Mode::Number::QHOVER:
@@ -70,9 +72,7 @@ MAV_MODE GCS_MAVLINK_Plane::base_mode() const
         // positions", which APM does not currently do
         break;
     case Mode::Number::INITIALISING:
-        break;
-    case Mode::Number::RMANUAL:
-        break;    
+        break;  
     }
 
     if (!plane.training_manual_pitch || !plane.training_manual_roll) {

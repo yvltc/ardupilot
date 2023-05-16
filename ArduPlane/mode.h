@@ -54,6 +54,7 @@ public:
         LOITER_ALT_QLAND = 25,
 #endif
         RMANUAL       = 26,
+        RDBWA         = 27,
     };
 
     // Constructor
@@ -795,6 +796,35 @@ public:
     Number mode_number() const override { return Number::RMANUAL; }
     const char *name() const override { return "RMANUAL"; }
     const char *name4() const override { return "RMAN"; }
+
+    bool is_vtol_mode() const override { return true; }
+    bool is_vtol_man_throttle() const override { return true; }
+    virtual bool is_vtol_man_mode() const override { return true; }
+    bool allows_throttle_nudging() const override { return true; }
+
+    // methods that affect movement of the vehicle in this mode
+    void update() override;
+
+    // used as a base class for all Q modes
+    bool _enter() override;
+
+    void run() override;
+
+protected:
+private:
+
+    void set_tailsitter_roll_pitch(const float roll_input, const float pitch_input);
+    void set_limited_roll_pitch(const float roll_input, const float pitch_input);
+
+};
+
+class ModeRDBWA : public Mode
+{
+public:
+
+    Number mode_number() const override { return Number::RDBWA; }
+    const char *name() const override { return "RDBWA"; }
+    const char *name4() const override { return "RDWA"; }
 
     bool is_vtol_mode() const override { return true; }
     bool is_vtol_man_throttle() const override { return true; }
