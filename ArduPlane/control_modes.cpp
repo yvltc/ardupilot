@@ -96,6 +96,9 @@ Mode *Plane::mode_from_mode_num(const enum Mode::Number num)
     case Mode::Number::RMANUAL:
         ret = &mode_rmanual;
         break;
+    case Mode::Number::RDBWA:
+        ret = &mode_rdbwa;
+        break;
 
     }
     return ret;

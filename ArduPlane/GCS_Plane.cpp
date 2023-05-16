@@ -41,6 +41,8 @@ void GCS_Plane::update_vehicle_sensor_status_flags(void)
     case Mode::Number::STABILIZE:
     case Mode::Number::FLY_BY_WIRE_A:
     case Mode::Number::AUTOTUNE:
+    case Mode::Number::RMANUAL:
+    case Mode::Number::RDBWA:
 #if HAL_QUADPLANE_ENABLED
     case Mode::Number::QSTABILIZE:
     case Mode::Number::QHOVER:
@@ -86,8 +88,6 @@ void GCS_Plane::update_vehicle_sensor_status_flags(void)
         break;
 
     case Mode::Number::INITIALISING:
-        break;
-    case Mode::Number::RMANUAL:
         break;
     }
 

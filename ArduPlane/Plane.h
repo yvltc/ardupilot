@@ -161,6 +161,7 @@ public:
     friend class ModeThermal;
     friend class ModeLoiterAltQLand;
     friend class ModeRManual;
+    friend class ModeRDBWA;
 
     Plane(void);
 
@@ -285,6 +286,7 @@ private:
     ModeThermal mode_thermal;
 #endif
     ModeRManual mode_rmanual;
+    ModeRDBWA mode_rdbwa;
 
     // This is the state of the flight control system
     // There are multiple states defined such as MANUAL, FBW-A, AUTO
