@@ -22,7 +22,7 @@ void ModeRDBWA::update()
     plane.nav_yaw_cd = degrees(target_speed_xy_cms.angle()) * 100;
     pos_control->input_vel_accel_xy(target_speed_xy_cms, target_accel_cms);
     // run horizontal velocity controller
-    plane.quadplane.run_xy_controller();
+    quadplane.run_xy_controller();
     plane.nav_roll_cd = 0;
     plane.nav_pitch_cd = pos_control->get_pitch_cd();
 
@@ -39,7 +39,6 @@ void ModeRDBWA::run()
 
     // normal QSTABILIZE mode
     float pilot_throttle_scaled = quadplane.get_pilot_throttle()/4;
-    quadplane.hold_stabilize(pilot_throttle_scaled);
     attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
                                                                plane.nav_pitch_cd,
                                                                plane.nav_yaw_cd, true);
