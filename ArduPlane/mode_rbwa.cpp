@@ -16,25 +16,16 @@ void ModeRDBWA::update()
     // radio_in values. This means that the results for norm_input would not necessarily
     // be correct for tailsitters, so get_control_in() must be used instead.
     // normalize control_input to [-1,1]
-    // in RMANUAL mode roll is always zero - in reality we want to disable the roll control
-    const float roll_input = 0;
-    const float pitch_input = (float)plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range();
+    // in Rover mode roll is always zero - in reality we want to disable the roll control
+    Vector2f target_speed_xy_cms = Vector2f((float)plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range(), (float)plane.channel_roll->get_control_in() / plane.channel_roll->get_range());
+    Vector2f target_accel_cms = Vector2f(0, 0);
+    plane.nav_yaw_cd = degrees(target_speed_xy_cms.angle()) * 100;
+    pos_control->input_vel_accel_xy(target_speed_xy_cms, target_accel_cms);
+    // run horizontal velocity controller
+    plane.quadplane.run_xy_controller();
+    plane.nav_roll_cd = 0;
+    plane.nav_pitch_cd = pos_control->get_pitch_cd();
 
-    // then scale to target angles in centidegrees
-    if (plane.quadplane.tailsitter.active()) {
-        // tailsitters are different
-        set_tailsitter_roll_pitch(roll_input, pitch_input);
-        return;
-    }
-
-    if (!plane.quadplane.option_is_set(QuadPlane::OPTION::INGORE_FW_ANGLE_LIMITS_IN_Q_MODES)) {
-        // by default angles are also constrained by forward flight limits
-        set_limited_roll_pitch(roll_input, pitch_input);
-    } else {
-        // use angle max for both roll and pitch
-        plane.nav_roll_cd = roll_input * plane.quadplane.aparm.angle_max;
-        plane.nav_pitch_cd = pitch_input * plane.quadplane.aparm.angle_max;
-    }
 }
 
 // quadplane stabilize mode
@@ -49,6 +40,10 @@ void ModeRDBWA::run()
     // normal QSTABILIZE mode
     float pilot_throttle_scaled = quadplane.get_pilot_throttle()/4;
     quadplane.hold_stabilize(pilot_throttle_scaled);
+    attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
+                                                               plane.nav_pitch_cd,
+                                                               plane.nav_yaw_cd, true);
+    attitude_control->set_throttle_out(pilot_throttle_scaled, true, 0);
 }
 
 // set the desired roll and pitch for a tailsitter
