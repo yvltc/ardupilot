@@ -1261,7 +1261,7 @@ float QuadPlane::landing_descent_rate_cms(float height_above_ground)
  */
 float QuadPlane::get_pilot_input_yaw_rate_cds(void) const
 {   // in rmanual mode, yaw rate is controlled by the roll stick
-    const auto rudder_in = plane.control_mode == &plane.mode_rmanual
+    const auto rudder_in = (plane.control_mode == &plane.mode_rmanual || plane.control_mode == &plane.mode_rdbwa)
     ? plane.channel_roll->get_control_in()
     : plane.channel_rudder->get_control_in();
     bool manual_air_mode = plane.control_mode->is_vtol_man_throttle() && air_mode_active();
