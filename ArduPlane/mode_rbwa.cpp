@@ -20,7 +20,8 @@ void ModeRDBWA::update()
     // be correct for tailsitters, so get_control_in() must be used instead.
     // normalize control_input to [-1,1]
     // in Rover mode roll is always zero - in reality we want to disable the roll control
-    Vector2f target_speed_xy_cms = Vector2f(- (float)plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range() * 500, 0);
+    float forward_speed = - plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range() * 500
+    Vector2f target_speed_xy_cms = Vector2f(forward_speed * _ahrs.cos_yaw(), forward_speed * _ahrs.sin_yaw());
     Vector2f target_accel_cms;
     if (!pos_control->is_active_xy()) {
         pos_control->init_xy_controller();

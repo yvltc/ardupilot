@@ -1175,7 +1175,7 @@ void AC_GndPosControl::accel_to_lean_angles(float accel_x_cmss, float accel_y_cm
 {
     // rotate accelerations into body forward-right frame
     const float accel_forward = accel_x_cmss * _ahrs.cos_yaw() + accel_y_cmss * _ahrs.sin_yaw();
-    const float accel_right = -accel_x_cmss * _ahrs.sin_yaw() + accel_y_cmss * _ahrs.cos_yaw();
+    const float accel_right = 0;
 
     // update angle targets that will be passed to stabilize controller
     pitch_target = accel_to_angle(-accel_forward * 0.01) * 100;
