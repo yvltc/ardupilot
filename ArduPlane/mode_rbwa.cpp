@@ -20,8 +20,8 @@ void ModeRDBWA::update()
     // be correct for tailsitters, so get_control_in() must be used instead.
     // normalize control_input to [-1,1]
     // in Rover mode roll is always zero - in reality we want to disable the roll control
-    float forward_speed = - plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range() * 500
-    Vector2f target_speed_xy_cms = Vector2f(forward_speed * _ahrs.cos_yaw(), forward_speed * _ahrs.sin_yaw());
+    float forward_speed = - plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range() * 500;
+    Vector2f target_speed_xy_cms = Vector2f(forward_speed * plane.ahrs.cos_yaw(), forward_speed * plane.ahrs.sin_yaw());
     Vector2f target_accel_cms;
     if (!pos_control->is_active_xy()) {
         pos_control->init_xy_controller();
@@ -46,7 +46,12 @@ void ModeRDBWA::run()
 
     // normal QSTABILIZE mode
     float pilot_throttle_scaled = quadplane.get_pilot_throttle()/4;
-    quadplane.hold_stabilize(pilot_throttle_scaled);
+    quadplane.set_pilot_yaw_rate_time_constant();
+    attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
+                                                                  plane.nav_pitch_cd,
+                                                                  quadplane.get_pilot_input_yaw_rate_cds());
+
+    attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
 }
 
 // set the desired roll and pitch for a tailsitter
