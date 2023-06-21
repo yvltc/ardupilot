@@ -55,6 +55,7 @@ public:
 #endif
         RMANUAL       = 26,
         RDBWA         = 27,
+        RGUIDED       = 28,
     };
 
     // Constructor
@@ -845,4 +846,33 @@ private:
     void set_tailsitter_roll_pitch(const float roll_input, const float pitch_input);
     void set_limited_roll_pitch(const float roll_input, const float pitch_input);
 
+};
+
+class ModeRGuided : public Mode
+{
+public:
+
+    Number mode_number() const override { return Number::RGUIDED; }
+    const char *name() const override { return "RGUIDED"; }
+    const char *name4() const override { return "RGID"; }
+
+    // methods that affect movement of the vehicle in this mode
+    void update() override;
+
+    void navigate() override;
+
+    virtual bool is_guided_mode() const override { return true; }
+
+    bool allows_throttle_nudging() const override { return true; }
+
+    bool does_auto_navigation() const override { return true; }
+
+    bool does_auto_throttle() const override { return true; }
+
+    // handle a guided target request from GCS
+    bool handle_guided_request(Location target_loc) override;
+
+protected:
+
+    bool _enter() override;
 };
