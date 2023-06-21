@@ -60,6 +60,7 @@ public:
     friend class ModeLoiterAltQLand;
     friend class ModeRManual;
     friend class ModeRDBWA;
+    friend class ModeRGuided;
     
     QuadPlane(AP_AHRS &_ahrs);
 

@@ -40,7 +40,8 @@ MAV_MODE GCS_MAVLINK_Plane::base_mode() const
     case Mode::Number::AUTOTUNE:
     case Mode::Number::FLY_BY_WIRE_B:
     case Mode::Number::RMANUAL:
-    case Mode::Number::RDBWA:  
+    case Mode::Number::RDBWA: 
+    case Mode::Number::RGUIDED: 
 #if HAL_QUADPLANE_ENABLED
     case Mode::Number::QSTABILIZE:
     case Mode::Number::QHOVER:
