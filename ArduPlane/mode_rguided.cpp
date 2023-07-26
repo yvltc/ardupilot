@@ -16,7 +16,6 @@ bool ModeRGuided::_enter()
         */
     loc.offset_bearing(degrees(plane.ahrs.groundspeed_vector().angle()),
                         plane.quadplane.stopping_distance());
-#endif
 
     plane.set_guided_WP(loc);
     return true;
@@ -26,19 +25,17 @@ void ModeRGuided::update()
 {   
     const Location &loc = plane.next_WP_loc;
     Location origin;
-    if (!ahrs.get_origin(origin)) {
+    if (!plane.ahrs.get_origin(origin)) {
         origin.zero();
     }
-    Vector2f diff2d = origin.get_distance_NE(loc);
-    diff2d += pos_control.xy_correction;
-    pos_control.target_cm.x = diff2d.x * 100;
-    pos_control.target_cm.y = diff2d.y * 100;
+    Vector2f diff2d = origin.get_distance_NE(loc) * 100;
+    Vector2p target_pos = Vector2p(diff2d.x, diff2d.y);
     if (!pos_control->is_active_xy()) {
         pos_control->init_xy_controller();
         }
     Vector2f zero;
     Vector2f vel_cms;
-    pos_control->input_pos_vel_accel_xy(pos_control.target_cm.xy(), vel_cms, zero);
+    pos_control->input_pos_vel_accel_xy(target_pos, vel_cms, zero);
 
 
     quadplane.run_xy_controller();
@@ -47,16 +44,13 @@ void ModeRGuided::update()
     plane.nav_roll_cd = pos_control->get_roll_cd();
     plane.nav_pitch_cd = pos_control->get_pitch_cd();
     plane.nav_yaw_cd = pos_control->get_yaw_cd();
-
-    if (transition->set_VTOL_roll_pitch_limit(plane.nav_roll_cd, plane.nav_pitch_cd)) {
-        pos_control->set_externally_limited_xy();
-    }
-
     // call attitude controller
-    set_pilot_yaw_rate_time_constant();
-    attitude_control->input_euler_angle_roll_pitch_euler_yaw(plane.nav_roll_cd,
+    quadplane.set_pilot_yaw_rate_time_constant();
+    attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
                                                                     plane.nav_pitch_cd,
-                                                                    plane.nav_yaw_cd);
+                                                                    plane.nav_yaw_cd, 0);
+    float pilot_throttle_scaled = quadplane.get_pilot_throttle()/4;
+    attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
 }
 
 void ModeRGuided::navigate()
