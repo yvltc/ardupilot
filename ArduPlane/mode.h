@@ -863,6 +863,10 @@ public:
 
     virtual bool is_guided_mode() const override { return true; }
 
+    bool is_vtol_mode() const override { return true; }
+    bool is_vtol_man_throttle() const override { return false; }
+    virtual bool is_vtol_man_mode() const override { return false; }
+
     bool allows_throttle_nudging() const override { return true; }
 
     bool does_auto_navigation() const override { return true; }
