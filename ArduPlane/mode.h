@@ -815,4 +815,10 @@ public:
 protected:
 
     bool _enter() override;
+
+private:
+    void set_tailsitter_roll_pitch(const float roll_input, const float pitch_input);
+    void set_limited_roll_pitch(const float roll_input, const float pitch_input);
+
+
 };
