@@ -4,7 +4,6 @@
 bool ModeRGuided::_enter()
 {
     // For ground movement only idle throttle is used
-    quadplane.set_desired_spool_state(AP_Motors::DesiredSpoolState::GROUND_IDLE);
     plane.guided_throttle_passthru = false;
     /*
       when entering guided mode we set the target as the current
@@ -49,7 +48,8 @@ void ModeRGuided::update()
     attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
                                                                     plane.nav_pitch_cd,
                                                                     plane.nav_yaw_cd, 0);
-    float pilot_throttle_scaled = quadplane.get_pilot_throttle()/4;
+    float pilot_throttle_scaled = 0.05;
+    quadplane.set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
     attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
 }
 
