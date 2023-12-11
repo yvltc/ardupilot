@@ -20,6 +20,12 @@ bool ModeAuto::_enter()
     } else {
         plane.auto_state.vtol_mode = false;
     }
+
+    if(plane.quadplane.available() && plane.quadplane.enable == 3){
+        plane.auto_state.ground_mode = true;
+    } else {
+        plane.auto_state.ground_mode = false;
+    }
 #else
     plane.auto_state.vtol_mode = false;
 #endif
@@ -73,7 +79,7 @@ void ModeAuto::update()
     uint16_t nav_cmd_id = plane.mission.get_current_nav_cmd().id;
 
 #if HAL_QUADPLANE_ENABLED
-    if (plane.quadplane.in_vtol_auto()) {
+    if (plane.quadplane.in_vtol_auto() || plane.quadplane.in_ground_auto()) {
         plane.quadplane.control_auto();
         return;
     }

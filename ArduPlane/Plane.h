@@ -498,6 +498,9 @@ private:
         // are we in VTOL mode in AUTO?
         bool vtol_mode;
 
+        // are we in Ground mode in AUTO?
+        bool ground_mode;
+
         // are we doing loiter mode as a VTOL?
         bool vtol_loiter;
 

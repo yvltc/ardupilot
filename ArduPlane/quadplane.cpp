@@ -8,8 +8,8 @@ const AP_Param::GroupInfo QuadPlane::var_info[] = {
 
     // @Param: ENABLE
     // @DisplayName: Enable QuadPlane
-    // @Description: This enables QuadPlane functionality, assuming multicopter motors start on output 5. If this is set to 2 then when starting AUTO mode it will initially be in VTOL AUTO mode.
-    // @Values: 0:Disable,1:Enable,2:Enable VTOL AUTO
+    // @Description: This enables QuadPlane functionality, assuming multicopter motors start on output 5. If this is set to 2 then when starting AUTO mode it will initially be in VTOL AUTO mode. If this is set to 3 then when starting AUTO mode it will initially be in Ground AUTO mode.
+    // @Values: 0:Disable,1:Enable,2:Enable VTOL AUTO,3:Enable Ground AUTO
     // @User: Standard
     // @RebootRequired: True
     AP_GROUPINFO_FLAGS("ENABLE", 1, QuadPlane, enable, 0, AP_PARAM_FLAG_ENABLE),
@@ -2123,6 +2123,25 @@ bool QuadPlane::in_vtol_auto(void) const
 }
 
 /*
+    are we in a Ground auto state?
+*/
+bool QuadPlane::in_ground_auto(void) const
+{
+    if (!available()) {
+        return false;
+    }
+    if (plane.control_mode != &plane.mode_auto) {
+        return false;
+    }
+    if (plane.auto_state.vtol_mode) {
+        return false;
+    }
+    if (plane.auto_state.ground_mode) {
+        return true;
+    }
+}
+
+/*
   are we in a VTOL mode? This is used to decide if we run the
   transition handling code or not
 
@@ -3078,6 +3097,9 @@ void QuadPlane::waypoint_controller(void)
 
     // nav roll and pitch are controller by waypoint controller
     plane.nav_roll_cd = wp_nav->get_roll();
+    if (plane.quadplane.in_ground_auto()){
+        plane.nav_roll_cd = 0;
+    }
     plane.nav_pitch_cd = wp_nav->get_pitch();
 
     if (transition->set_VTOL_roll_pitch_limit(plane.nav_roll_cd, plane.nav_pitch_cd)) {
@@ -3090,10 +3112,15 @@ void QuadPlane::waypoint_controller(void)
                                                        plane.nav_pitch_cd,
                                                        wp_nav->get_yaw(),
                                                        true);
-
-    // climb based on altitude error
-    set_climb_rate_cms(assist_climb_rate_cms());
-    run_z_controller();
+    if (!plane.quadplane.in_ground_auto()){
+        // climb based on altitude error
+        set_climb_rate_cms(assist_climb_rate_cms());
+        run_z_controller();
+    } else {
+        float pilot_throttle_scaled = 0.1;
+        set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
+        attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
+    }
 }
 
 

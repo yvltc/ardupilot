@@ -115,6 +115,7 @@ public:
     bool verify_vtol_takeoff(const AP_Mission::Mission_Command &cmd);
     bool verify_vtol_land(void);
     bool in_vtol_auto(void) const;
+    bool in_ground_auto(void) const;
     bool in_vtol_mode(void) const;
     bool in_vtol_takeoff(void) const;
     bool in_vtol_posvel_mode(void) const;
