@@ -397,7 +397,7 @@ void Plane::stabilize()
         }
         stabilize_yaw();
 #if HAL_QUADPLANE_ENABLED
-    } else if (control_mode->is_vtol_mode() && !quadplane.tailsitter.in_vtol_transition(now)) {
+    } else if ((control_mode->is_vtol_mode() || control_mode->is_ground_mode()) && !quadplane.tailsitter.in_vtol_transition(now)) {
         // run controlers specific to this mode
         plane.control_mode->run();
 

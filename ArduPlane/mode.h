@@ -91,8 +91,11 @@ public:
 
     // true for all q modes
     virtual bool is_vtol_mode() const { return false; }
+    virtual bool is_ground_mode() const { return false; }
     virtual bool is_vtol_man_throttle() const;
+    virtual bool is_ground_man_throttle() const { return false; }
     virtual bool is_vtol_man_mode() const { return false; }
+    virtual bool is_ground_man_mode() const { return false; }
 
     // guided or adsb mode
     virtual bool is_guided_mode() const { return false; }
@@ -798,9 +801,9 @@ public:
     const char *name() const override { return "RMANUAL"; }
     const char *name4() const override { return "RMAN"; }
 
-    bool is_vtol_mode() const override { return true; }
-    bool is_vtol_man_throttle() const override { return true; }
-    virtual bool is_vtol_man_mode() const override { return true; }
+    bool is_ground_mode() const override { return true; }
+    bool is_ground_man_throttle() const override { return true; }
+    virtual bool is_ground_man_mode() const override { return true; }
     bool allows_throttle_nudging() const override { return true; }
 
     // methods that affect movement of the vehicle in this mode
@@ -827,9 +830,9 @@ public:
     const char *name() const override { return "RDBWA"; }
     const char *name4() const override { return "RDWA"; }
 
-    bool is_vtol_mode() const override { return true; }
-    bool is_vtol_man_throttle() const override { return true; }
-    virtual bool is_vtol_man_mode() const override { return true; }
+    bool is_ground_mode() const override { return true; }
+    bool is_ground_man_throttle() const override { return true; }
+    virtual bool is_ground_man_mode() const override { return true; }
     bool allows_throttle_nudging() const override { return true; }
 
     // methods that affect movement of the vehicle in this mode
@@ -863,8 +866,8 @@ public:
 
     virtual bool is_guided_mode() const override { return true; }
 
-    bool is_vtol_mode() const override { return true; }
-    bool is_vtol_man_throttle() const override { return false; }
+    bool is_ground_mode() const override { return true; }
+    bool is_ground_man_throttle() const override { return false; }
     virtual bool is_vtol_man_mode() const override { return false; }
 
     bool allows_throttle_nudging() const override { return true; }

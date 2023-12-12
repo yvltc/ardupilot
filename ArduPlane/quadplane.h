@@ -117,6 +117,7 @@ public:
     bool in_vtol_auto(void) const;
     bool in_ground_auto(void) const;
     bool in_vtol_mode(void) const;
+    bool in_ground_mode(void) const;
     bool in_vtol_takeoff(void) const;
     bool in_vtol_posvel_mode(void) const;
     void update_throttle_hover();

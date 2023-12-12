@@ -597,7 +597,7 @@ bool Tailsitter::in_vtol_transition(uint32_t now) const
  */
 bool Tailsitter::is_in_fw_flight(void) const
 {
-    return enabled() && !quadplane.in_vtol_mode() && transition->transition_state == Tailsitter_Transition::TRANSITION_DONE;
+    return enabled() && !quadplane.in_vtol_mode() && !quadplane.in_ground_mode() && transition->transition_state == Tailsitter_Transition::TRANSITION_DONE;
 }
 
 /*
@@ -867,7 +867,7 @@ void Tailsitter_Transition::VTOL_update()
 // return true if we should show VTOL view
 bool Tailsitter_Transition::show_vtol_view() const
 {
-    bool show_vtol = quadplane.in_vtol_mode();
+    bool show_vtol = quadplane.in_vtol_mode() || quadplane.in_ground_mode();
 
     if (show_vtol && (transition_state == TRANSITION_ANGLE_WAIT_VTOL)) {
         // in a vtol mode but still transitioning from forward flight

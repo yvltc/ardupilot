@@ -871,7 +871,7 @@ void QuadPlane::run_esc_calibration(void)
  */
 void QuadPlane::multicopter_attitude_rate_update(float yaw_rate_cds)
 {
-    bool use_multicopter_control = in_vtol_mode() && !tailsitter.in_vtol_transition();
+    bool use_multicopter_control = (in_vtol_mode() && !tailsitter.in_vtol_transition()) || in_ground_mode();
     bool use_yaw_target = false;
 
     float yaw_target_cd = 0.0;
@@ -1185,7 +1185,7 @@ bool QuadPlane::is_flying_vtol(void) const
         // if we are demanding more than 1% throttle then don't consider aircraft landed
         return true;
     }
-    if (plane.control_mode->is_vtol_man_throttle() && air_mode_active()) {
+    if ((plane.control_mode->is_vtol_man_throttle() || plane.control_mode->is_ground_man_throttle()) && air_mode_active()) {
         // in manual throttle modes with airmode on, don't consider aircraft landed
         return true;
     }
@@ -1261,10 +1261,10 @@ float QuadPlane::landing_descent_rate_cms(float height_above_ground)
  */
 float QuadPlane::get_pilot_input_yaw_rate_cds(void) const
 {   // in rmanual mode, yaw rate is controlled by the roll stick
-    const auto rudder_in = (plane.control_mode == &plane.mode_rmanual || plane.control_mode == &plane.mode_rdbwa)
+    const auto rudder_in = (plane.control_mode->is_ground_man_mode())
     ? plane.channel_roll->get_control_in()
     : plane.channel_rudder->get_control_in();
-    bool manual_air_mode = plane.control_mode->is_vtol_man_throttle() && air_mode_active();
+    bool manual_air_mode = (plane.control_mode->is_vtol_man_throttle() || plane.control_mode->is_ground_man_throttle()) && air_mode_active();
     if (!manual_air_mode &&
         !is_positive(plane.get_throttle_input()) &&
         (!plane.control_mode->does_auto_throttle() || motors->limit.throttle_lower) &&
@@ -1805,7 +1805,7 @@ void QuadPlane::update(void)
     }
 
     const uint32_t now = AP_HAL::millis();
-    if (!in_vtol_mode() && !in_vtol_airbrake()) {
+    if (!in_vtol_mode() && !in_vtol_airbrake() && !in_ground_mode()) {
         // we're in a fixed wing mode, cope with transitions and check
         // for assistance needed
         if (plane.control_mode == &plane.mode_manual ||
@@ -1844,7 +1844,7 @@ void QuadPlane::update(void)
 
     // motors logging
     if (motors->armed()) {
-        const bool motors_active = in_vtol_mode() || assisted_flight;
+        const bool motors_active = in_vtol_mode() || assisted_flight || in_ground_mode();
         if (motors_active && (motors->get_spool_state() != AP_Motors::SpoolState::SHUT_DOWN)) {
             // log RATE at main loop rate
             ahrs_view->Write_Rate(*motors, *attitude_control, *pos_control);
@@ -1898,13 +1898,13 @@ void QuadPlane::update_throttle_suppression(void)
     */
     if (!is_zero(plane.get_throttle_input()) &&
         (rc().arming_check_throttle() ||
-         plane.control_mode->is_vtol_man_throttle() ||
+         plane.control_mode->is_vtol_man_throttle() || plane.control_mode->is_ground_man_throttle() ||
          plane.channel_throttle->norm_input_dz() > 0)) {
         return;
     }
 
     // if in a VTOL manual throttle mode and air_mode is on then allow motors to run
-    if (plane.control_mode->is_vtol_man_throttle() && air_mode_active()) {
+    if ((plane.control_mode->is_vtol_man_throttle() || plane.control_mode->is_ground_man_throttle()) && air_mode_active()) {
         return;
     }
 
@@ -2079,6 +2079,21 @@ bool QuadPlane::handle_do_vtol_transition(enum MAV_VTOL_STATE state) const
         plane.auto_state.vtol_mode = false;
 
         return true;
+    case MAV_VTOL_STATE_GR:
+        if (!plane.auto_state.vtol_mode) {
+            gcs().send_text(MAV_SEVERITY_NOTICE, "Unable to enter Ground mode in FW mode");
+            return false;
+        } else {
+            // Check if aircraft is landed
+            if (!plane.is_flying()) {
+                gcs().send_text(MAV_SEVERITY_NOTICE, "Entered Ground mode");
+                plane.auto_state.ground_mode = true;
+                return true;
+            } else {
+                gcs().send_text(MAV_SEVERITY_NOTICE, "Unable to enter Ground mode while flying");
+                return false;
+            }
+        }
 
     default:
         break;
@@ -2139,6 +2154,7 @@ bool QuadPlane::in_ground_auto(void) const
     if (plane.auto_state.ground_mode) {
         return true;
     }
+    return false;
 }
 
 /*
@@ -2172,6 +2188,21 @@ bool QuadPlane::in_vtol_mode(void) const
         if (!plane.auto_state.vtol_loiter || poscontrol.get_state() > QPOS_AIRBRAKE) {
             return true;
         }
+    }
+    return false;
+}
+
+
+bool QuadPlane::in_ground_mode(void) const
+{
+    if (!available()) {
+        return false;
+    }
+    if (plane.control_mode->is_ground_mode()) {
+        return true;
+    }
+    if (in_ground_auto()) {
+        return true;
     }
     return false;
 }
@@ -3117,7 +3148,7 @@ void QuadPlane::waypoint_controller(void)
         set_climb_rate_cms(assist_climb_rate_cms());
         run_z_controller();
     } else {
-        float pilot_throttle_scaled = 0.1;
+        float pilot_throttle_scaled = 0.03;
         set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
         attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
     }
@@ -3164,6 +3195,9 @@ void QuadPlane::control_auto(void)
     case MAV_CMD_NAV_VTOL_LAND:
     case MAV_CMD_NAV_PAYLOAD_PLACE:
     case MAV_CMD_NAV_LAND:
+        if (in_ground_auto()){
+            plane.arming.disarm(AP_Arming::Method::LANDED);
+        }
         if (is_vtol_land(id)) {
             vtol_position_controller();
         }
@@ -3943,7 +3977,7 @@ void QuadPlane::update_throttle_mix(void)
         return;
     }
 
-    if (plane.control_mode->is_vtol_man_throttle()) {
+    if (plane.control_mode->is_vtol_man_throttle() || plane.control_mode->is_ground_man_throttle()) {
         // manual throttle
         if (!is_positive(plane.get_throttle_input()) && !air_mode_active()) {
             attitude_control->set_throttle_mix_min();
@@ -4078,7 +4112,7 @@ bool QuadPlane::show_vtol_view() const
 bool SLT_Transition::show_vtol_view() const
 {
 
-    return quadplane.in_vtol_mode();
+    return quadplane.in_vtol_mode() || quadplane.in_ground_mode();
 }
 
 // return the PILOT_VELZ_MAX_DN value if non zero, otherwise returns the PILOT_VELZ_MAX value.
@@ -4406,7 +4440,7 @@ MAV_VTOL_STATE SLT_Transition::get_mav_vtol_state() const
 // Set FW roll and pitch limits and keep TECS informed
 void SLT_Transition::set_FW_roll_pitch(int32_t& nav_pitch_cd, int32_t& nav_roll_cd, bool& allow_stick_mixing)
 {
-    if (quadplane.in_vtol_mode() || quadplane.in_vtol_airbrake()) {
+    if (quadplane.in_vtol_mode() || quadplane.in_vtol_airbrake() || quadplane.in_ground_mode()) {
         // not in FW flight
         return;
     }
@@ -4487,7 +4521,7 @@ bool QuadPlane::allow_servo_auto_trim()
         // Quadplane disabled, auto trim always allowed
         return true;
     }
-    if (in_vtol_mode()) {
+    if (in_vtol_mode() || in_ground_mode()) {
         // VTOL motors active in VTOL modes
         return false;
     }

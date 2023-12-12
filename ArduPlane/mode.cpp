@@ -82,6 +82,7 @@ bool Mode::enter()
 
     // set VTOL auto state
     plane.auto_state.vtol_mode = is_vtol_mode();
+    plane.auto_state.ground_mode = is_ground_mode();
     plane.auto_state.vtol_loiter = false;
 
     // initialize speed variable used in AUTO and GUIDED for DO_CHANGE_SPEED commands

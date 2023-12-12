@@ -25,7 +25,7 @@
 void Plane::throttle_slew_limit(SRV_Channel::Aux_servo_function_t func)
 {
 #if HAL_QUADPLANE_ENABLED
-    const bool do_throttle_slew = (control_mode->does_auto_throttle() || quadplane.in_assisted_flight() || quadplane.in_vtol_mode());
+    const bool do_throttle_slew = (control_mode->does_auto_throttle() || quadplane.in_assisted_flight() || quadplane.in_vtol_mode() || quadplane.in_ground_mode());
 #else
     const bool do_throttle_slew = control_mode->does_auto_throttle();
 #endif
@@ -587,7 +587,7 @@ void Plane::set_servos_controlled(void)
         // manual pass through of throttle while in GUIDED
         SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, get_throttle_input(true));
 #if HAL_QUADPLANE_ENABLED
-    } else if (quadplane.in_vtol_mode()) {
+    } else if (quadplane.in_vtol_mode() || quadplane.in_ground_mode()) {
         float fwd_thr = 0;
         // if armed and not spooled down ask quadplane code for forward throttle
         if (quadplane.motors->armed() &&

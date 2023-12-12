@@ -218,7 +218,7 @@ void Plane::update_speed_height(void)
 
 #if HAL_QUADPLANE_ENABLED
     if (quadplane.in_vtol_mode() ||
-        quadplane.in_assisted_flight()) {
+        quadplane.in_assisted_flight() || quadplane.in_ground_mode()) {
         quadplane.update_throttle_mix();
     }
 #endif
@@ -478,7 +478,7 @@ void Plane::update_fly_forward(void)
         return;
     }
 
-    if (quadplane.in_vtol_mode() ||
+    if (quadplane.in_vtol_mode() || quadplane.in_ground_mode() ||
         quadplane.in_assisted_flight()) {
         ahrs.set_fly_forward(false);
         return;
@@ -631,7 +631,7 @@ void Plane::update_flight_stage(void)
     }
 #if HAL_QUADPLANE_ENABLED
     if (quadplane.in_vtol_mode() ||
-        quadplane.in_assisted_flight()) {
+        quadplane.in_assisted_flight() || quadplane.in_ground_mode()) {
         set_flight_stage(AP_FixedWing::FlightStage::VTOL);
         return;
     }
@@ -745,7 +745,7 @@ bool Plane::get_wp_distance_m(float &distance) const
         return false;
     }
 #if HAL_QUADPLANE_ENABLED
-    if (quadplane.in_vtol_mode()) {
+    if (quadplane.in_vtol_mode() || quadplane.in_ground_mode()) {
         distance = quadplane.using_wp_nav() ? quadplane.wp_nav->get_wp_distance_to_destination() * 0.01 : 0;
         return true;
     }
@@ -761,7 +761,7 @@ bool Plane::get_wp_bearing_deg(float &bearing) const
         return false;
     }
 #if HAL_QUADPLANE_ENABLED
-    if (quadplane.in_vtol_mode()) {
+    if (quadplane.in_vtol_mode() || quadplane.in_ground_mode()) {
         bearing = quadplane.using_wp_nav() ? quadplane.wp_nav->get_wp_bearing_to_destination() : 0;
         return true;
     }
@@ -777,7 +777,7 @@ bool Plane::get_wp_crosstrack_error_m(float &xtrack_error) const
         return false;
     }
 #if HAL_QUADPLANE_ENABLED
-    if (quadplane.in_vtol_mode()) {
+    if (quadplane.in_vtol_mode() || quadplane.in_ground_mode()) {
         xtrack_error = quadplane.using_wp_nav() ? quadplane.wp_nav->crosstrack_error() : 0;
         return true;
     }
