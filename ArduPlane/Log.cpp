@@ -17,7 +17,11 @@ void Plane::Log_Write_Attitude(void)
         // Also, for bodyframe roll input types, _attitude_target_euler_angle is not maintained
         // since Euler angles are not used and it is a waste of cpu to compute them at the loop rate.
         // Get them from the quaternion instead:
-        quadplane.attitude_control->get_attitude_target_quat().to_euler(targets.x, targets.y, targets.z);
+        if (quadplane.in_ground_mode()) {
+            quadplane.gnd_attitude_control->get_attitude_target_quat().to_euler(targets.x, targets.y, targets.z);
+        } else {
+            quadplane.attitude_control->get_attitude_target_quat().to_euler(targets.x, targets.y, targets.z);
+        }
         targets *= degrees(100.0f);
         quadplane.ahrs_view->Write_AttitudeView(targets);
     } else
@@ -29,14 +33,24 @@ void Plane::Log_Write_Attitude(void)
 #if HAL_QUADPLANE_ENABLED
     if (AP_HAL::millis() - quadplane.last_att_control_ms < 100) {
         // log quadplane PIDs separately from fixed wing PIDs
-        logger.Write_PID(LOG_PIQR_MSG, quadplane.attitude_control->get_rate_roll_pid().get_pid_info());
-        logger.Write_PID(LOG_PIQP_MSG, quadplane.attitude_control->get_rate_pitch_pid().get_pid_info());
-        logger.Write_PID(LOG_PIQY_MSG, quadplane.attitude_control->get_rate_yaw_pid().get_pid_info());
-        logger.Write_PID(LOG_PIQA_MSG, quadplane.pos_control->get_accel_z_pid().get_pid_info() );
+        if (quadplane.in_ground_mode()){
+            logger.Write_PID(LOG_PIQR_MSG, quadplane.gnd_attitude_control->get_rate_roll_pid().get_pid_info());
+            logger.Write_PID(LOG_PIQP_MSG, quadplane.gnd_attitude_control->get_rate_pitch_pid().get_pid_info());
+            logger.Write_PID(LOG_PIQY_MSG, quadplane.gnd_attitude_control->get_rate_yaw_pid().get_pid_info());
+            logger.Write_PID(LOG_PIQA_MSG, quadplane.gnd_pos_control->get_accel_z_pid().get_pid_info() );
+        } else {
+            logger.Write_PID(LOG_PIQR_MSG, quadplane.attitude_control->get_rate_roll_pid().get_pid_info());
+            logger.Write_PID(LOG_PIQP_MSG, quadplane.attitude_control->get_rate_pitch_pid().get_pid_info());
+            logger.Write_PID(LOG_PIQY_MSG, quadplane.attitude_control->get_rate_yaw_pid().get_pid_info());
+            logger.Write_PID(LOG_PIQA_MSG, quadplane.pos_control->get_accel_z_pid().get_pid_info() );
+        }
     }
-    if ((quadplane.in_vtol_mode() || quadplane.in_ground_mode()) && quadplane.pos_control->is_active_xy()) {
+    if ((quadplane.in_vtol_mode()) && quadplane.pos_control->is_active_xy()) {
         logger.Write_PID(LOG_PIDN_MSG, quadplane.pos_control->get_vel_xy_pid().get_pid_info_x());
         logger.Write_PID(LOG_PIDE_MSG, quadplane.pos_control->get_vel_xy_pid().get_pid_info_y());
+    } else if (quadplane.in_ground_mode() && quadplane.gnd_pos_control->is_active_xy()) {
+        logger.Write_PID(LOG_PIDN_MSG, quadplane.gnd_pos_control->get_vel_xy_pid().get_pid_info_x());
+        logger.Write_PID(LOG_PIDE_MSG, quadplane.gnd_pos_control->get_vel_xy_pid().get_pid_info_y());
     }
 #endif
 

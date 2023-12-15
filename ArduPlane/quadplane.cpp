@@ -684,7 +684,7 @@ bool QuadPlane::setup(void)
     }
     
     if (hal.util->available_memory() <
-        4096 + sizeof(*motors) + sizeof(*gnd_attitude_control) + sizeof(*gnd_pos_control) + sizeof(*wp_nav) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) {
+        4096 + sizeof(*motors) + sizeof(*gnd_attitude_control) + sizeof(*gnd_pos_control) + sizeof(*gnd_wp_nav) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) {
         AP_BoardConfig::config_error("Not enough memory for quadplane");
     }
 
@@ -813,6 +813,7 @@ bool QuadPlane::setup(void)
     motors->init(frame_class, frame_type);
     motors->update_throttle_range();
     motors->set_update_rate(rc_speed);
+    gnd_attitude_control->parameter_sanity_check();
     attitude_control->parameter_sanity_check();
 
     // Try to convert mot PWM params, if still invalid force conversion
@@ -3197,12 +3198,11 @@ void QuadPlane::waypoint_controller(void)
     }
 
     // nav roll and pitch are controller by waypoint controller
-    if (plane.quadplane.in_ground_auto()){
+    if (in_ground_auto()){
         plane.nav_roll_cd = 0;
         plane.nav_pitch_cd = gnd_wp_nav->get_pitch();
         plane.nav_yaw_cd = gnd_wp_nav->get_yaw();
-    }
-    else{
+    } else{
         plane.nav_roll_cd = wp_nav->get_roll();
         plane.nav_pitch_cd = wp_nav->get_pitch();
         plane.nav_yaw_cd = wp_nav->get_yaw();
@@ -3214,11 +3214,18 @@ void QuadPlane::waypoint_controller(void)
 
     // call attitude controller
     disable_yaw_rate_time_constant();
-    attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
+    if (in_ground_auto()){
+        gnd_attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
                                                        plane.nav_pitch_cd,
                                                        plane.nav_yaw_cd,
                                                        true);
-    if (!plane.quadplane.in_ground_auto()){
+    } else {
+        attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
+                                                       plane.nav_pitch_cd,
+                                                       plane.nav_yaw_cd,
+                                                       true);
+    }
+    if (!in_ground_auto()){
         // climb based on altitude error
         set_climb_rate_cms(assist_climb_rate_cms());
         run_z_controller();
@@ -3638,31 +3645,55 @@ void QuadPlane::Log_Write_QControl_Tuning()
     float des_alt_m = 0.0f;
     int16_t target_climb_rate_cms = 0;
     if (plane.control_mode != &plane.mode_qstabilize) {
-        des_alt_m = pos_control->get_pos_target_z_cm() * 0.01f;
-        target_climb_rate_cms = pos_control->get_vel_target_z_cms();
+        des_alt_m = (plane.quadplane.in_ground_mode()) ? gnd_pos_control->get_pos_target_z_cm() * 0.01f : pos_control->get_pos_target_z_cm() * 0.01f;
+        target_climb_rate_cms = (plane.quadplane.in_ground_mode()) ? gnd_pos_control->get_vel_target_z_cms() : pos_control->get_vel_target_z_cms();
     }
-
-    struct log_QControl_Tuning pkt = {
-        LOG_PACKET_HEADER_INIT(LOG_QTUN_MSG),
-        time_us             : AP_HAL::micros64(),
-        throttle_in         : attitude_control->get_throttle_in(),
-        angle_boost         : attitude_control->angle_boost(),
-        throttle_out        : motors->get_throttle(),
-        throttle_hover      : motors->get_throttle_hover(),
-        desired_alt         : des_alt_m,
-        inav_alt            : inertial_nav.get_position_z_up_cm() * 0.01f,
-        baro_alt            : int32_t(plane.barometer.get_altitude() * 100),
-        target_climb_rate   : target_climb_rate_cms,
-        climb_rate          : int16_t(inertial_nav.get_velocity_z_up_cms()),
-        throttle_mix        : attitude_control->get_throttle_mix(),
-        speed_scaler        : tailsitter.log_spd_scaler,
-        transition_state    : transition->get_log_transition_state(),
-        assist              : assisted_flight,
-    };
+    struct log_QControl_Tuning pkt;
+    if (plane.quadplane.in_ground_mode()) {
+        pkt = {
+            LOG_PACKET_HEADER_INIT(LOG_QTUN_MSG),
+            time_us             : AP_HAL::micros64(),
+            throttle_in         : gnd_attitude_control->get_throttle_in(),
+            angle_boost         : gnd_attitude_control->angle_boost(),
+            throttle_out        : motors->get_throttle(),
+            throttle_hover      : motors->get_throttle_hover(),
+            desired_alt         : des_alt_m,
+            inav_alt            : inertial_nav.get_position_z_up_cm() * 0.01f,
+            baro_alt            : int32_t(plane.barometer.get_altitude() * 100),
+            target_climb_rate   : target_climb_rate_cms,
+            climb_rate          : int16_t(inertial_nav.get_velocity_z_up_cms()),
+            throttle_mix        : gnd_attitude_control->get_throttle_mix(),
+            speed_scaler        : tailsitter.log_spd_scaler,
+            transition_state    : transition->get_log_transition_state(),
+            assist              : assisted_flight
+        };
+    } else {
+        pkt = {
+            LOG_PACKET_HEADER_INIT(LOG_QTUN_MSG),
+            time_us             : AP_HAL::micros64(),
+            throttle_in         : attitude_control->get_throttle_in(),
+            angle_boost         : attitude_control->angle_boost(),
+            throttle_out        : motors->get_throttle(),
+            throttle_hover      : motors->get_throttle_hover(),
+            desired_alt         : des_alt_m,
+            inav_alt            : inertial_nav.get_position_z_up_cm() * 0.01f,
+            baro_alt            : int32_t(plane.barometer.get_altitude() * 100),
+            target_climb_rate   : target_climb_rate_cms,
+            climb_rate          : int16_t(inertial_nav.get_velocity_z_up_cms()),
+            throttle_mix        : attitude_control->get_throttle_mix(),
+            speed_scaler        : tailsitter.log_spd_scaler,
+            transition_state    : transition->get_log_transition_state(),
+            assist              : assisted_flight
+        };
+    }
     plane.logger.WriteBlock(&pkt, sizeof(pkt));
 
     // write multicopter position control message
-    pos_control->write_log();
+    if (plane.quadplane.in_ground_mode()) {
+        gnd_pos_control->write_log();
+    } else {
+        pos_control->write_log();
+    }
 }
 
 
@@ -4580,13 +4611,21 @@ void QuadPlane::mode_enter(void)
 // Set attitude control yaw rate time constant to pilot input command model value
 void QuadPlane::set_pilot_yaw_rate_time_constant()
 {
-    attitude_control->set_yaw_rate_tc(command_model_pilot.get_rate_tc());
+    if (in_ground_mode()){
+        gnd_attitude_control->set_yaw_rate_tc(command_model_pilot.get_rate_tc());
+    } else {
+        attitude_control->set_yaw_rate_tc(command_model_pilot.get_rate_tc());
+    }
 }
 
 // Disable attitude control yaw rate time constant
 void QuadPlane::disable_yaw_rate_time_constant()
 {
+    if (in_ground_mode()){
+        gnd_attitude_control->set_yaw_rate_tc(0.0);
+    } else {
     attitude_control->set_yaw_rate_tc(0.0);
+    }
 }
 
 // Check if servo auto trim is allowed, only if countrol surfaces are fully in use

@@ -179,10 +179,15 @@ void GCS_MAVLINK_Plane::send_nav_controller_output() const
 #if HAL_QUADPLANE_ENABLED
     const QuadPlane &quadplane = plane.quadplane;
     if (quadplane.show_vtol_view() && quadplane.using_wp_nav()) {
-        const Vector3f &targets = quadplane.attitude_control->get_att_target_euler_cd();
+        const Vector3f &targets = (quadplane.in_ground_mode())
+                                ? quadplane.gnd_attitude_control->get_att_target_euler_cd()
+                                : quadplane.attitude_control->get_att_target_euler_cd();
+
 
         const Vector2f& curr_pos = quadplane.inertial_nav.get_position_xy_cm();
-        const Vector2f& target_pos = quadplane.pos_control->get_pos_target_cm().xy().tofloat();
+        const Vector2f& target_pos = (quadplane.in_ground_mode()) 
+                                   ? quadplane.gnd_pos_control->get_pos_target_cm().xy().tofloat()
+                                   : quadplane.pos_control->get_pos_target_cm().xy().tofloat();
         const Vector2f error = (target_pos - curr_pos) * 0.01;
 
         mavlink_msg_nav_controller_output_send(
@@ -332,8 +337,10 @@ void GCS_MAVLINK_Plane::send_pid_tuning()
     if (g.gcs_pid_mask & TUNING_BITS_ROLL) {
         pid_info = &plane.rollController.get_pid_info();
 #if HAL_QUADPLANE_ENABLED
-        if (plane.quadplane.in_vtol_mode() || plane.quadplane.in_ground_mode()) {
+        if (plane.quadplane.in_vtol_mode()) {
             pid_info = &plane.quadplane.attitude_control->get_rate_roll_pid().get_pid_info();
+        } else if (plane.quadplane.in_ground_mode()) {
+            pid_info = &plane.quadplane.gnd_attitude_control->get_rate_roll_pid().get_pid_info();
         }
 #endif
         send_pid_info(pid_info, PID_TUNING_ROLL, pid_info->actual);
@@ -341,8 +348,10 @@ void GCS_MAVLINK_Plane::send_pid_tuning()
     if (g.gcs_pid_mask & TUNING_BITS_PITCH) {
         pid_info = &plane.pitchController.get_pid_info();
 #if HAL_QUADPLANE_ENABLED
-        if (plane.quadplane.in_vtol_mode() || plane.quadplane.in_ground_mode()) {
+        if (plane.quadplane.in_vtol_mode()) {
             pid_info = &plane.quadplane.attitude_control->get_rate_pitch_pid().get_pid_info();
+        } else if (plane.quadplane.in_ground_mode()) {
+            pid_info = &plane.quadplane.gnd_attitude_control->get_rate_pitch_pid().get_pid_info();
         }
 #endif
         send_pid_info(pid_info, PID_TUNING_PITCH, pid_info->actual);
@@ -350,8 +359,10 @@ void GCS_MAVLINK_Plane::send_pid_tuning()
     if (g.gcs_pid_mask & TUNING_BITS_YAW) {
         pid_info = &plane.yawController.get_pid_info();
 #if HAL_QUADPLANE_ENABLED
-        if (plane.quadplane.in_vtol_mode() || plane.quadplane.in_ground_mode()) {
+        if (plane.quadplane.in_vtol_mode()) {
             pid_info = &plane.quadplane.attitude_control->get_rate_yaw_pid().get_pid_info();
+        } else if (plane.quadplane.in_ground_mode()) {
+            pid_info = &plane.quadplane.gnd_attitude_control->get_rate_yaw_pid().get_pid_info();
         }
 #endif
         send_pid_info(pid_info, PID_TUNING_YAW, pid_info->actual);
@@ -366,8 +377,11 @@ void GCS_MAVLINK_Plane::send_pid_tuning()
         send_pid_info(plane.landing.get_pid_info(), PID_TUNING_LANDING, degrees(gyro.z));
     }
 #if HAL_QUADPLANE_ENABLED
-    if (g.gcs_pid_mask & TUNING_BITS_ACCZ && (plane.quadplane.in_vtol_mode() || plane.quadplane.in_ground_mode())) {
+    if (g.gcs_pid_mask & TUNING_BITS_ACCZ && (plane.quadplane.in_vtol_mode())) {
         pid_info = &plane.quadplane.pos_control->get_accel_z_pid().get_pid_info();
+        send_pid_info(pid_info, PID_TUNING_ACCZ, pid_info->actual);
+    } else if (g.gcs_pid_mask & TUNING_BITS_ACCZ && (plane.quadplane.in_ground_mode())) {
+        pid_info = &plane.quadplane.gnd_pos_control->get_accel_z_pid().get_pid_info();
         send_pid_info(pid_info, PID_TUNING_ACCZ, pid_info->actual);
     }
 #endif
