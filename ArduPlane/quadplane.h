@@ -207,8 +207,11 @@ private:
     const struct AP_Param::GroupInfo *motors_var_info;
 
     AC_AttitudeControl_Multi *attitude_control;
+    AC_AttitudeControl_Multi *gnd_attitude_control;
     AC_PosControl *pos_control;
+    AC_PosControl *gnd_pos_control;
     AC_WPNav *wp_nav;
+    AC_WPNav *gnd_wp_nav;
     AC_Loiter *loiter_nav;
     
     // maximum vertical velocity the pilot may request
@@ -398,6 +401,9 @@ private:
     AP_Float acro_roll_rate;
     AP_Float acro_pitch_rate;
     AP_Float acro_yaw_rate;
+
+    AP_Int8 roll_thr;
+    AP_Int8 roll_th;
 
     // time we last got an EKF yaw reset
     uint32_t ekfYawReset_ms;

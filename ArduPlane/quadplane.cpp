@@ -281,6 +281,10 @@ const AP_Param::GroupInfo QuadPlane::var_info[] = {
     // @Bitmask: 21: Tilt rotor-tilt motors up when disarmed in FW modes (except manual) to prevent ground strikes.
     AP_GROUPINFO("OPTIONS", 58, QuadPlane, options, 0),
 
+    // @Group: G_P
+    // @Path: ../libraries/AC_AttitudeControl/AC_PosControl.cpp
+    AP_SUBGROUPPTR(gnd_pos_control, "G_P", 62, QuadPlane, AC_PosControl),
+
     AP_SUBGROUPEXTENSION("",59, QuadPlane, var_info2),
 
     // 60 is used above for VELZ_MAX_DN
@@ -504,6 +508,20 @@ const AP_Param::GroupInfo QuadPlane::var_info2[] = {
     // @User: Standard
     AP_GROUPINFO("RTL_ALT_MIN", 34, QuadPlane, qrtl_alt_min, 10),
 
+    // @Param: ROLL_THR
+    // @DisplayName: Roll throttle
+    // @Description: This is the throttle level used to roll in automatic ground modes
+    // @Units: %
+    // @Range: 1 100
+    // @Increment: 1
+    // @User: Standard
+    AP_GROUPINFO("ROLL_THR", 35, QuadPlane, roll_thr, 5),
+
+    // @Group: G_WP
+    // @Path: ../libraries/AC_WPNav/AC_WPNav.cpp
+    AP_SUBGROUPPTR(gnd_wp_nav, "G_WP", 36, QuadPlane, AC_WPNav),
+
+
     AP_GROUPEND
 };
 
@@ -666,7 +684,7 @@ bool QuadPlane::setup(void)
     }
     
     if (hal.util->available_memory() <
-        4096 + sizeof(*motors) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) {
+        4096 + sizeof(*motors) + sizeof(*gnd_attitude_control) + sizeof(*gnd_pos_control) + sizeof(*wp_nav) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) {
         AP_BoardConfig::config_error("Not enough memory for quadplane");
     }
 
@@ -760,6 +778,25 @@ bool QuadPlane::setup(void)
         AP_BoardConfig::allocation_error("wp_nav");
     }
     AP_Param::load_object_from_eeprom(wp_nav, wp_nav->var_info);
+
+    gnd_attitude_control = new AC_AttitudeControl_TS(*ahrs_view, aparm, *motors);
+    if (!gnd_attitude_control) {
+        AP_BoardConfig::allocation_error("gnd_attitude_control");
+    }
+
+    AP_Param::load_object_from_eeprom(gnd_attitude_control, gnd_attitude_control->var_info);
+
+    gnd_pos_control = new AC_PosControl(*ahrs_view, inertial_nav, *motors, *gnd_attitude_control);
+    if (!gnd_pos_control) {
+        AP_BoardConfig::allocation_error("gnd_pos_control");
+    }
+    AP_Param::load_object_from_eeprom(gnd_pos_control, gnd_pos_control->var_info);
+
+    gnd_wp_nav = new AC_WPNav(inertial_nav, *ahrs_view, *gnd_pos_control, *gnd_attitude_control);
+    if (!gnd_wp_nav) {
+        AP_BoardConfig::allocation_error("gnd_wp_nav");
+    }
+    AP_Param::load_object_from_eeprom(gnd_wp_nav, gnd_wp_nav->var_info);
 
     loiter_nav = new AC_Loiter(inertial_nav, *ahrs_view, *pos_control, *attitude_control);
     if (!loiter_nav) {
@@ -2965,6 +3002,9 @@ float QuadPlane::get_scaled_wp_speed(float target_bearing_deg) const
                                                          20, 160);
         return wp_speed / speed_reduction;
     }
+    if (in_ground_auto()){ // If we are in ground mode, 
+        return 0;
+    }
     return wp_speed;
 }
 
@@ -3148,7 +3188,7 @@ void QuadPlane::waypoint_controller(void)
         set_climb_rate_cms(assist_climb_rate_cms());
         run_z_controller();
     } else {
-        float pilot_throttle_scaled = 0.03;
+        float pilot_throttle_scaled = roll_thr;
         set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
         attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
     }

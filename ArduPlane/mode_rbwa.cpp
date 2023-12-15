@@ -45,7 +45,7 @@ void ModeRDBWA::run()
     }
 
     // normal QSTABILIZE mode
-    float pilot_throttle_scaled = 0.03;
+    float pilot_throttle_scaled = plane.quadplane.roll_thr * 0.01;
     quadplane.set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
     quadplane.set_pilot_yaw_rate_time_constant();
     attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
