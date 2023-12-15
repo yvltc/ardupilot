@@ -3223,7 +3223,7 @@ void QuadPlane::waypoint_controller(void)
         set_climb_rate_cms(assist_climb_rate_cms());
         run_z_controller();
     } else {
-        float pilot_throttle_scaled = roll_thr;
+        float pilot_throttle_scaled = roll_thr * 0.01;
         set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
         gnd_attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
     }
