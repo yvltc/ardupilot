@@ -835,20 +835,14 @@ public:
     virtual bool is_ground_man_mode() const override { return true; }
     bool allows_throttle_nudging() const override { return true; }
 
-    // methods that affect movement of the vehicle in this mode
-    void update() override;
-
     // used as a base class for all Q modes
     bool _enter() override;
+
+    void update() override;
 
     void run() override;
 
 protected:
-private:
-
-    void set_tailsitter_roll_pitch(const float roll_input, const float pitch_input);
-    void set_limited_roll_pitch(const float roll_input, const float pitch_input);
-
 };
 
 class ModeRGuided : public Mode

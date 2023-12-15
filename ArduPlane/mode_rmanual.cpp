@@ -32,7 +32,7 @@ void ModeRManual::update()
         set_limited_roll_pitch(roll_input, pitch_input);
     } else {
         // use angle max for both roll and pitch
-        plane.nav_roll_cd = roll_input * plane.quadplane.aparm.angle_max;
+        plane.nav_roll_cd = 0;
         plane.nav_pitch_cd = pitch_input * plane.quadplane.aparm.angle_max;
     }
 }

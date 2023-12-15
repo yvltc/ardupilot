@@ -521,6 +521,10 @@ const AP_Param::GroupInfo QuadPlane::var_info2[] = {
     // @Path: ../libraries/AC_WPNav/AC_WPNav.cpp
     AP_SUBGROUPPTR(gnd_wp_nav, "G_WP", 36, QuadPlane, AC_WPNav),
 
+    // @Group: GHVR_
+    // @Path: ../libraries/AC_WPNav/AC_Loiter.cpp
+    AP_SUBGROUPPTR(gnd_loiter_nav, "GHVR_",  37, QuadPlane, AC_Loiter),
+
 
     AP_GROUPEND
 };
@@ -684,7 +688,7 @@ bool QuadPlane::setup(void)
     }
     
     if (hal.util->available_memory() <
-        4096 + sizeof(*motors) + sizeof(*gnd_attitude_control) + sizeof(*gnd_pos_control) + sizeof(*gnd_wp_nav) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) {
+        4096 + sizeof(*motors) + sizeof(*gnd_attitude_control) + sizeof(*gnd_pos_control) + sizeof(*gnd_wp_nav) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*gnd_loiter_nav) + sizeof(*weathervane)) {
         AP_BoardConfig::config_error("Not enough memory for quadplane");
     }
 
@@ -803,6 +807,12 @@ bool QuadPlane::setup(void)
         AP_BoardConfig::allocation_error("loiter_nav");
     }
     AP_Param::load_object_from_eeprom(loiter_nav, loiter_nav->var_info);
+
+    gnd_loiter_nav = new AC_Loiter(inertial_nav, *ahrs_view, *gnd_pos_control, *gnd_attitude_control);
+    if (!gnd_loiter_nav) {
+        AP_BoardConfig::allocation_error("gnd_loiter_nav");
+    }
+    AP_Param::load_object_from_eeprom(gnd_loiter_nav, gnd_loiter_nav->var_info);
 
     weathervane = new AC_WeatherVane();
     if (!weathervane) {
@@ -1020,6 +1030,7 @@ void QuadPlane::hold_stabilize(float throttle_in)
     if ((throttle_in <= 0) && !air_mode_active()) {
         set_desired_spool_state(AP_Motors::DesiredSpoolState::GROUND_IDLE);
         attitude_control->set_throttle_out(0, true, 0);
+        gnd_attitude_control->set_throttle_out(0, true, 0);
         relax_attitude_control();
     } else {
         set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
@@ -1069,6 +1080,7 @@ void QuadPlane::relax_attitude_control()
     // disable roll and yaw control for vectored tailsitters
     // if not a vectored tailsitter completely disable attitude control
     attitude_control->relax_attitude_controllers(!tailsitter.relax_pitch());
+    gnd_attitude_control->relax_attitude_controllers(!tailsitter.relax_pitch());
 }
 
 /*
@@ -1083,6 +1095,7 @@ void QuadPlane::check_yaw_reset(void)
     uint32_t new_ekfYawReset_ms = ahrs.getLastYawResetAngle(yaw_angle_change_rad);
     if (new_ekfYawReset_ms != ekfYawReset_ms) {
         attitude_control->inertial_frame_reset();
+        gnd_attitude_control->inertial_frame_reset();
         ekfYawReset_ms = new_ekfYawReset_ms;
         AP::logger().Write_Event(LogEvent::EKF_YAW_RESET);
     }
@@ -1168,6 +1181,9 @@ void QuadPlane::get_pilot_desired_lean_angles(float &roll_out_cd, float &pitch_o
 
     // apply lateral tilt to euler roll conversion
     roll_out_cd = 100 * degrees(atanf(cosf(radians(pitch_out_cd*0.01))*tanf(radians(roll_out_cd*0.01))));
+    if (in_ground_mode()){
+        roll_out_cd = 0;
+    }
 }
 
 /*
@@ -1843,6 +1859,7 @@ void QuadPlane::update(void)
 
     if (SRV_Channels::get_emergency_stop()) {
         attitude_control->reset_rate_controller_I_terms();
+        gnd_attitude_control->reset_rate_controller_I_terms();
     }
 
     if (!plane.arming.is_armed_and_safety_off()) {
@@ -1852,12 +1869,18 @@ void QuadPlane::update(void)
         if (tailsitter.enabled()) {
             // tailsitters only relax I terms, to make ground testing easier
             attitude_control->reset_rate_controller_I_terms();
+            gnd_attitude_control->reset_rate_controller_I_terms();
         } else {
             // otherwise full relax
             attitude_control->relax_attitude_controllers();
+            gnd_attitude_control->relax_attitude_controllers();
         }
         // todo: do you want to set the throttle at this point?
-        pos_control->relax_z_controller(0);
+        if (in_ground_mode()){
+            gnd_pos_control->relax_z_controller(0);
+        } else {
+            pos_control->relax_z_controller(0);
+        }
     }
 
     const uint32_t now = AP_HAL::millis();
@@ -1903,12 +1926,20 @@ void QuadPlane::update(void)
         const bool motors_active = in_vtol_mode() || assisted_flight || in_ground_mode();
         if (motors_active && (motors->get_spool_state() != AP_Motors::SpoolState::SHUT_DOWN)) {
             // log RATE at main loop rate
-            ahrs_view->Write_Rate(*motors, *attitude_control, *pos_control);
+            if (in_ground_mode()){
+                ahrs_view->Write_Rate(*motors, *gnd_attitude_control, *gnd_pos_control);
+            } else {
+                ahrs_view->Write_Rate(*motors, *attitude_control, *pos_control);
+            }
 
             // log CTRL and MOTB at 10 Hz
             if (now - last_ctrl_log_ms > 100) {
                 last_ctrl_log_ms = now;
-                attitude_control->control_monitor_log();
+                if (in_ground_mode()) {
+                    gnd_attitude_control->control_monitor_log();
+                } else {
+                    attitude_control->control_monitor_log();
+                }
                 motors->Log_Write();
             }
         }
@@ -2089,9 +2120,15 @@ void QuadPlane::motors_output(bool run_rate_controller)
         // run low level rate controllers that only require IMU data and set loop time
         const float last_loop_time_s = AP::scheduler().get_last_loop_time_s();
         motors->set_dt(last_loop_time_s);
-        attitude_control->set_dt(last_loop_time_s);
-        pos_control->set_dt(last_loop_time_s);
-        attitude_control->rate_controller_run();
+        if (in_ground_mode()){
+            gnd_attitude_control->set_dt(last_loop_time_s);
+            gnd_pos_control->set_dt(last_loop_time_s);
+            gnd_attitude_control->rate_controller_run();
+        } else {
+            attitude_control->set_dt(last_loop_time_s);
+            pos_control->set_dt(last_loop_time_s);
+            attitude_control->rate_controller_run();
+        }
         last_att_control_ms = now;
     }
 
@@ -2325,13 +2362,23 @@ void QuadPlane::run_xy_controller(float accel_limit)
         accel_cmss = MAX(accel_cmss, accel_limit*100);
     }
     const float speed_cms = wp_nav->get_default_speed_xy();
-    pos_control->set_max_speed_accel_xy(speed_cms, accel_cmss);
-    pos_control->set_correction_speed_accel_xy(speed_cms, accel_cmss);
-    if (!pos_control->is_active_xy()) {
-        pos_control->init_xy_controller();
+    if (in_ground_mode()){
+        gnd_pos_control->set_max_speed_accel_xy(speed_cms, accel_cmss);
+        gnd_pos_control->set_correction_speed_accel_xy(speed_cms, accel_cmss);
+        if (!gnd_pos_control->is_active_xy()) {
+            gnd_pos_control->init_xy_controller();
+        }
+        gnd_pos_control->set_lean_angle_max_cd(MIN(4500, MAX(accel_to_angle(accel_limit)*100, aparm.angle_max)));
+        gnd_pos_control->update_xy_controller();
+    } else {
+        pos_control->set_max_speed_accel_xy(speed_cms, accel_cmss);
+        pos_control->set_correction_speed_accel_xy(speed_cms, accel_cmss);
+        if (!pos_control->is_active_xy()) {
+            pos_control->init_xy_controller();
+        }
+        pos_control->set_lean_angle_max_cd(MIN(4500, MAX(accel_to_angle(accel_limit)*100, aparm.angle_max)));
+        pos_control->update_xy_controller();
     }
-    pos_control->set_lean_angle_max_cd(MIN(4500, MAX(accel_to_angle(accel_limit)*100, aparm.angle_max)));
-    pos_control->update_xy_controller();
 }
 
 /*
@@ -3012,7 +3059,7 @@ void QuadPlane::vtol_position_controller(void)
 float QuadPlane::get_scaled_wp_speed(float target_bearing_deg) const
 {
     const float yaw_difference = fabsf(wrap_180(degrees(plane.ahrs.yaw) - target_bearing_deg));
-    const float wp_speed = (in_ground_auto())
+    const float wp_speed = (in_ground_mode())
     ? gnd_wp_nav->get_default_speed_xy() * 0.01
     : wp_nav->get_default_speed_xy() * 0.01;
     if (yaw_difference > 20) {
@@ -3755,7 +3802,7 @@ float QuadPlane::forward_throttle_pct()
     vel_forward.last_ms = AP_HAL::millis();
     
     // work out the desired speed in forward direction
-    Vector3f desired_velocity_cms = pos_control->get_vel_desired_cms();
+    Vector3f desired_velocity_cms = (in_ground_mode()) ? gnd_pos_control->get_vel_desired_cms() : pos_control->get_vel_desired_cms();
 
     // convert to NED m/s
     desired_velocity_cms.z *= -1;
@@ -3965,7 +4012,7 @@ bool QuadPlane::do_user_takeoff(float takeoff_altitude)
 // return true if the wp_nav controller is being updated
 bool QuadPlane::using_wp_nav(void) const
 {
-    if (plane.control_mode == &plane.mode_qloiter || plane.control_mode == &plane.mode_qland) {
+    if (plane.control_mode == &plane.mode_qloiter || plane.control_mode == &plane.mode_qland || plane.control_mode == &plane.mode_rdbwa) {
         return true;
     }
     return false;
@@ -4080,6 +4127,7 @@ void QuadPlane::update_throttle_mix(void)
     // if disarmed or landed prioritise throttle
     if (!motors->armed()) {
         attitude_control->set_throttle_mix_min();
+        gnd_attitude_control->set_throttle_mix_min();
         return;
     }
 
@@ -4087,18 +4135,20 @@ void QuadPlane::update_throttle_mix(void)
         // manual throttle
         if (!is_positive(plane.get_throttle_input()) && !air_mode_active()) {
             attitude_control->set_throttle_mix_min();
+            gnd_attitude_control->set_throttle_mix_min();
         } else {
             attitude_control->set_throttle_mix_man();
+            gnd_attitude_control->set_throttle_mix_man();
         }
     } else {
         // autopilot controlled throttle
 
         // check for aggressive flight requests - requested roll or pitch angle below 15 degrees
-        const Vector3f angle_target = attitude_control->get_att_target_euler_cd();
+        const Vector3f angle_target = (in_ground_mode()) ? gnd_attitude_control->get_att_target_euler_cd() : attitude_control->get_att_target_euler_cd();
         bool large_angle_request = angle_target.xy().length() > LAND_CHECK_LARGE_ANGLE_CD;
 
         // check for large external disturbance - angle error over 30 degrees
-        const float angle_error = attitude_control->get_att_error_angle_deg();
+        const float angle_error = (in_ground_mode()) ? gnd_attitude_control->get_att_error_angle_deg() : attitude_control->get_att_error_angle_deg();
         bool large_angle_error = (angle_error > LAND_CHECK_ANGLE_ERROR_DEG);
 
         // check for large acceleration - falling or high turbulence
@@ -4119,8 +4169,10 @@ void QuadPlane::update_throttle_mix(void)
 
         if (use_mix_max) {
             attitude_control->set_throttle_mix_max(1.0);
+            gnd_attitude_control->set_throttle_mix_max(1.0);
         } else {
             attitude_control->set_throttle_mix_min();
+            gnd_attitude_control->set_throttle_mix_min();
         }
     }
 }
@@ -4595,6 +4647,7 @@ bool QuadPlane::in_vtol_takeoff(void) const
 void QuadPlane::mode_enter(void)
 {
     if (available()) {
+        gnd_pos_control->set_lean_angle_max_cd(0);
         pos_control->set_lean_angle_max_cd(0);
     }
     poscontrol.xy_correction.zero();
@@ -4624,7 +4677,7 @@ void QuadPlane::disable_yaw_rate_time_constant()
     if (in_ground_mode()){
         gnd_attitude_control->set_yaw_rate_tc(0.0);
     } else {
-    attitude_control->set_yaw_rate_tc(0.0);
+        attitude_control->set_yaw_rate_tc(0.0);
     }
 }
 

@@ -4,84 +4,77 @@
 
 bool ModeRDBWA::_enter()
 {
-    pos_control->set_max_speed_accel_z(-quadplane.get_pilot_velocity_z_max_dn(), quadplane.pilot_velocity_z_max_up, quadplane.pilot_accel_z);
-    pos_control->set_correction_speed_accel_z(-quadplane.get_pilot_velocity_z_max_dn(), quadplane.pilot_velocity_z_max_up, quadplane.pilot_accel_z);
+    // initialise loiter
+    plane.quadplane.gnd_loiter_nav->clear_pilot_desired_acceleration();
+    plane.quadplane.gnd_loiter_nav->init_target();
 
-    quadplane.throttle_wait = false;
+    plane.quadplane.init_throttle_wait();
+
+    // prevent re-init of target position
+    plane.quadplane.last_loiter_ms = AP_HAL::millis();
     return true;
 }
 
 void ModeRDBWA::update()
 {
-    // set nav_roll and nav_pitch using sticks
-    // Beware that QuadPlane::tailsitter_check_input (called from Plane::read_radio)
-    // may alter the control_in values for roll and yaw, but not the corresponding
-    // radio_in values. This means that the results for norm_input would not necessarily
-    // be correct for tailsitters, so get_control_in() must be used instead.
-    // normalize control_input to [-1,1]
-    // in Rover mode roll is always zero - in reality we want to disable the roll control
-    float forward_speed = - (float)plane.channel_pitch->get_control_in() / plane.channel_pitch->get_range() * 500;
-    Vector2f target_speed_xy_cms = Vector2f(forward_speed * plane.ahrs.cos_yaw(), forward_speed * plane.ahrs.sin_yaw());
-    Vector2f target_accel_cms;
-    if (!pos_control->is_active_xy()) {
-        pos_control->init_xy_controller();
-    }
-    // plane.nav_yaw_cd = degrees(target_speed_xy_cms.angle()) * 100;
-    pos_control->input_vel_accel_xy(target_speed_xy_cms, target_accel_cms);
-    // run horizontal velocity controller
-    quadplane.run_xy_controller();
-    plane.nav_roll_cd = 0;
-    plane.nav_pitch_cd = pos_control->get_pitch_cd();
-
+    plane.mode_rmanual.update();
 }
 
-// quadplane stabilize mode
+// plane.quadplane stabilize mode
 void ModeRDBWA::run()
 {
-    // special check for ESC calibration in QSTABILIZE
-    if (quadplane.esc_calibration != 0) {
-        quadplane.run_esc_calibration();
+    if (plane.quadplane.throttle_wait) {
+        plane.quadplane.set_desired_spool_state(AP_Motors::DesiredSpoolState::GROUND_IDLE);
+        plane.quadplane.gnd_attitude_control->set_throttle_out(0, true, 0);
+        plane.quadplane.relax_attitude_control();
+        plane.quadplane.gnd_loiter_nav->clear_pilot_desired_acceleration();
+        plane.quadplane.gnd_loiter_nav->init_target();
         return;
     }
+    if (!plane.quadplane.motors->armed()) {
+        plane.mode_rdbwa._enter();
+    }
 
-    // normal QSTABILIZE mode
-    float pilot_throttle_scaled = plane.quadplane.roll_thr * 0.01;
-    quadplane.set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
-    quadplane.set_pilot_yaw_rate_time_constant();
-    attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
+    const uint32_t now = AP_HAL::millis();
+    if (now - plane.quadplane.last_loiter_ms > 500) {
+        plane.quadplane.gnd_loiter_nav->clear_pilot_desired_acceleration();
+        plane.quadplane.gnd_loiter_nav->init_target();
+    }
+    plane.quadplane.last_loiter_ms = now;
+
+    // motors use full range
+    plane.quadplane.set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
+    
+    // process pilot's roll and pitch input
+    float target_roll_cd, target_pitch_cd;
+    plane.quadplane.get_pilot_desired_lean_angles(target_roll_cd, target_pitch_cd, plane.quadplane.gnd_loiter_nav->get_angle_max_cd(), plane.quadplane.gnd_attitude_control->get_althold_lean_angle_max_cd());
+    plane.quadplane.gnd_loiter_nav->set_pilot_desired_acceleration(target_roll_cd, target_pitch_cd);
+
+    target_roll_cd = 0;
+    
+    // run loiter controller
+    if (!plane.quadplane.gnd_pos_control->is_active_xy()) {
+        plane.quadplane.gnd_pos_control->init_xy_controller();
+    }
+    plane.quadplane.gnd_loiter_nav->update();
+
+    // nav roll and pitch are controller by loiter controller
+    plane.nav_roll_cd = 0;
+    plane.nav_pitch_cd = plane.quadplane.gnd_loiter_nav->get_pitch();
+
+    if (plane.quadplane.transition->set_VTOL_roll_pitch_limit(plane.nav_roll_cd, plane.nav_pitch_cd)) {
+        plane.quadplane.gnd_pos_control->set_externally_limited_xy();
+    }
+
+    // Pilot input, use yaw rate time constant
+    plane.quadplane.set_pilot_yaw_rate_time_constant();
+
+    // call attitude controller with conservative smoothing gain of 4.0f
+    plane.quadplane.gnd_attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
                                                                   plane.nav_pitch_cd,
-                                                                  quadplane.get_pilot_input_yaw_rate_cds());
-
-    attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
+                                                                  plane.quadplane.get_desired_yaw_rate_cds());
+    float pilot_throttle_scaled = plane.quadplane.roll_thr * 0.01;
+    plane.quadplane.gnd_attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
 }
 
-// set the desired roll and pitch for a tailsitter
-void ModeRDBWA::set_tailsitter_roll_pitch(const float roll_input, const float pitch_input)
-{
-    // separate limit for roll, if set
-    if (plane.quadplane.tailsitter.max_roll_angle > 0) {
-        // roll param is in degrees not centidegrees
-        plane.nav_roll_cd = plane.quadplane.tailsitter.max_roll_angle * 100.0f * roll_input;
-    } else {
-        plane.nav_roll_cd = roll_input * plane.quadplane.aparm.angle_max;
-    }
-
-    // angle max for tailsitter pitch
-    plane.nav_pitch_cd = pitch_input * plane.quadplane.aparm.angle_max;
-
-    plane.quadplane.transition->set_VTOL_roll_pitch_limit(plane.nav_roll_cd, plane.nav_pitch_cd);
-}
-
-// set the desired roll and pitch for normal quadplanes, also limited by forward flight limtis
-void ModeRDBWA::set_limited_roll_pitch(const float roll_input, const float pitch_input)
-{
-    plane.nav_roll_cd = roll_input * MIN(plane.roll_limit_cd, plane.quadplane.aparm.angle_max);
-    // pitch is further constrained by LIM_PITCH_MIN/MAX which may impose
-    // tighter (possibly asymmetrical) limits than Q_ANGLE_MAX
-    if (pitch_input > 0) {
-        plane.nav_pitch_cd = pitch_input * MIN(plane.aparm.pitch_limit_max_cd, plane.quadplane.aparm.angle_max);
-    } else {
-        plane.nav_pitch_cd = pitch_input * MIN(-plane.pitch_limit_min_cd, plane.quadplane.aparm.angle_max);
-    }
-}
 

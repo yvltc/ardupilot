@@ -246,6 +246,8 @@ void Plane::stabilize_stick_mixing_fbw()
         control_mode == &mode_qloiter ||
         control_mode == &mode_qland ||
         control_mode == &mode_qacro ||
+        control_mode == &mode_rmanual ||
+        control_mode == &mode_rdbwa ||
 #if QAUTOTUNE_ENABLED
         control_mode == &mode_qautotune ||
 #endif

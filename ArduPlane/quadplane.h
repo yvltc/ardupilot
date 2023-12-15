@@ -213,6 +213,7 @@ private:
     AC_WPNav *wp_nav;
     AC_WPNav *gnd_wp_nav;
     AC_Loiter *loiter_nav;
+    AC_Loiter *gnd_loiter_nav;
     
     // maximum vertical velocity the pilot may request
     AP_Int16 pilot_velocity_z_max_up;
