@@ -971,15 +971,28 @@ void QuadPlane::multicopter_attitude_rate_update(float yaw_rate_cds)
         }
 
         if (use_yaw_target) {
-            attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
+            if (in_ground_mode()){
+                gnd_attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
                                                                plane.nav_pitch_cd,
                                                                yaw_target_cd,
                                                                true);
+            } else {
+                attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
+                                                               plane.nav_pitch_cd,
+                                                               yaw_target_cd,
+                                                               true);
+            }
         } else {
             // use euler angle attitude control
-            attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
+            if (in_ground_mode()){
+                gnd_attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
                                                                           plane.nav_pitch_cd,
                                                                           yaw_rate_cds);
+            } else {
+                attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
+                                                                          plane.nav_pitch_cd,
+                                                                          yaw_rate_cds);
+            }
         }
     } else {
         // use the fixed wing desired rates
@@ -1014,7 +1027,11 @@ void QuadPlane::hold_stabilize(float throttle_in)
             // tailsitters in forward flight should not use angle boost
             should_boost = false;
         }
-        attitude_control->set_throttle_out(throttle_in, should_boost, 0);
+        if (in_ground_mode()) {
+            gnd_attitude_control->set_throttle_out(throttle_in, should_boost, 0);
+        } else {
+            attitude_control->set_throttle_out(throttle_in, should_boost, 0);
+        }
     }
 }
 
@@ -3029,8 +3046,13 @@ void QuadPlane::setup_target_position(void)
     poscontrol.target_cm.z = plane.next_WP_loc.alt - origin.alt;
 
     // set vertical speed and acceleration limits
-    pos_control->set_max_speed_accel_z(-get_pilot_velocity_z_max_dn(), pilot_velocity_z_max_up, pilot_accel_z);
-    pos_control->set_correction_speed_accel_z(-get_pilot_velocity_z_max_dn(), pilot_velocity_z_max_up, pilot_accel_z);
+    if (in_ground_auto()){
+        gnd_pos_control->set_max_speed_accel_z(-get_pilot_velocity_z_max_dn(), pilot_velocity_z_max_up, pilot_accel_z);
+        gnd_pos_control->set_correction_speed_accel_z(-get_pilot_velocity_z_max_dn(), pilot_velocity_z_max_up, pilot_accel_z);
+    } else {
+        pos_control->set_max_speed_accel_z(-get_pilot_velocity_z_max_dn(), pilot_velocity_z_max_up, pilot_accel_z);
+        pos_control->set_correction_speed_accel_z(-get_pilot_velocity_z_max_dn(), pilot_velocity_z_max_up, pilot_accel_z);
+    }
 }
 
 /*
@@ -3203,7 +3225,7 @@ void QuadPlane::waypoint_controller(void)
     } else {
         float pilot_throttle_scaled = roll_thr;
         set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);
-        attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
+        gnd_attitude_control->set_throttle_out(pilot_throttle_scaled, false, 0);
     }
 }
 
