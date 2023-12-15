@@ -848,6 +848,7 @@ bool QuadPlane::setup(void)
 
     // init wp_nav variables after detaults are setup
     wp_nav->wp_and_spline_init();
+    gnd_wp_nav->wp_and_spline_init();
 
     transition->force_transition_complete();
 
@@ -2993,7 +2994,9 @@ void QuadPlane::vtol_position_controller(void)
 float QuadPlane::get_scaled_wp_speed(float target_bearing_deg) const
 {
     const float yaw_difference = fabsf(wrap_180(degrees(plane.ahrs.yaw) - target_bearing_deg));
-    const float wp_speed = wp_nav->get_default_speed_xy() * 0.01;
+    const float wp_speed = (in_ground_auto())
+    ? gnd_wp_nav->get_default_speed_xy() * 0.01
+    : wp_nav->get_default_speed_xy() * 0.01;
     if (yaw_difference > 20) {
         // this gives a factor of 2x reduction in max speed when
         // off by 90 degrees, and 3x when off by 180 degrees
@@ -3001,9 +3004,6 @@ float QuadPlane::get_scaled_wp_speed(float target_bearing_deg) const
                                                          yaw_difference,
                                                          20, 160);
         return wp_speed / speed_reduction;
-    }
-    if (in_ground_auto()){ // If we are in ground mode, 
-        return 0;
     }
     return wp_speed;
 }
@@ -3155,7 +3155,11 @@ void QuadPlane::waypoint_controller(void)
     if (!loc.same_latlon_as(last_auto_target) ||
         plane.next_WP_loc.alt != last_auto_target.alt ||
         now - last_loiter_ms > 500) {
-        wp_nav->set_wp_destination(poscontrol.target_cm.tofloat());
+        if (in_ground_auto()){
+            gnd_wp_nav->set_wp_destination(poscontrol.target_cm.tofloat());
+        } else {
+            wp_nav->set_wp_destination(poscontrol.target_cm.tofloat());
+        }
         last_auto_target = loc;
     }
     last_loiter_ms = now;
@@ -3164,14 +3168,23 @@ void QuadPlane::waypoint_controller(void)
       this is full copter control of auto flight
     */
     // run wpnav controller
-    wp_nav->update_wpnav();
+    if (in_ground_auto()){
+        gnd_wp_nav->update_wpnav();
+    } else {
+        wp_nav->update_wpnav();
+    }
 
     // nav roll and pitch are controller by waypoint controller
-    plane.nav_roll_cd = wp_nav->get_roll();
     if (plane.quadplane.in_ground_auto()){
         plane.nav_roll_cd = 0;
+        plane.nav_pitch_cd = gnd_wp_nav->get_pitch();
+        plane.nav_yaw_cd = gnd_wp_nav->get_yaw();
     }
-    plane.nav_pitch_cd = wp_nav->get_pitch();
+    else{
+        plane.nav_roll_cd = wp_nav->get_roll();
+        plane.nav_pitch_cd = wp_nav->get_pitch();
+        plane.nav_yaw_cd = wp_nav->get_yaw();
+    }
 
     if (transition->set_VTOL_roll_pitch_limit(plane.nav_roll_cd, plane.nav_pitch_cd)) {
         pos_control->set_externally_limited_xy();
@@ -3181,7 +3194,7 @@ void QuadPlane::waypoint_controller(void)
     disable_yaw_rate_time_constant();
     attitude_control->input_euler_angle_roll_pitch_yaw(plane.nav_roll_cd,
                                                        plane.nav_pitch_cd,
-                                                       wp_nav->get_yaw(),
+                                                       plane.nav_yaw_cd,
                                                        true);
     if (!plane.quadplane.in_ground_auto()){
         // climb based on altitude error
