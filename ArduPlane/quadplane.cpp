@@ -515,7 +515,7 @@ const AP_Param::GroupInfo QuadPlane::var_info2[] = {
     // @Range: 1 100
     // @Increment: 1
     // @User: Standard
-    AP_GROUPINFO("ROLL_THR", 35, QuadPlane, roll_thr, 5),
+    AP_GROUPINFO("GROUND_THR", 35, QuadPlane, roll_thr, 5),
 
     // @Group: G_WP
     // @Path: ../libraries/AC_WPNav/AC_WPNav.cpp
