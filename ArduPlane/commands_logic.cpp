@@ -1154,8 +1154,10 @@ bool Plane::verify_loiter_heading(bool init)
 float Plane::get_wp_radius() const
 {
 #if HAL_QUADPLANE_ENABLED
-    if (plane.quadplane.in_vtol_mode() || plane.quadplane.in_ground_mode()) {
+    if (plane.quadplane.in_vtol_mode()) {
         return plane.quadplane.wp_nav->get_wp_radius_cm() * 0.01;
+    } else if (plane.quadplane.in_ground_mode()) {
+        return plane.quadplane.gnd_wp_nav->get_wp_radius_cm() * 0.01;
     }
 #endif
     return g.waypoint_radius;
