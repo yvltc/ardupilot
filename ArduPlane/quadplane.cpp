@@ -285,6 +285,15 @@ const AP_Param::GroupInfo QuadPlane::var_info[] = {
     // @Path: ../libraries/AC_AttitudeControl/AC_PosControl.cpp
     AP_SUBGROUPPTR(gnd_pos_control, "G_P", 62, QuadPlane, AC_PosControl),
 
+    // @Param: G_ANGLE_MAX
+    // @DisplayName: Angle Max
+    // @Description: Maximum lean angle in all ground modes
+    // @Units: cdeg
+    // @Increment: 10
+    // @Range: 1000 8000
+    // @User: Advanced
+    AP_GROUPINFO("G_ANGLE_MAX", 63, QuadPlane, ground_angle_max, 3000),
+
     AP_SUBGROUPEXTENSION("",59, QuadPlane, var_info2),
 
     // 60 is used above for VELZ_MAX_DN
@@ -2368,7 +2377,7 @@ void QuadPlane::run_xy_controller(float accel_limit)
         if (!gnd_pos_control->is_active_xy()) {
             gnd_pos_control->init_xy_controller();
         }
-        gnd_pos_control->set_lean_angle_max_cd(MIN(4500, MAX(accel_to_angle(accel_limit)*100, aparm.angle_max)));
+        gnd_pos_control->set_lean_angle_max_cd(MIN(4500, MAX(accel_to_angle(accel_limit)*100, ground_angle_max)));
         gnd_pos_control->update_xy_controller();
     } else {
         pos_control->set_max_speed_accel_xy(speed_cms, accel_cmss);
@@ -4468,7 +4477,7 @@ bool SLT_Transition::active() const
 bool SLT_Transition::set_VTOL_roll_pitch_limit(int32_t& roll_cd, int32_t& pitch_cd)
 {
     bool ret = false;
-    const int16_t angle_max = quadplane.aparm.angle_max;
+    const int16_t angle_max = quadplane.in_ground_mode() ? quadplane.ground_angle_max : quadplane.aparm.angle_max;
 
     /*
       we always limit roll to Q_ANGLE_MAX

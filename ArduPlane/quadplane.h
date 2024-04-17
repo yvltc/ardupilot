@@ -197,6 +197,8 @@ private:
     // key aircraft parameters passed to multiple libraries
     AP_MultiCopter aparm;
 
+    AP_Int16 ground_angle_max;
+
     AP_InertialNav inertial_nav{ahrs};
 
     AP_Enum<AP_Motors::motor_frame_class> frame_class;
