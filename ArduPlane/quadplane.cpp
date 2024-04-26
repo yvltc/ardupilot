@@ -3257,7 +3257,8 @@ void QuadPlane::waypoint_controller(void)
     if (in_ground_auto()){
         plane.nav_roll_cd = 0;
         plane.nav_pitch_cd = gnd_wp_nav->get_pitch();
-        plane.nav_yaw_cd = gnd_wp_nav->get_yaw();
+        // Calculate target yaw from target bearing to waypoint, vehicle requires to point to the next waypoint
+        plane.nav_yaw_cd = gnd_wp_nav->get_wp_bearing_to_destination();
     } else{
         plane.nav_roll_cd = wp_nav->get_roll();
         plane.nav_pitch_cd = wp_nav->get_pitch();
