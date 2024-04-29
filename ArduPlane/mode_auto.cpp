@@ -73,6 +73,7 @@ void ModeAuto::update()
         // restart_landing_sequence() is called when not executing a NAV_LAND or there is no previous nav point
         if (plane.quadplane.in_ground_auto()){
             plane.arming.disarm(AP_Arming::Method::LANDED);
+            return;
         }
         plane.set_mode(plane.mode_rtl, ModeReason::MISSION_END);
         gcs().send_text(MAV_SEVERITY_INFO, "Aircraft in auto without a running mission");
