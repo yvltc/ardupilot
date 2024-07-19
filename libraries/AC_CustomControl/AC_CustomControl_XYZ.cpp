@@ -149,7 +149,7 @@ Vector3f AC_CustomControl_XYZ::update(void)
     NN_input << NN::obs, NN::task;
 
     // ###### Inference Starts ######
-    auto t1 = high_resolution_clock::now();
+    //auto t1 = high_resolution_clock::now();
 
     // context encoder
     auto tmp = (NN::win_b.matrix() + NN::win_w * NN_input.matrix()).array().cwiseMax(0);
@@ -185,7 +185,8 @@ Vector3f AC_CustomControl_XYZ::update(void)
     NN_output = NN_output.unaryExpr([](float x)
                           { return std::min(std::max(x, -1.0f), 1.0f); });
 
-    auto t2 = high_resolution_clock::now();
+    //auto t2 = high_resolution_clock::now();
+    const uint32_t t2 = AP_HAL::millis();
 
     // ###### Inference Ends ######
 
@@ -194,9 +195,13 @@ Vector3f AC_CustomControl_XYZ::update(void)
     // GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NN output: %s", matrixStr.c_str());
 
     // printing the inference time of the Network
-    duration<double, std::milli> ms_double = t2 - t1;
-    double loop_frequency = 1000 / ms_double.count();
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NN freq: %s", std::to_string(loop_frequency).c_str());
+    //duration<double, std::milli> ms_double = t2 - t1;
+    //double loop_frequency = 1000 / ms_double.count();
+    //GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NN freq: %s", std::to_string(loop_frequency).c_str());
+    
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NN time: %s", std::to_string(t2).c_str());
+    // Printing the output of the Network
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NN output: %s, %s, %s", std::to_string(NN_output[1]).c_str(), std::to_string(NN_output[2]).c_str(), std::to_string(NN_output[3]).c_str());
 
     // return what arducopter main controller outputted
     Vector3f motor_out;
