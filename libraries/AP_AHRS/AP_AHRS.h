@@ -221,6 +221,9 @@ public:
     // EKF has a better ground speed vector estimate
     const Vector2f &groundspeed_vector() const { return state.ground_speed_vec; }
 
+    // Yu-Tang Edited
+    const Vector3f &airspeed_vector() const { return state.airspeed_vec; }
+
     // return ground speed estimate in meters/second. Used by ground vehicles.
     float groundspeed(void) const { return state.ground_speed; }
 

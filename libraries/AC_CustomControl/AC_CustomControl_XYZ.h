@@ -1,6 +1,4 @@
-
 #pragma once
-//#include "AC_CustomControl_config.h"
 #include "AC_CustomControl_Backend.h"
 
 class AC_CustomControl_XYZ : public AC_CustomControl_Backend {
