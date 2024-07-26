@@ -22,6 +22,28 @@ std::vector<std::vector<float>> FIFOBuffer::getReversedTable() const {
     return reversed_table;
 }
 
+// Method to get the transposed table
+std::vector<std::vector<float>> FIFOBuffer::getTransposedTable() const {
+    if (buffer.empty()) {
+        return {};
+    }
+
+    std::size_t num_rows = buffer.size();
+    std::size_t num_cols = buffer[0].size();
+
+    // Initialize the transposed table
+    std::vector<std::vector<float>> transposed_table(num_cols, std::vector<float>(num_rows));
+
+    // Fill the transposed table
+    for (std::size_t i = 0; i < num_rows; ++i) {
+        for (std::size_t j = 0; j < num_cols; ++j) {
+            transposed_table[j][i] = buffer[i][j];
+        }
+    }
+
+    return transposed_table;
+}
+
 // Method to get the reversed and transposed table
 std::vector<std::vector<float>> FIFOBuffer::getReversedTransposedTable() const {
     if (buffer.empty()) {

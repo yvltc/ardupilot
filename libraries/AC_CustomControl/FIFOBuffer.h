@@ -22,6 +22,8 @@ public:
     // Method to get the reversed table
     std::vector<std::vector<float>> getReversedTable() const;
 
+    std::vector<std::vector<float>> getTransposedTable() const;
+    
     std::vector<std::vector<float>> getReversedTransposedTable() const;
 };
 
