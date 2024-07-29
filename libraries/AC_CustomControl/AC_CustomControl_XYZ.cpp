@@ -11,28 +11,6 @@
 
 FIFOBuffer fifoBuffer(NN::N_STACK);
 
-// table of user settable parameters
-const AP_Param::GroupInfo AC_CustomControl_XYZ::var_info[] = {
-    // @Param: PARAM1
-    // @DisplayName: XYZ param1
-    // @Description: Dummy parameter for empty custom controller backend
-    // @User: Advanced
-    AP_GROUPINFO("PARAM1", 1, AC_CustomControl_XYZ, param1, 0.0f),
-
-    // @Param: PARAM2
-    // @DisplayName: XYZ param2
-    // @Description: Dummy parameter for empty custom controller backend
-    // @User: Advanced
-    AP_GROUPINFO("PARAM2", 2, AC_CustomControl_XYZ, param2, 0.0f),
-
-    // @Param: PARAM3
-    // @DisplayName: XYZ param3
-    // @Description: Dummy parameter for empty custom controller backend
-    // @User: Advanced
-    AP_GROUPINFO("PARAM3", 3, AC_CustomControl_XYZ, param3, 0.0f),
-
-    AP_GROUPEND};
-
 // initialize in the constructor
 AC_CustomControl_XYZ::AC_CustomControl_XYZ(AC_CustomControl &frontend, AP_AHRS_View *&ahrs, AC_AttitudeControl *&att_control, AP_MotorsMulticopter *&motors, float dt) : AC_CustomControl_Backend(frontend, ahrs, att_control, motors, dt)
 {
@@ -40,7 +18,6 @@ AC_CustomControl_XYZ::AC_CustomControl_XYZ(AC_CustomControl &frontend, AP_AHRS_V
         fifoBuffer.insert(NN::OBS);
     }
 
-    AP_Param::setup_object_defaults(this, var_info);
 }
 
 // update controller
@@ -63,8 +40,6 @@ Vector3f AC_CustomControl_XYZ::update(void)
         // we are off the ground
         break;
     }
-
-    // GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NN controller working");
 
     // (*)
     Quaternion attitude_body, attitude_target;
@@ -110,7 +85,9 @@ Vector3f AC_CustomControl_XYZ::update(void)
     NN::OBS[9] = -rb_ned_vel[2];
 
     // std::vector<float> vec = {NN::OBS[0], NN::OBS[1], NN::OBS[2], NN::OBS[3]}; 
-    std::vector<float> vec = {NN::OBS[7], NN::OBS[8], NN::OBS[9]}; 
+    // std::vector<float> vec = {NN::OBS[7], NN::OBS[8], NN::OBS[9]}; 
+    // std::string print_Str = vectorToString(vec);
+    // GCS_SEND_TEXT(MAV_SEVERITY_INFO, "obs: %s", print_Str.c_str());
 
     // ###### Inference Starts ######
     // auto t1 = high_resolution_clock::now();
@@ -160,6 +137,10 @@ Vector3f AC_CustomControl_XYZ::update(void)
 
     // ###### Inference Ends ######
 
+    // printing the output of the Network
+    // std::string NN_outStr = vectorToString(NN_out);
+    // GCS_SEND_TEXT(MAV_SEVERITY_INFO, "NNout: %s", NN_outStr.c_str());
+
     // printing the inference time of the Network
     // duration<float, std::milli> ms_float = t2 - t1;
     // float loop_frequency = 1000 / ms_float.count();
@@ -169,11 +150,11 @@ Vector3f AC_CustomControl_XYZ::update(void)
     Vector3f motor_out;
     motor_out.x = NN::AUTHORITY*NN_out[1];
     motor_out.y = NN::AUTHORITY*NN_out[0];
-    motor_out.z = -NN::AUTHORITY*NN_out[2];
+    // motor_out.z = -NN::AUTHORITY*NN_out[2];
 
     // motor_out.x = 0;
     // motor_out.y = 0;
-    // motor_out.z = 0;
+    motor_out.z = 0;
 
     return motor_out;
 }

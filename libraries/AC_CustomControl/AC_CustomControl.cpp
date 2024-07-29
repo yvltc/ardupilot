@@ -68,7 +68,6 @@ void AC_CustomControl::init(void)
             break;
         case CustomControlType::CONT_XYZ:
             _backend = new AC_CustomControl_XYZ(*this, _ahrs, _att_control, _motors, _dt);
-            _backend_var_info[get_type()] = AC_CustomControl_XYZ::var_info;
             break;
 
         default:
