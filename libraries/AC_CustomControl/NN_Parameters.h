@@ -13,7 +13,7 @@ static constexpr int N_LATENT = 2;
 static constexpr int N_HIDDEN = 3;
 static constexpr int N_CONTEXT = 8;
 static constexpr int N_KERNEL = 2;
-static constexpr int N_STACK = 100;
+static constexpr int N_STACK = 25;
 static constexpr int N_PADD = 1;
 
 static constexpr float AVEL_LIM = 12.570000;
