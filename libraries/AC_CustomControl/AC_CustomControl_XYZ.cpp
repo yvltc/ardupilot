@@ -11,12 +11,23 @@
 
 FIFOBuffer fifoBuffer(NN::N_STACK);
 
+const AP_Param::GroupInfo AC_CustomControl_XYZ::var_info[] = {
+    // @Param: PARAM1
+    // @DisplayName: Empty param1
+    // @Description: Dummy parameter for empty custom controller backend
+    // @User: Advanced
+    AP_GROUPINFO("AUTH", 1, AC_CustomControl_XYZ, authority, 0.1f),
+
+    AP_GROUPEND
+};
+
 // initialize in the constructor
 AC_CustomControl_XYZ::AC_CustomControl_XYZ(AC_CustomControl &frontend, AP_AHRS_View *&ahrs, AC_AttitudeControl *&att_control, AP_MotorsMulticopter *&motors, float dt) : AC_CustomControl_Backend(frontend, ahrs, att_control, motors, dt)
 {
     for (int i = 0; i < NN::N_STACK; ++i){
         fifoBuffer.insert(NN::OBS);
     }
+    AP_Param::setup_object_defaults(this, var_info);
 
 }
 
@@ -148,9 +159,9 @@ Vector3f AC_CustomControl_XYZ::update(void)
 
     // return what arducopter main controller outputted
     Vector3f motor_out;
-    motor_out.x = NN::AUTHORITY*NN_out[1];
-    motor_out.y = NN::AUTHORITY*NN_out[0];
-    // motor_out.z = -NN::AUTHORITY*NN_out[2];
+    motor_out.x = authority*NN_out[1];
+    motor_out.y = authority*NN_out[0];
+    // motor_out.z = authority*NN_out[2];
 
     // motor_out.x = 0;
     // motor_out.y = 0;

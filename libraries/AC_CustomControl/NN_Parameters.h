@@ -19,7 +19,6 @@ static constexpr int N_PADD = 1;
 static constexpr float AVEL_LIM = 12.570000;
 static constexpr float VEL_LIM = 20.000000;
 static constexpr float POS_LIM = 50.000000;
-static constexpr float AUTHORITY = 0.100000;
 
 std::vector<float> OBS = {
 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, };
