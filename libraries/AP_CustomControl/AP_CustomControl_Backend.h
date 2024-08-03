@@ -7,7 +7,7 @@
 class AP_CustomControl_Backend
 {
 public:
-    AP_CustomControl_Backend(AP_CustomControl& frontend, AP_AHRS_View*& ahrs, float dt) :
+    AP_CustomControl_Backend(AP_CustomControl& frontend, AP_AHRS &ahrs, float dt) :
         _frontend(frontend),
         _ahrs(ahrs)
     {}
@@ -32,7 +32,7 @@ public:
 
 protected:
     // References to external libraries
-    AP_AHRS_View*& _ahrs;
+    AP_AHRS &_ahrs;
     AP_CustomControl& _frontend;
 };
 

@@ -39,7 +39,7 @@ const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
 
 const struct AP_Param::GroupInfo *AP_CustomControl::_backend_var_info[CUSTOMCONTROL_MAX_TYPES];
 
-AP_CustomControl::AP_CustomControl(AP_AHRS &ahrs, AP_PitchController*& pitchController, AP_RollController*& rollController, AP_YawController*& yawController, float dt) :
+AP_CustomControl::AP_CustomControl(AP_AHRS &ahrs, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, float dt) :
     _dt(dt),
     _ahrs(ahrs),
     _pitchController(pitchController),

@@ -10,7 +10,7 @@
 
 class AP_CustomControl_Empty : public AP_CustomControl_Backend {
 public:
-    AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AHRS_View*& ahrs, float dt);
+    AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AHRS &ahrs, float dt);
 
 
     float get_roll_out(float roll_target) override;

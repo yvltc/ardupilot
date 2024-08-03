@@ -21,7 +21,7 @@ class AP_CustomControl_Backend;
 
 class AP_CustomControl {
 public:
-    AP_CustomControl(AP_AHRS*& ahrs, AP_PitchController*& pitchController, AP_RollController*& rollController, AP_YawController*& yawController, float dt);
+    AP_CustomControl(AP_AHRS &ahrs, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, float dt);
 
     CLASS_NO_COPY(AP_CustomControl);  /* Do not allow copies */
 
@@ -62,10 +62,10 @@ protected:
     bool _custom_controller_active;
 
     // References to external libraries
-    AP_AHRS*& _ahrs;
-    AP_PitchController*& _pitchController;
-    AP_RollController*& _rollController;
-    AP_YawController*& _yawController;
+    AP_AHRS &_ahrs;
+    AP_PitchController *_pitchController;
+    AP_RollController *_rollController;
+    AP_YawController *_yawController;
 
     AP_Enum<CustomControlType> _controller_type;
     AP_Int8 _custom_controller_mask;

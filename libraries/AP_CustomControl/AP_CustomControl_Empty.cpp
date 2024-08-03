@@ -29,7 +29,7 @@ const AP_Param::GroupInfo AP_CustomControl_Empty::var_info[] = {
 };
 
 // initialize in the constructor
-AP_CustomControl_Empty::AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AHRS_View*& ahrs, float dt) :
+AP_CustomControl_Empty::AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AHRS &ahrs, float dt) :
     AP_CustomControl_Backend(frontend, ahrs, dt)
 {
     AP_Param::setup_object_defaults(this, var_info);
