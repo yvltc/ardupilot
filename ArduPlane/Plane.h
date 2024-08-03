@@ -116,6 +116,10 @@
 #include <AP_Scripting/AP_Scripting.h>
 #endif
 
+#if AP_CUSTOMCONTROL_ENABLED == ENABLED
+#include <AP_CustomControl/AP_CustomControl.h>                  // Custom control library
+#endif
+
 #include "RC_Channel.h"     // RC Channel Library
 #include "Parameters.h"
 #if HAL_ADSB_ENABLED
@@ -224,6 +228,10 @@ private:
     AP_PitchController pitchController{aparm};
     AP_YawController yawController{aparm};
     AP_SteerController steerController{};
+
+#if AP_CUSTOMCONTROL_ENABLED == ENABLED
+    AP_CustomControl custom_control{ahrs, pitchController, rollController, yawController, scheduler.get_loop_period_s()};
+#endif
 
     // Training mode
     bool training_manual_roll;  // user has manual roll control
@@ -895,6 +903,10 @@ private:
     int16_t calc_nav_yaw_coordinated();
     int16_t calc_nav_yaw_course(void);
     int16_t calc_nav_yaw_ground(void);
+
+#if AP_CUSTOMCONTROL_ENABLED == ENABLED
+    void custom_stabilize() { custom_control.update(nav_roll_cd, nav_pitch_cd); }
+#endif
 
     // Log.cpp
     uint32_t last_log_fast_ms;

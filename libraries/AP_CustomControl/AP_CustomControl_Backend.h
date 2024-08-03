@@ -4,21 +4,25 @@
 
 #if AP_CUSTOMCONTROL_ENABLED
 
-class AC_CustomControl_Backend
+class AP_CustomControl_Backend
 {
 public:
-    AC_CustomControl_Backend(AC_CustomControl& frontend, AP_AHRS_View*& ahrs, AC_AttitudeControl*& att_control, AP_MotorsMulticopter*& motors, float dt) :
+    AP_CustomControl_Backend(AP_CustomControl& frontend, AP_AHRS_View*& ahrs, float dt) :
         _frontend(frontend),
-        _ahrs(ahrs),
-        _att_control(att_control),
-        _motors(motors)
+        _ahrs(ahrs)
     {}
 
     // empty destructor to suppress compiler warning
-    virtual ~AC_CustomControl_Backend() {}
+    virtual ~AP_CustomControl_Backend() {}
 
-    // update controller, return roll, pitch, yaw controller output
-    virtual Vector3f update() = 0;
+    // update controller, return roll output
+    virtual float get_roll_out(float roll_target) = 0;
+
+    // update controller, return pitch output
+    virtual float get_pitch_out(float pitch_target) = 0;
+
+    // update controller, return yaw output
+    virtual float get_yaw_out(void) = 0;
 
     // reset controller to avoid build up or abrupt response upon switch, ex: integrator, filter
     virtual void reset() = 0;
@@ -29,9 +33,7 @@ public:
 protected:
     // References to external libraries
     AP_AHRS_View*& _ahrs;
-    AC_AttitudeControl*& _att_control;
-    AP_MotorsMulticopter*& _motors;
-    AC_CustomControl& _frontend;
+    AP_CustomControl& _frontend;
 };
 
 #endif

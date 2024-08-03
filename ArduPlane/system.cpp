@@ -197,6 +197,10 @@ void Plane::startup_ground(void)
     g2.scripting.init();
 #endif // AP_SCRIPTING_ENABLED
 
+#if AP_CUSTOMCONTROL_ENABLED == ENABLED
+    custom_control.init();
+#endif
+
     // reset last heartbeat time, so we don't trigger failsafe on slow
     // startup
     gcs().sysid_myggcs_seen(AP_HAL::millis());

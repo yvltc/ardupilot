@@ -6,48 +6,50 @@
 
 
 #include "AP_CustomControl_Backend.h"
-// #include "AC_CustomControl_Empty.h"
-#include "AP_CustomControl_PID.h"
+// #include "AP_CustomControl_Empty.h"
+// #include "AP_CustomControl_PID.h"
 #include <GCS_MAVLink/GCS.h>
+#include <SRV_Channel/SRV_Channel.h>
 
 // table of user settable parameters
-const AP_Param::GroupInfo AC_CustomControl::var_info[] = {
+const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
     // @Param: _TYPE
     // @DisplayName: Custom control type
     // @Description: Custom control type to be used
     // @Values: 0:None, 1:Empty, 2:PID
     // @RebootRequired: True
     // @User: Advanced
-    AP_GROUPINFO_FLAGS("_TYPE", 1, AC_CustomControl, _controller_type, 0, AP_PARAM_FLAG_ENABLE),
+    AP_GROUPINFO_FLAGS("_TYPE", 1, AP_CustomControl, _controller_type, 0, AP_PARAM_FLAG_ENABLE),
 
     // @Param: _AXIS_MASK
     // @DisplayName: Custom Controller bitmask
     // @Description: Custom Controller bitmask to chose which axis to run
     // @Bitmask: 0:Roll, 1:Pitch, 2:Yaw
     // @User: Advanced
-    AP_GROUPINFO("_AXIS_MASK", 2, AC_CustomControl, _custom_controller_mask, 0),
+    AP_GROUPINFO("_AXIS_MASK", 2, AP_CustomControl, _custom_controller_mask, 0),
 
     // parameters for empty controller. only used as a template, no need for param table 
     // AP_SUBGROUPVARPTR(_backend, "1_", 6, AC_CustomControl, _backend_var_info[0]),
 
     // parameters for PID controller
-    AP_SUBGROUPVARPTR(_backend, "2_", 7, AC_CustomControl, _backend_var_info[1]),
+    AP_SUBGROUPVARPTR(_backend, "2_", 7, AP_CustomControl, _backend_var_info[1]),
 
     AP_GROUPEND
 };
 
-const struct AP_Param::GroupInfo *AC_CustomControl::_backend_var_info[CUSTOMCONTROL_MAX_TYPES];
+const struct AP_Param::GroupInfo *AP_CustomControl::_backend_var_info[CUSTOMCONTROL_MAX_TYPES];
 
-AC_CustomControl::AC_CustomControl(AP_AHRS_View*& ahrs, AC_AttitudeControl*& att_control, AP_MotorsMulticopter*& motors, float dt) :
+AP_CustomControl::AP_CustomControl(AP_AHRS &ahrs, AP_PitchController*& pitchController, AP_RollController*& rollController, AP_YawController*& yawController, float dt) :
     _dt(dt),
     _ahrs(ahrs),
-    _att_control(att_control),
-    _motors(motors)
+    _pitchController(pitchController),
+    _rollController(rollController),
+    _yawController(yawController)
 {
     AP_Param::setup_object_defaults(this, var_info);
 }
 
-void AC_CustomControl::init(void)
+void AP_CustomControl::init(void)
 {
     switch (CustomControlType(_controller_type))
     {
@@ -57,10 +59,6 @@ void AC_CustomControl::init(void)
             // This is template backend. Don't initialize it.
             // _backend = new AC_CustomControl_Empty(*this, _ahrs, _att_control, _motors, _dt);
             // _backend_var_info[get_type()] = AC_CustomControl_Empty::var_info;
-            break;
-        case CustomControlType::CONT_PID:
-            _backend = new AC_CustomControl_PID(*this, _ahrs, _att_control, _motors, _dt);
-            _backend_var_info[get_type()] = AC_CustomControl_PID::var_info;
             break;
         default:
             return;
@@ -72,22 +70,22 @@ void AC_CustomControl::init(void)
 }
 
 // run custom controller if it is activated by RC switch and appropriate type is selected
-void AC_CustomControl::update(void)
+void AP_CustomControl::update(float roll_target, float pitch_target)
 {
     if (is_safe_to_run()) {
         float roll_out, pitch_out, yaw_out;
 
         // TEMPORARY
-        roll_out = 0.0f;
-        pitch_out = 0.0f;
-        yaw_out = 0.0f;
-        
+        roll_out = _backend->get_roll_out(roll_target);
+        pitch_out = _backend->get_pitch_out(pitch_target);
+        yaw_out = _backend->get_yaw_out();
+
         servo_set(roll_out, pitch_out, yaw_out);
     }
 }
 
 // choose which axis to apply custom controller output
-void AC_CustomControl::servo_set(float roll_out, float pitch_out, float yaw_out) {
+void AP_CustomControl::servo_set(float roll_out, float pitch_out, float yaw_out) {
     if (_custom_controller_mask & (uint8_t)CustomControlOption::ROLL) {
         //_motors->set_roll(rpy.x);
         //_att_control->get_rate_roll_pid().set_integrator(0.0);
@@ -104,23 +102,19 @@ void AC_CustomControl::servo_set(float roll_out, float pitch_out, float yaw_out)
         SRV_Channels::set_output_scaled(SRV_Channel::k_rudder, yaw_out);
     }
 }
-
+// Requires adaoptation for Plane, but should be unnecessary
 // move main controller's target to current states, reset filters,
 // and move integrator to motor output
 // to allow smooth transition to the primary controller
-void AC_CustomControl::reset_main_att_controller(void)
+void AP_CustomControl::reset_main_att_controller(void)
 {
-    // reset attitude and rate target, if feedforward is enabled
-    if (_att_control->get_bf_feedforward()) {
-        _att_control->relax_attitude_controllers();
-    }
 
-    _att_control->get_rate_roll_pid().set_integrator(0.0);
-    _att_control->get_rate_pitch_pid().set_integrator(0.0);
-    _att_control->get_rate_yaw_pid().set_integrator(0.0);
+    _pitchController->reset_I();
+    _rollController->reset_I();
+    _yawController->reset_I();
 }
 
-void AC_CustomControl::set_custom_controller(bool enabled)
+void AP_CustomControl::set_custom_controller(bool enabled)
 {
     // double logging switch makes the state change very clear in the log
     log_switch();
@@ -172,7 +166,7 @@ void AC_CustomControl::set_custom_controller(bool enabled)
 }
 
 // check that RC switch is on, backend is not changed mid flight and controller type is selected
-bool AC_CustomControl::is_safe_to_run(void) {
+bool AP_CustomControl::is_safe_to_run(void) {
     if (_custom_controller_active && (_controller_type > CustomControlType::CONT_NONE)
         && (_controller_type <= CUSTOMCONTROL_MAX_TYPES) && _backend != nullptr)
     {
@@ -183,14 +177,14 @@ bool AC_CustomControl::is_safe_to_run(void) {
 }
 
 // log when the custom controller is switch into
-void AC_CustomControl::log_switch(void) {
+void AP_CustomControl::log_switch(void) {
     AP::logger().Write("CC", "TimeUS,Type,Act","QBB",
                             AP_HAL::micros64(),
                             _controller_type,
                             _custom_controller_active);
 }
 
-void AC_CustomControl::set_notch_sample_rate(float sample_rate)
+void AP_CustomControl::set_notch_sample_rate(float sample_rate)
 {
 #if AP_FILTER_ENABLED
     if (_backend != nullptr) {

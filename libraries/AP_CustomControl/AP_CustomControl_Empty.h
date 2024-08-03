@@ -8,12 +8,14 @@
 
 #if CUSTOMCONTROL_EMPTY_ENABLED
 
-class AC_CustomControl_Empty : public AC_CustomControl_Backend {
+class AP_CustomControl_Empty : public AP_CustomControl_Backend {
 public:
-    AC_CustomControl_Empty(AC_CustomControl& frontend, AP_AHRS_View*& ahrs, AC_AttitudeControl*& att_control, AP_MotorsMulticopter*& motors, float dt);
+    AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AHRS_View*& ahrs, float dt);
 
 
-    Vector3f update(void) override;
+    float get_roll_out(float roll_target) override;
+    float get_pitch_out(float pitch_target) override;
+    float get_yaw_out(void) override;
     void reset(void) override;
 
     // user settable parameters

@@ -58,6 +58,9 @@ const AP_Scheduler::Task Plane::scheduler_tasks[] = {
     FAST_TASK(ahrs_update),
     FAST_TASK(update_control_mode),
     FAST_TASK(stabilize),
+#if AP_CUSTOMCONTROL_ENABLED == ENABLED
+    FAST_TASK(custom_stabilize),
+#endif
     FAST_TASK(set_servos),
     SCHED_TASK(read_radio,             50,    100,   6),
     SCHED_TASK(check_short_failsafe,   50,    100,   9),
@@ -379,6 +382,9 @@ void Plane::one_second_loop()
     rollController.set_notch_sample_rate(loop_rate);
     pitchController.set_notch_sample_rate(loop_rate);
     yawController.set_notch_sample_rate(loop_rate);
+#if AP_CUSTOMCONTROL_ENABLED == ENABLED
+    custom_control.set_notch_sample_rate(AP::scheduler().get_filtered_loop_rate_hz());
+#endif
 }
 
 void Plane::three_hz_loop()

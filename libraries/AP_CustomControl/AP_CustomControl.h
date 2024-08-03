@@ -1,13 +1,14 @@
 #pragma once
 
-/// @file    AC_CustomControl.h
-/// @brief   ArduCopter custom control library
+/// @file    AP_CustomControl.h
+/// @brief   ArduPlane custom control library
 
 #include <AP_Common/AP_Common.h>
 #include <AP_Param/AP_Param.h>
-#include <AP_AHRS/AP_AHRS_View.h>
-#include <AC_AttitudeControl/AC_AttitudeControl.h>
-#include <AP_Motors/AP_MotorsMulticopter.h>
+#include <AP_AHRS/AP_AHRS.h>
+#include <APM_Control/AP_PitchController.h>
+#include <APM_Control/AP_RollController.h>
+#include <APM_Control/AP_YawController.h>
 #include <AP_Logger/AP_Logger.h>
 
 #if AP_CUSTOMCONTROL_ENABLED
@@ -16,16 +17,16 @@
 #define CUSTOMCONTROL_MAX_TYPES 2
 #endif
 
-class AC_CustomControl_Backend;
+class AP_CustomControl_Backend;
 
-class AC_CustomControl {
+class AP_CustomControl {
 public:
-    AC_CustomControl(AP_AHRS_View*& ahrs, AC_AttitudeControl*& _att_control, AP_MotorsMulticopter*& motors, float dt);
+    AP_CustomControl(AP_AHRS*& ahrs, AP_PitchController*& pitchController, AP_RollController*& rollController, AP_YawController*& yawController, float dt);
 
-    CLASS_NO_COPY(AC_CustomControl);  /* Do not allow copies */
+    CLASS_NO_COPY(AP_CustomControl);  /* Do not allow copies */
 
     void init(void);
-    void update(void);
+    void update(float roll_target, float pitch_target);
     void servo_set(float roll_out, float pitch_out, float yaw_out);
     void set_custom_controller(bool enabled);
     void reset_main_att_controller(void);
@@ -61,15 +62,16 @@ protected:
     bool _custom_controller_active;
 
     // References to external libraries
-    AP_AHRS_View*& _ahrs;
-    AC_AttitudeControl*& _att_control;
-    AP_MotorsMulticopter*& _motors;
+    AP_AHRS*& _ahrs;
+    AP_PitchController*& _pitchController;
+    AP_RollController*& _rollController;
+    AP_YawController*& _yawController;
 
     AP_Enum<CustomControlType> _controller_type;
     AP_Int8 _custom_controller_mask;
 
 private:
-    AC_CustomControl_Backend *_backend;
+    AP_CustomControl_Backend *_backend;
 };
 
 #endif
