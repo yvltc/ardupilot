@@ -29,7 +29,7 @@ const AP_Param::GroupInfo AP_CustomControl_Empty::var_info[] = {
 };
 
 // initialize in the constructor
-AP_CustomControl_Empty::AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AHRS &ahrs, float dt) :
+AP_CustomControl_Empty::AP_CustomControl_Empty(AP_CustomControl& frontend, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, float dt) :
     AP_CustomControl_Backend(frontend, ahrs, dt)
 {
     AP_Param::setup_object_defaults(this, var_info);
@@ -39,6 +39,7 @@ AP_CustomControl_Empty::AP_CustomControl_Empty(AP_CustomControl& frontend, AP_AH
 // return roll controller output
 float AP_CustomControl_Empty::get_roll_out(float roll_target)
 {
+    //float demanded_roll = _rollController->get_pid_info().target; 
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
 
@@ -51,6 +52,7 @@ float AP_CustomControl_Empty::get_roll_out(float roll_target)
 //return pitch controller output
 float AP_CustomControl_Empty::get_pitch_out(float pitch_target)
 {
+    //float demanded_pitch = _pitchController->get_pid_info().target; 
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
 
