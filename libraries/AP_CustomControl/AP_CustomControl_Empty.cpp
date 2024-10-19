@@ -1,4 +1,5 @@
 #include "AP_CustomControl_Empty.h"
+#include "AP_CustomControl_INDI.h"
 
 #if CUSTOMCONTROL_EMPTY_ENABLED
 

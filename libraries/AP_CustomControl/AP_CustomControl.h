@@ -27,7 +27,7 @@ public:
 
     void init(void);
     void update(float roll_target, float pitch_target);
-    void servo_set(float roll_out, float pitch_out, float yaw_out);
+    void servo_set(float roll_out, float pitch_out, float yaw_out, float Vt_out);
     void set_custom_controller(bool enabled);
     void reset_main_att_controller(void);
     bool is_safe_to_run(void);
@@ -48,13 +48,14 @@ protected:
     enum class CustomControlType : uint8_t {
         CONT_NONE            = 0,
         CONT_EMPTY           = 1,
-        CONT_PID             = 2,
+        CONT_INDI            = 2,
     };            // controller that should be used     
 
     enum class  CustomControlOption {
         ROLL = 1 << 0,
         PITCH = 1 << 1,
         YAW = 1 << 2,
+        // VT = 1 << 3,
     };
 
     // Intersampling period in seconds
@@ -69,6 +70,7 @@ protected:
 
     AP_Enum<CustomControlType> _controller_type;
     AP_Int8 _custom_controller_mask;
+    AP_Int8 _custom_controller_thr;
 
 private:
     AP_CustomControl_Backend *_backend;

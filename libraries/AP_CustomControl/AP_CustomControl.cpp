@@ -31,8 +31,16 @@ const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
     // parameters for empty controller. only used as a template, no need for param table 
     // AP_SUBGROUPVARPTR(_backend, "1_", 6, AC_CustomControl, _backend_var_info[0]),
 
-    // parameters for PID controller
+    // @Param: _THR_MASK
+    // @DisplayName: Custom Controller bitmask
+    // @Description: Custom Controller bitmask to chose which axis to run
+    // @Bitmask: 0:Roll, 1:Pitch, 2:Yaw
+    // @User: Advanced
+    AP_GROUPINFO("_THR_MASK", 3, AP_CustomControl, _custom_controller_thr, 0),
+
+    // parameters for INDI controller
     AP_SUBGROUPVARPTR(_backend, "2_", 7, AP_CustomControl, _backend_var_info[1]),
+    
 
     AP_GROUPEND
 };
@@ -60,6 +68,10 @@ void AP_CustomControl::init(void)
             // _backend = new AC_CustomControl_Empty(*this, _ahrs, _att_control, _motors, _dt);
             // _backend_var_info[get_type()] = AC_CustomControl_Empty::var_info;
             break;
+        case CustomControlType::CONT_INDI:
+            _backend = new AP_CustomControl_INDI(*this, _ahrs, _att_control, _motors, _dt);
+            _backend_var_info[get_type()] = AP_CustomControl_INDI::var_info;
+            break;
         default:
             return;
     }
@@ -73,19 +85,25 @@ void AP_CustomControl::init(void)
 void AP_CustomControl::update(float roll_target, float pitch_target)
 {
     if (is_safe_to_run()) {
-        float roll_out, pitch_out, yaw_out;
+        float roll_out, pitch_out, yaw_out, Vt_out;
 
         // TEMPORARY
+        _backend->update;
         roll_out = _backend->get_roll_out(roll_target);
         pitch_out = _backend->get_pitch_out(pitch_target);
         yaw_out = _backend->get_yaw_out();
 
-        servo_set(roll_out, pitch_out, yaw_out);
+        if(!is_gliding)
+        {
+            Vt_out = _backend->get_Vt_out();
+        }
+
+        servo_set(roll_out, pitch_out, yaw_out, Vt_out);
     }
 }
 
 // choose which axis to apply custom controller output
-void AP_CustomControl::servo_set(float roll_out, float pitch_out, float yaw_out) {
+void AP_CustomControl::servo_set(float roll_out, float pitch_out, float yaw_out, float Vt_out) {
     if (_custom_controller_mask & (uint8_t)CustomControlOption::ROLL) {
         //_motors->set_roll(rpy.x);
         //_att_control->get_rate_roll_pid().set_integrator(0.0);
@@ -100,6 +118,10 @@ void AP_CustomControl::servo_set(float roll_out, float pitch_out, float yaw_out)
         //_motors->set_yaw(rpy.z);
         //_att_control->get_rate_yaw_pid().set_integrator(0.0);
         SRV_Channels::set_output_scaled(SRV_Channel::k_rudder, yaw_out);
+    }
+    // if (_custom_controller_thr & (uint8_t)CustomControlOption::VT) {
+    if (_custom_controller_thr) {
+        SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, Vt_out);
     }
 }
 // Requires adaoptation for Plane, but should be unnecessary
