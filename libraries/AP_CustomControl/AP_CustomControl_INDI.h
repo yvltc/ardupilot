@@ -19,6 +19,9 @@ public:
     float get_Vt_out(void);
     void reset(void) override;
 
+    void sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next);
+    void saturate(float min, float max, float *u);
+
     void update(void);
 
     // user settable parameters

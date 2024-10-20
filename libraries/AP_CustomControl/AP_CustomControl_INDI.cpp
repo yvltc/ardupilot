@@ -5,21 +5,6 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 
-void sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
-{
-    *x_next = A*x + B*u;
-    *y = C*x + D*u;
-}
-
-void saturate(float min, float max, float *u)
-{
-    if (*u > max)
-        *u = max;
-
-    else if (*u < min)
-        *u = min;
-}
-
 // table of user settable parameters
 const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
     // @Param: PARAM1
@@ -137,6 +122,21 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     }
 
     invert_G = invG.invert();
+}
+
+void AP_CustomControl_INDI::sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
+{
+    *x_next = A*x + B*u;
+    *y = C*x + D*u;
+}
+
+void AP_CustomControl_INDI::saturate(float min, float max, float *u)
+{
+    if (*u > max)
+        *u = max;
+
+    else if (*u < min)
+        *u = min;
 }
 
 // update controller
@@ -304,9 +304,9 @@ void AP_CustomControl_INDI::reset(void)
     xCF.y = 0;
     xCF.z = 0;
 
-    u_0.x = get_output_scaled(SRV_Channel::k_aileron);
-    u_0.y = get_output_scaled(SRV_Channel::k_elevator);
-    u_0.y = get_output_scaled(SRV_Channel::k_throttle);
+    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
+    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
+    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
 }
 
 #endif
