@@ -32,7 +32,7 @@
 AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, float dt) :
     AP_CustomControl_Backend(frontend, ahrs, dt)
 {
-    AP_Param::setup_object_defaults(this, var_info);
+    // AP_Param::setup_object_defaults(this, var_info);
 
     // initialise variables
     u_0.x = 0;
