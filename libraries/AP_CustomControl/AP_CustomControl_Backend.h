@@ -34,7 +34,7 @@ public:
 protected:
     // References to external libraries
     AP_AHRS &_ahrs;
-    AP_TECS *_tecs;
+    AP_TECS &_tecs;
     AP_CustomControl& _frontend;
 };
 
