@@ -6,27 +6,27 @@
 #include <SRV_Channel/SRV_Channel.h>
 
 // table of user settable parameters
-const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
-    // @Param: PARAM1
-    // @DisplayName: INDI param1
-    // @Description: Dummy parameter for INDI custom controller backend
-    // @User: Advanced
-    AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
+// const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
+//     // @Param: PARAM1
+//     // @DisplayName: INDI param1
+//     // @Description: Dummy parameter for INDI custom controller backend
+//     // @User: Advanced
+//     AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
-    // @Param: PARAM2
-    // @DisplayName: INDI param2
-    // @Description: Dummy parameter for INDI custom controller backend
-    // @User: Advanced
-    AP_GROUPINFO("PARAM2", 2, AP_CustomControl_INDI, param2, 0.0f),
+//     // @Param: PARAM2
+//     // @DisplayName: INDI param2
+//     // @Description: Dummy parameter for INDI custom controller backend
+//     // @User: Advanced
+//     AP_GROUPINFO("PARAM2", 2, AP_CustomControl_INDI, param2, 0.0f),
 
-    // @Param: PARAM3
-    // @DisplayName: INDI param3
-    // @Description: Dummy parameter for INDI custom controller backend
-    // @User: Advanced
-    AP_GROUPINFO("PARAM3", 3, AP_CustomControl_INDI, param3, 0.0f),
+//     // @Param: PARAM3
+//     // @DisplayName: INDI param3
+//     // @Description: Dummy parameter for INDI custom controller backend
+//     // @User: Advanced
+//     AP_GROUPINFO("PARAM3", 3, AP_CustomControl_INDI, param3, 0.0f),
 
-    AP_GROUPEND
-};
+//     AP_GROUPEND
+// };
 
 // initialize in the constructor
 AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, float dt) :

@@ -25,7 +25,7 @@ public:
     void update(void);
 
     // user settable parameters
-    static const struct AP_Param::GroupInfo var_info[];
+    // static const struct AP_Param::GroupInfo var_info[];
 
 protected:
     // declare parameters here
