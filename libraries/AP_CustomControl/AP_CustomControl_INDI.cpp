@@ -214,6 +214,10 @@ void AP_CustomControl_INDI::reset(void)
     xCF.x = 0;
     xCF.y = 0;
     xCF.z = 0;
+
+    u_0.x = get_output_scaled(SRV_Channel::k_aileron);
+    u_0.y = get_output_scaled(SRV_Channel::k_elevator);
+    u_0.y = get_output_scaled(SRV_Channel::k_throttle);
 }
 
 #endif
