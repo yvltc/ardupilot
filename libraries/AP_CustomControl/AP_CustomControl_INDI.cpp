@@ -307,7 +307,7 @@ void AP_CustomControl_INDI::reset(void)
 
     u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
     u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
 }
 
 #endif
