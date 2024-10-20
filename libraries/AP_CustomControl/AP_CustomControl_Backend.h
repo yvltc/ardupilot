@@ -7,7 +7,7 @@
 class AP_CustomControl_Backend
 {
 public:
-    AP_CustomControl_Backend(AP_CustomControl& frontend, AP_AHRS &ahrs, float dt) :
+    AP_CustomControl_Backend(AP_CustomControl& frontend, AP_AHRS &ahrs, AP_TECS &tecs, float dt) :
         _frontend(frontend),
         _ahrs(ahrs),
         _tecs(tecs)
