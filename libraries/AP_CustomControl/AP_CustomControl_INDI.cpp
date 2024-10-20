@@ -109,7 +109,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // cada vetor é uma linha
     // afinar valores depois
     // como obter o is_gliding??
-    if (_tecs.is_gliding)
+    if (_tecs._flags.is_gliding)
     {
         invG.a = {-864.9306,864.9306,0};
         invG.b = {-103.2060,-104.6034,0};
@@ -255,7 +255,7 @@ void AP_CustomControl_INDI::update(void)
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
 
-    if (_tecs.is_gliding)
+    if (_tecs._flags.is_gliding)
     {
         // código de planador
         u.z = 0;
