@@ -29,7 +29,7 @@
 // };
 
 // initialize in the constructor
-AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, float dt) :
+AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, AP_TECS &tecs, float dt) :
     AP_CustomControl_Backend(frontend, ahrs, dt)
 {
     // AP_Param::setup_object_defaults(this, var_info);
@@ -108,7 +108,8 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
 
     // cada vetor é uma linha
     // afinar valores depois
-    if (is_gliding)
+    // como obter o is_gliding??
+    if (_tecs.is_gliding)
     {
         invG.a = {-864.9306,864.9306,0};
         invG.b = {-103.2060,-104.6034,0};
@@ -254,7 +255,7 @@ void AP_CustomControl_INDI::update(void)
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
 
-    if (is_gliding)
+    if (_tecs.is_gliding)
     {
         // código de planador
         u.z = 0;

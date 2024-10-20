@@ -6,6 +6,7 @@
 #include <AP_Common/AP_Common.h>
 #include <AP_Param/AP_Param.h>
 #include <AP_AHRS/AP_AHRS.h>
+#include <AP_TECS/AP_TECS.h>
 #include <APM_Control/AP_PitchController.h>
 #include <APM_Control/AP_RollController.h>
 #include <APM_Control/AP_YawController.h>
@@ -21,7 +22,7 @@ class AP_CustomControl_Backend;
 
 class AP_CustomControl {
 public:
-    AP_CustomControl(AP_AHRS &ahrs, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, float dt);
+    AP_CustomControl(AP_AHRS &ahrs, AP_TECS &tecs, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, float dt);
 
     CLASS_NO_COPY(AP_CustomControl);  /* Do not allow copies */
 
@@ -64,6 +65,7 @@ protected:
 
     // References to external libraries
     AP_AHRS &_ahrs;
+    AP_TECS &_tecs;
     AP_PitchController *_pitchController;
     AP_RollController *_rollController;
     AP_YawController *_yawController;

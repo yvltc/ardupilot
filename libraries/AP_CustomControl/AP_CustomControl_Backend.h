@@ -9,7 +9,8 @@ class AP_CustomControl_Backend
 public:
     AP_CustomControl_Backend(AP_CustomControl& frontend, AP_AHRS &ahrs, float dt) :
         _frontend(frontend),
-        _ahrs(ahrs)
+        _ahrs(ahrs),
+        _tecs(tecs)
     {}
 
     // empty destructor to suppress compiler warning
@@ -33,6 +34,7 @@ public:
 protected:
     // References to external libraries
     AP_AHRS &_ahrs;
+    AP_TECS *_tecs;
     AP_CustomControl& _frontend;
 };
 

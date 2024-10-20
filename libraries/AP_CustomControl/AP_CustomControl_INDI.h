@@ -10,7 +10,7 @@
 
 class AP_CustomControl_INDI : public AP_CustomControl_Backend {
 public:
-    AP_CustomControl_INDI(AP_CustomControl& frontend,  AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, float dt);
+    AP_CustomControl_INDI(AP_CustomControl& frontend,  AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, AP_TECS &tecs float dt);
 
 
     float get_roll_out(float roll_target) override;

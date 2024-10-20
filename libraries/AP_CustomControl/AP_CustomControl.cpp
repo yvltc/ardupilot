@@ -47,9 +47,10 @@ const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
 
 const struct AP_Param::GroupInfo *AP_CustomControl::_backend_var_info[CUSTOMCONTROL_MAX_TYPES];
 
-AP_CustomControl::AP_CustomControl(AP_AHRS &ahrs, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, float dt) :
+AP_CustomControl::AP_CustomControl(AP_AHRS &ahrs, AP_TECS &tecs, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, float dt) :
     _dt(dt),
     _ahrs(ahrs),
+    _tecs(tecs),
     _pitchController(pitchController),
     _rollController(rollController),
     _yawController(yawController)
@@ -69,7 +70,7 @@ void AP_CustomControl::init(void)
             // _backend_var_info[get_type()] = AC_CustomControl_Empty::var_info;
             break;
         case CustomControlType::CONT_INDI:
-            _backend = new AP_CustomControl_INDI(*this, _ahrs, _att_control, _motors, _dt);
+            _backend = new AP_CustomControl_INDI(*this, _ahrs, _tecs, _att_control, _motors, _dt);
             _backend_var_info[get_type()] = AP_CustomControl_INDI::var_info;
             break;
         default:
@@ -93,7 +94,7 @@ void AP_CustomControl::update(float roll_target, float pitch_target)
         pitch_out = _backend->get_pitch_out(pitch_target);
         yaw_out = _backend->get_yaw_out();
 
-        if(!is_gliding)
+        if(!_tecs.is_gliding)
         {
             Vt_out = _backend->get_Vt_out();
         }
