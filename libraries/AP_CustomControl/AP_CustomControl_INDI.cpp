@@ -42,9 +42,9 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     u_0.z = 0;
 
     // saturation limits
-    ddmax(30*M_PI);
-    dtmax(1);
-    dtmin(0.1);
+    ddmax = 30*M_PI;
+    dtmax = 1;
+    dtmin = 0.1;
 
     // SOD - each vector is a row
     SOD_A.a = {0.846153846153846,0.003076923076923,0};
@@ -72,15 +72,15 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     xSOD_u.z = 0;
 
     // command filter
-    _CF_A(0.3333);
-    _CF_B(0.6667);
-    _CF_C(0.6667);
-    _CF_D(0.3333);
+    _CF_A = 0.3333;
+    _CF_B = 0.6667;
+    _CF_C = 0.6667;
+    _CF_D = 0.3333;
 
-    _CFu_A(0.9048);
-    _CFu_B(0.09524);
-    _CFu_C(0.9524);
-    _CFu_D(0.04762);
+    _CFu_A = 0.9048;
+    _CFu_B = 0.09524;
+    _CFu_C = 0.9524;
+    _CFu_D = 0.04762;
 
     // initial values for CF state vectors
     xCF.x = 0;
