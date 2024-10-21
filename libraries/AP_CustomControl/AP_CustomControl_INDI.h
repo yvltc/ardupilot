@@ -30,6 +30,8 @@ public:
 protected:
     // declare parameters here
 
+    bool is_gliding;
+
     Vector3f u_0;
 
     // saturation limits

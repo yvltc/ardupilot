@@ -94,7 +94,7 @@ void AP_CustomControl::update(float roll_target, float pitch_target)
         pitch_out = _backend->get_pitch_out(pitch_target);
         yaw_out = _backend->get_yaw_out();
 
-        if(!_tecs._flags.is_gliding)
+        if(!is_gliding)
         {
             Vt_out = _backend->get_Vt_out();
         }

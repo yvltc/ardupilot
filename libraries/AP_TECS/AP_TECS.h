@@ -144,6 +144,12 @@ public:
         _need_reset = true;
     }
 
+    bool get_is_gliding(void) {
+        return _flags.is_gliding;
+    }
+
+    
+
     // this supports the TECS_* user settable parameters
     static const struct AP_Param::GroupInfo var_info[];
 
