@@ -200,11 +200,11 @@ void AP_CustomControl_INDI::update(void)
     float phi = _ahrs.get_roll();
     float theta = _ahrs.get_pitch();
     float Vt;
-    bool use_TAS = _ahrs.airspeed_estimate_true(&Vt);
+    bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
 
     if (!use_TAS)
     {
-        use_TAS = _ahrs.airspeed_estimate(&Vt);
+        use_TAS = _ahrs.airspeed_estimate(Vt);
     }
 
     // AHRS airspeed estimate true (true airspeed)
