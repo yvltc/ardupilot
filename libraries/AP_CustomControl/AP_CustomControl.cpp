@@ -8,6 +8,7 @@
 #include "AP_CustomControl_Backend.h"
 // #include "AP_CustomControl_Empty.h"
 // #include "AP_CustomControl_PID.h"
+#include "AP_CustomControl_INDI.h"
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 
