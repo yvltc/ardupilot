@@ -235,7 +235,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     aux.x = Vt;                     // Vt
     sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
-    p_dot = SOD_out[0];
+    Vt_dot = SOD_out[0];
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
