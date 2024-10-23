@@ -16,7 +16,7 @@ public:
     float get_roll_out(float roll_target) override;
     float get_pitch_out(float pitch_target) override;
     float get_yaw_out(void) override;
-    float get_Vt_out(void);
+    float get_Vt_out(void) override;
     void reset(void) override;
 
     void sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next);

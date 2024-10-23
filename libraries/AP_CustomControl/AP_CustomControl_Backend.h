@@ -25,6 +25,9 @@ public:
     // update controller, return yaw output
     virtual float get_yaw_out(void) = 0;
 
+    // update controller, return throttle output
+    virtual float get_Vt_out(void) = 0;
+
     // update controller
     virtual void update(float roll_target, float pitch_target) = 0;
 
