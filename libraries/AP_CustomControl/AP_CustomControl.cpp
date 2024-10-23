@@ -71,7 +71,8 @@ void AP_CustomControl::init(void)
             // _backend_var_info[get_type()] = AC_CustomControl_Empty::var_info;
             break;
         case CustomControlType::CONT_INDI:
-            _backend = new AP_CustomControl_INDI(*this, _ahrs, _tecs, _att_control, _motors, _dt);
+            // _backend = new AP_CustomControl_INDI(*this, _ahrs, _tecs, _att_control, _motors, _dt);
+            _backend = new AP_CustomControl_INDI(*this, _ahrs, _tecs, pitchController, rollController, yawController, _motors, _dt);
             _backend_var_info[get_type()] = AP_CustomControl_INDI::var_info;
             break;
         default:
