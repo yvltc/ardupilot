@@ -1,3 +1,4 @@
+/*
 #include "AP_CustomControl_Empty.h"
 #include "AP_CustomControl_INDI.h"
 
@@ -82,3 +83,4 @@ void AP_CustomControl_Empty::reset(void)
 }
 
 #endif
+*/
