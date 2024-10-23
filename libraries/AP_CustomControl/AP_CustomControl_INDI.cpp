@@ -105,24 +105,6 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     KVt = 0.02;
     Kp = 55;
     Kq = 10;
-
-    // cada vetor é uma linha
-    // afinar valores depois
-    // como obter o is_gliding??
-    if (is_gliding)
-    {
-        invG.a = {-864.9306,864.9306,0};
-        invG.b = {-103.2060,-104.6034,0};
-        invG.c = {0,0,1};
-    }
-    else
-    {
-        invG.a = {-397.6476,397.6476,-6.1354};
-        invG.b = {-47.4484,-47.4484,-0.0598};
-        invG.c = {0.4008,0.4008,6.2293};
-    }
-
-    invert_G = invG.invert();
 }
 
 void AP_CustomControl_INDI::sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
@@ -194,7 +176,24 @@ float AP_CustomControl_INDI::get_Vt_out(void)
 
 void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 {  
+    // cada vetor é uma linha
+    // afinar valores depois
+    // como obter o is_gliding??
     is_gliding = _tecs.get_is_gliding();
+    if (is_gliding)
+    {
+        invG.a = {-864.9306,864.9306,0};
+        invG.b = {-103.2060,-104.6034,0};
+        invG.c = {0,0,1};
+    }
+    else
+    {
+        invG.a = {-397.6476,397.6476,-6.1354};
+        invG.b = {-47.4484,-47.4484,-0.0598};
+        invG.c = {0.4008,0.4008,6.2293};
+    }
+
+    invert_G = invG.invert();
 
     Vector3f angular_rates = _ahrs.get_gyro_latest();
     float phi = _ahrs.get_roll();
