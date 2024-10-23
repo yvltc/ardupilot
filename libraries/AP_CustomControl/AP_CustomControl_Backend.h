@@ -26,7 +26,7 @@ public:
     virtual float get_yaw_out(void) = 0;
 
     // update controller
-    virtual float update(float roll_target, float pitch_target) = 0;
+    virtual void update(float roll_target, float pitch_target) = 0;
 
     // reset controller to avoid build up or abrupt response upon switch, ex: integrator, filter
     virtual void reset() = 0;

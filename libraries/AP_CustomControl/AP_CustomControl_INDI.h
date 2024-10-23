@@ -22,7 +22,7 @@ public:
     void sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next);
     void saturate(float min, float max, float *u);
 
-    void update(float roll_target, float pitch_target);
+    void update(float roll_target, float pitch_target) override;
 
     // user settable parameters
     // static const struct AP_Param::GroupInfo var_info[];
