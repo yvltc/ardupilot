@@ -77,6 +77,11 @@ public:
         return _TAS_dem_adj / _ahrs.get_EAS2TAS();
     }
 
+    // return true airspeed demand
+    float get_TAS_demand(void) {
+        return _TAS_dem;
+    }
+
     // return maximum climb rate
     float get_max_climbrate(void) const {
         return _maxClimbRate;

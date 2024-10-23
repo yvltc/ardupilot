@@ -35,8 +35,6 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // AP_Param::setup_object_defaults(this, var_info);
 
     // initialise variables
-    is_gliding = _tecs.get_is_gliding();
-
     u_0.x = 0;
     u_0.y = 0;
     u_0.z = 0;
@@ -194,8 +192,10 @@ float AP_CustomControl_INDI::get_Vt_out(void)
     return u_0[2];
 }
 
-void AP_CustomControl_INDI::update(void)
+void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 {  
+    is_gliding = _tecs.get_is_gliding();
+
     Vector3f angular_rates = _ahrs.get_gyro_latest();
     float phi = _ahrs.get_roll();
     float theta = _ahrs.get_pitch();
@@ -239,9 +239,11 @@ void AP_CustomControl_INDI::update(void)
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
-    error.x = nav_roll_cd - roll;
-    error.y = nav_pitch_cd - pitch;
-    error.z = _TAS_dem - Vt;
+    //arspd_target = _tecs.get_target_airspeed():
+    arspd_target = _tecs.get_TAS_demand();
+    error.x = roll_target - roll;
+    error.y = pitch_target - pitch;
+    error.z = arspd_target - Vt;
 
     niu.x = Kff*error[0] - Kp*angular_rates[0];
     niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
