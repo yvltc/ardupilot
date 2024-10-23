@@ -241,8 +241,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     //arspd_target = _tecs.get_target_airspeed():
     float arspd_target = _tecs.get_TAS_demand();
-    error.x = roll_target - roll;
-    error.y = pitch_target - pitch;
+    error.x = roll_target - phi;
+    error.y = pitch_target - theta;
     error.z = arspd_target - Vt;
 
     niu.x = Kff*error[0] - Kp*angular_rates[0];
