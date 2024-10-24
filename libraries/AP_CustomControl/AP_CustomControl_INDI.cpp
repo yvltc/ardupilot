@@ -194,7 +194,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         Kff = 120;
         Ktt = 75;
         Kp = 65;
-        Kq = 19;
+        Kq = 14;
     }
 
     invert_G = invG.invert();
