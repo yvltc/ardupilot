@@ -130,7 +130,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
 
-    gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
+    //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
@@ -144,7 +144,7 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
 
-    gcs().send_text(MAV_SEVERITY_INFO, "pitch INDI custom controller working");
+    //gcs().send_text(MAV_SEVERITY_INFO, "pitch INDI custom controller working");
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
@@ -157,7 +157,7 @@ float AP_CustomControl_INDI::get_yaw_out(void)
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
 
-    gcs().send_text(MAV_SEVERITY_INFO, "yaw INDI custom controller working");
+    //gcs().send_text(MAV_SEVERITY_INFO, "yaw INDI custom controller working");
 
     // return what ArduPlane main controller outputted
     return SRV_Channels::get_output_scaled(SRV_Channel::k_rudder);
@@ -167,7 +167,7 @@ float AP_CustomControl_INDI::get_yaw_out(void)
 
 float AP_CustomControl_INDI::get_Vt_out(void)
 {
-    gcs().send_text(MAV_SEVERITY_INFO, "Vt INDI custom controller working");
+    //gcs().send_text(MAV_SEVERITY_INFO, "Vt INDI custom controller working");
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
