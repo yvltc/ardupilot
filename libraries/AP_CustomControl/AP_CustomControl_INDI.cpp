@@ -40,7 +40,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     u_0.z = 0;
 
     // saturation limits
-    ddmax = 30*M_PI;
+    ddmax = 30*M_PI/180;
     dtmax = 1;
     dtmin = 0.1;
 
@@ -196,7 +196,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     invert_G = invG.invert();
 
     Vector3f angular_rates = _ahrs.get_gyro_latest();
-    float phi = _ahrs.get_roll();
+    float phi = _ahrs.get_roll();       // radians
     float theta = _ahrs.get_pitch();
     float Vt;
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
@@ -240,8 +240,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     //arspd_target = _tecs.get_target_airspeed():
     float arspd_target = _tecs.get_TAS_demand();
-    error.x = roll_target - phi;
-    error.y = pitch_target - theta;
+    error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
+    error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
 
     niu.x = Kff*error[0] - Kp*angular_rates[0];
