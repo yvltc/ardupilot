@@ -230,7 +230,7 @@ private:
     AP_SteerController steerController{};
 
 #if AP_CUSTOMCONTROL_ENABLED == ENABLED
-    AP_CustomControl custom_control{ahrs, tecs, &pitchController, &rollController, &yawController, scheduler.get_loop_period_s()};
+    AP_CustomControl custom_control{ahrs, TECS_controller, &pitchController, &rollController, &yawController, scheduler.get_loop_period_s()};
 #endif
 
     // Training mode
