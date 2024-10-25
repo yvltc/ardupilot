@@ -145,7 +145,7 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
     // we don't need to do anything else
 
     //gcs().send_text(MAV_SEVERITY_INFO, "pitch INDI custom controller working");
-    char buffer[50];  // Create a buffer to hold the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
     snprintf(buffer, sizeof(buffer), "pitch INDI custom controller working, u_0[1]: %.2f", u_0[1]);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
