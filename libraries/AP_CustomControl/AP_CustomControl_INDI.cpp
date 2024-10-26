@@ -214,7 +214,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
 
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "phi: %.4f", phi);
+    snprintf(buffer, sizeof(buffer), "Vt: %.4f", Vt);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     if (!use_TAS)
