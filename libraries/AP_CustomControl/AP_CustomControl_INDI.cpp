@@ -213,9 +213,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float Vt;
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
 
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "Vt: %.4f", Vt);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
 
     if (!use_TAS)
     {
@@ -259,6 +257,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
+
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "arspd_target: %.4f", arspd_target);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     niu.x = Kff*error[0] - Kp*angular_rates[0];
     niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
