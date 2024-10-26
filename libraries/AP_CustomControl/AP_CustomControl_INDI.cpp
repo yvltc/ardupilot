@@ -259,7 +259,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error.z = arspd_target - Vt;
 
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "arspd_target: %.4f", arspd_target);
+    snprintf(buffer, sizeof(buffer), "roll error: %.4f", error.x);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     niu.x = Kff*error[0] - Kp*angular_rates[0];
