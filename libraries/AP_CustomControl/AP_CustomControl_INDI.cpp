@@ -205,15 +205,17 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     invert_G = invG.invert();
 
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "invG_11: %.4f", invG.a.x);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
 
     Vector3f angular_rates = _ahrs.get_gyro_latest();
     float phi = _ahrs.get_roll();       // radians
     float theta = _ahrs.get_pitch();
     float Vt;
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
+
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "phi: %.4f", phi);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     if (!use_TAS)
     {
