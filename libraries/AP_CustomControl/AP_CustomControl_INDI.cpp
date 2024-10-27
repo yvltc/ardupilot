@@ -132,7 +132,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[1]: %.2f", u_0[0]*18000/M_PI);
+    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0]: %.2f", u_0[0]*18000/M_PI);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
@@ -184,7 +184,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 {  
     // cada vetor é uma linha
     // afinar valores depois
-    // como obter o is_gliding??
+
     is_gliding = _tecs.get_is_gliding();
     if (is_gliding)
     {
@@ -205,15 +205,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     invert_G = invG.invert();
 
-
-
     Vector3f angular_rates = _ahrs.get_gyro_latest();
     float phi = _ahrs.get_roll();       // radians
     float theta = _ahrs.get_pitch();
     float Vt;
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
-
-
 
     if (!use_TAS)
     {
@@ -259,7 +255,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error.z = arspd_target - Vt;
 
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll error: %.4f", error.x);
+    snprintf(buffer, sizeof(buffer), "roll target: %.4f", roll_target);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     niu.x = Kff*error[0] - Kp*angular_rates[0];
