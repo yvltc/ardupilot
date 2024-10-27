@@ -131,9 +131,9 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // we don't need to do anything else
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0]: %.2f", u_0[0]*18000/M_PI);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
+    // snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0]: %.2f", u_0[0]*18000/M_PI);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
@@ -254,10 +254,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
 
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll angular rate: %.4f", angular_rates[0]);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-
     niu.x = Kff*error[0] - Kp*angular_rates[0];
     niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
     niu.z = KVt*error[2];
@@ -268,6 +264,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
+
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "du: %.4f %.4f", du.x, du.y);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
