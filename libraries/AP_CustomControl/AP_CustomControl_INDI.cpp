@@ -293,7 +293,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // command filter
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
-    u_0 = u;
+    u_0.x = u.x;
+    u_0.y = u.y;
+    u_0.z = u.z;
 
     // float aileron_out = get_roll_out(nav_roll_cd);
     // float elevator_out = get_pitch_out(nav_pitch_cd);
