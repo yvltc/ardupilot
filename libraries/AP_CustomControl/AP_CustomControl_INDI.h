@@ -31,6 +31,7 @@ protected:
     // declare parameters here
 
     bool is_gliding;
+    float _dt;
 
     Vector3f u_0;
 

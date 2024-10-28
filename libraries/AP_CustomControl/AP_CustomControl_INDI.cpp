@@ -34,6 +34,8 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
 {
     // AP_Param::setup_object_defaults(this, var_info);
 
+    _dt = dt;
+
     // initialise variables
     u_0.x = 0;
     u_0.y = 0;
@@ -266,7 +268,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u.y = u_0.y + du.y;
 
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "dt: %.4f", dt);
+    snprintf(buffer, sizeof(buffer), "dt: %.4f", _dt);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
