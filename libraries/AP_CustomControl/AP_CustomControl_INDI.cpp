@@ -250,7 +250,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
-    roll_target = 3000;
+    //roll_target = 3000;
     //phi = 29*M_PI/180;
 
     //arspd_target = _tecs.get_target_airspeed():
@@ -297,14 +297,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_0.y = u.y;
     u_0.z = u.z;
 
-    // float aileron_out = get_roll_out(nav_roll_cd);
-    // float elevator_out = get_pitch_out(nav_pitch_cd);
-
-    // if (!is_gliding)
-    // {
-    //     float throttle_out = get_Vt_out();
-    // }
-
 }
 
 // reset controller to avoid build up on the ground
@@ -329,9 +321,9 @@ void AP_CustomControl_INDI::reset(void)
     xCF.y = 0;
     xCF.z = 0;
 
-    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
-    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
-    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    //u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
+    //u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
+    //u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
 }
 
 #endif
