@@ -297,6 +297,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_0.y = u.y;
     u_0.z = u.z;
 
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "(after update) u_0 du u: %.4f %.4f %.4f", u_0.x, du.x, u.x);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
 }
 
 // reset controller to avoid build up on the ground
