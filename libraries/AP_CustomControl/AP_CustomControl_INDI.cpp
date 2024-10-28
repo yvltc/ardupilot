@@ -138,8 +138,8 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
-    return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    //return u_0[0]*18000/M_PI;
+    //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
+    return u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
@@ -155,8 +155,8 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
-    //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return u_0[1]*18000/M_PI;
+    return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
+    //return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -267,9 +267,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
 
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "dt: %.4f", _dt);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
+    // snprintf(buffer, sizeof(buffer), "dt: %.4f", _dt);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
