@@ -250,6 +250,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
+    roll_target = 30000;
+    phi = 29000;
+
     //arspd_target = _tecs.get_target_airspeed():
     float arspd_target = _tecs.get_TAS_demand();
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
