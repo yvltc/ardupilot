@@ -251,7 +251,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
     roll_target = 3000;
-    phi = 29*M_PI/180;
+    //phi = 29*M_PI/180;
 
     //arspd_target = _tecs.get_target_airspeed():
     float arspd_target = _tecs.get_TAS_demand();
