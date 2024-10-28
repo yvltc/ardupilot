@@ -136,8 +136,8 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
-    // return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return u_0[0]*18000/M_PI;
+    return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
+    //return u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
