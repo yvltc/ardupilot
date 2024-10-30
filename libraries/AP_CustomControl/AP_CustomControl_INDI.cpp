@@ -250,17 +250,31 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
-    //roll_target = 3000;
-    //phi = 29*M_PI/180;
 
     //arspd_target = _tecs.get_target_airspeed():
     float arspd_target = _tecs.get_TAS_demand();
+
+    //debug
+    roll_target = 3000;
+    pitch_target = 0;
+    arspd_target = 20;
+    phi = 29*M_PI/180;
+    theta = -4*M_PI/180;
+    Vt = 19.8;
+    p = 1*M_PI/180;
+    q = 0.1*M_PI/180;
+    p_dot = 0;
+    q_dot = 0;
+    Vt_dot = 0;
+
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
 
-    niu.x = Kff*error[0] - Kp*angular_rates[0];
-    niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
+    // niu.x = Kff*error[0] - Kp*angular_rates[0];
+    // niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
+    niu.x = Kff*error[0] - Kp*p;
+    niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
     du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
@@ -269,10 +283,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
-
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "u_0 du u: %.4f %.4f %.4f", u_0.x, du.x, u.x);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
@@ -325,9 +335,9 @@ void AP_CustomControl_INDI::reset(void)
     xCF.y = 0;
     xCF.z = 0;
 
-    //u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
-    //u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
-    //u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
+    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
 }
 
 #endif
