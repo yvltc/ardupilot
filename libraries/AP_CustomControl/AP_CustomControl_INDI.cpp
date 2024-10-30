@@ -261,8 +261,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     phi = 29*M_PI/180;
     theta = -4*M_PI/180;
     Vt = 19.8;
-    p = 1*M_PI/180;
-    q = 0.1*M_PI/180;
+    float p = 1*M_PI/180;
+    float q = 0.1*M_PI/180;
     p_dot = 0;
     q_dot = 0;
     Vt_dot = 0;
