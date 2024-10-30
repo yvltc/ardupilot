@@ -37,9 +37,12 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     _dt = dt;
 
     // initialise variables
-    u_0.x = 0;
-    u_0.y = 0;
-    u_0.z = 0;
+    // u_0.x = 0;
+    // u_0.y = 0;
+    // u_0.z = 0;
+    u_0.x = -0.2041;
+    u_0.y = -0.2025;
+    u_0.z = 0.6428;
 
     // saturation limits
     ddmax = 30*M_PI/180;
