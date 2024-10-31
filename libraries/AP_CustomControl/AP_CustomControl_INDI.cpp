@@ -280,17 +280,17 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     //debug
     char buffer[80];  // Create a buffer to hold the formatted message
-    roll_target = 3000;
-    pitch_target = 0;
-    arspd_target = 20;
-    phi = 29*M_PI/180;
-    theta = -4*M_PI/180;
-    Vt = 19.8;
-    float p = 1*M_PI/180;
-    float q = 0.1*M_PI/180;
-    p_dot = 0;
-    q_dot = 0;
-    Vt_dot = 0;
+    // roll_target = 3000;
+    // pitch_target = 0;
+    // arspd_target = 20;
+    // phi = 29*M_PI/180;
+    // theta = -4*M_PI/180;
+    // Vt = 19.8;
+    // float p = 1*M_PI/180;
+    // float q = 0.1*M_PI/180;
+    // p_dot = 0;
+    // q_dot = 0;
+    // Vt_dot = 0;
 
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
