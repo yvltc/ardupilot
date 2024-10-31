@@ -296,10 +296,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
 
-    // niu.x = Kff*error[0] - Kp*angular_rates[0];
-    // niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
-    niu.x = Kff*error[0] - Kp*p;
-    niu.y = Ktt*error[1] - Kq*q; 
+    niu.x = Kff*error[0] - Kp*angular_rates[0];
+    niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
+    // niu.x = Kff*error[0] - Kp*p;
+    // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
     snprintf(buffer, sizeof(buffer), "roll error, niu: %.4f %.4f", error.x, niu.x);
