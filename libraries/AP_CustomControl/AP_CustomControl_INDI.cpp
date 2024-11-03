@@ -163,7 +163,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return u_0[0]*18000/M_PI;
+    return -u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
@@ -302,8 +302,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
-    snprintf(buffer, sizeof(buffer), "roll error, niu: %.4f %.4f", error.x, niu.x);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "roll error, niu: %.4f %.4f", error.x, niu.x);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda*(niu.x - p_dot) + invG.b.y*lambda*(niu.y - q_dot) + invG.b.z*lambda*(niu.z - Vt_dot);
@@ -332,8 +332,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
     
-    snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     u_0.x = u.x;
     u_0.y = u.y;
