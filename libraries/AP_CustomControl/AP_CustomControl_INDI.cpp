@@ -180,7 +180,7 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return u_0[1]*18000/M_PI;
+    return -u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -332,7 +332,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
     
-    snprintf(buffer, sizeof(buffer), "u_0 du u: %.4f %.4f %.4f", u_0.x, du.x, u.x);
+    snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     u_0.x = u.x;
