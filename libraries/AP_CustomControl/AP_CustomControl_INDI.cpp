@@ -279,7 +279,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float arspd_target = _tecs.get_TAS_demand();
 
     //debug
-    char buffer[80];  // Create a buffer to hold the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
     // roll_target = 3000;
     // pitch_target = 0;
     // arspd_target = 20;
