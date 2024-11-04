@@ -158,12 +158,12 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0]: %.2f", u_0[0]*18000/M_PI);
+    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0]: %.2f", u_0[0]*180/M_PI);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return u_0[0]*18000/M_PI;
+    return -u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
