@@ -179,8 +179,8 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
-    //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return u_0[1]*18000/M_PI;
+    return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
+    //return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -192,7 +192,8 @@ float AP_CustomControl_INDI::get_yaw_out(void)
     //gcs().send_text(MAV_SEVERITY_INFO, "yaw INDI custom controller working");
 
     // return what ArduPlane main controller outputted
-    return SRV_Channels::get_output_scaled(SRV_Channel::k_rudder);
+    //return SRV_Channels::get_output_scaled(SRV_Channel::k_rudder);
+    return 0;
 
     // não preciso disto, posso deixar estar assim
 }
