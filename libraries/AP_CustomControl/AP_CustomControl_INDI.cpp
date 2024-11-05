@@ -366,9 +366,9 @@ void AP_CustomControl_INDI::reset(void)
     xCF.y = 0;
     xCF.z = 0;
 
-    // u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
-    // u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
-    // u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
+    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
 }
 
 #endif
