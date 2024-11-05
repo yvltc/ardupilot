@@ -180,7 +180,7 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return -u_0[1]*18000/M_PI;
+    return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -225,9 +225,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         invG.b = {-47.4484,-47.4484,-0.0598};
         invG.c = {0.4008,0.4008,6.2293};
         Kff = 120;
-        Ktt = 75/50;
+        Ktt = 75;
         Kp = 65;
-        Kq = 14/50;
+        Kq = 14;
     }
 
     invert_G = invG.invert();
