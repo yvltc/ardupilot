@@ -37,12 +37,12 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     _dt = dt;
 
     // initialise variables
-    // u_0.x = 0;
-    // u_0.y = 0;
-    // u_0.z = 0;
-    u_0.x = -0.2041;
-    u_0.y = -0.2025;
-    u_0.z = 0.6428;
+    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
+    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    // u_0.x = -0.2041;
+    // u_0.y = -0.2025;
+    // u_0.z = 0.6428;
 
     // saturation limits
     ddmax = 30*M_PI/180;
@@ -158,7 +158,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1]: %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI);
+    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] dt: %.2f %.2f %f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, dt);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
