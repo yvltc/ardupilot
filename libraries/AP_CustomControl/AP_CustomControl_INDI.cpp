@@ -4,6 +4,7 @@
 
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
+#include <AP_HAL/AP_HAL.h>
 
 // table of user settable parameters
 // const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
@@ -155,6 +156,8 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     //float demanded_roll = _rollController->get_pid_info().target; 
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
+    uint32_t timestamp = hal.scheduler.micros();
+    GCS_DEBUG("Timestamp: %lu microseconds", timestamp);
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
     char buffer[80];  // Create a buffer to hold the formatted message
