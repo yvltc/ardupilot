@@ -157,7 +157,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // ArduPlane main attitude controller already ran
     // we don't need to do anything else
     uint32_t timestamp = AP_HAL::millis();
-    gcs().send_text(MAV_SEVERITY_INFO, "Timestamp: %d microseconds", timestamp);
+    gcs().send_text(MAV_SEVERITY_INFO, "Timestamp: %d miliseconds", timestamp);
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
     char buffer[80];  // Create a buffer to hold the formatted message
@@ -230,7 +230,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         Kff = 120;
         Ktt = 75*1;
         Kp = 65;
-        Kq = 14*10;
+        Kq = 14;
         lambda = 0.3;
     }
 
