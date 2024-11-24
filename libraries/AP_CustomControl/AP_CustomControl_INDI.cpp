@@ -234,7 +234,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         Kff = 100;
         Ktt = 100;
         Kp = 100;
-        Kq = 1;
+        Kq = 10;
         lambda = 0.3;
     }
 
