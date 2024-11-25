@@ -129,7 +129,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     lambda = 0.6;
     Kff = 140;
     Ktt = 50;
-    KVt = 20;
+    KVt = 100;
     Kp = 55;
     Kq = 10;
 }
@@ -207,7 +207,7 @@ float AP_CustomControl_INDI::get_Vt_out(void)
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
-    return -u_0[2]*100;
+    return u_0[2]*100;
 }
 
 void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
