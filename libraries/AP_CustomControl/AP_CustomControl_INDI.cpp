@@ -129,7 +129,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     lambda = 0.6;
     Kff = 140;
     Ktt = 50;
-    KVt = 50;
+    KVt = 1;
     Kp = 55;
     Kq = 10;
 }
