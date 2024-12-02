@@ -19,7 +19,7 @@
 
 #include "SIM_Plane.h"
 
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include <AP_Filesystem/AP_Filesystem_config.h>
 
