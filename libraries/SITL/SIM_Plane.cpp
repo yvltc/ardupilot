@@ -57,10 +57,11 @@ Plane::Plane(const char *frame_str) :
     } else if (strstr(frame_str, "-dspoilers")) {
         dspoilers = true;
     } else if (strstr(frame_str, "-flyingwing")) {
+        elevons = true;
         coefficient.s = 0.44;
         coefficient.b = 1.55;
         coefficient.c = 0.2839;
-        // coefficient.c_lift_0 = 0;
+        coefficient.c_lift_0 = 0;
         coefficient.c_lift_deltae = 0.3993;
         coefficient.c_lift_a = 3.9934;
         coefficient.c_lift_q = 3.1851;
@@ -70,19 +71,19 @@ Plane::Plane(const char *frame_str) :
         // float coefficient.c_drag_q = 0;
         // float coefficient.c_drag_deltae = 0.0;
         // float coefficient.c_drag_p = 0.1;
-        // coefficient.c_y_0 = 0;
+        coefficient.c_y_0 = 0;
         coefficient.c_y_b = -0.0025;
         coefficient.c_y_p = 0.2620;
         coefficient.c_y_r = -0.0673;
         // float coefficient.c_y_deltaa = 0;
         // float coefficient.c_y_deltar = -0.2;
-        // coefficient.c_l_0 = 0;
+        coefficient.c_l_0 = 0;
         coefficient.c_l_p = -0.4506;
         coefficient.c_l_b = -0.1604;
         coefficient.c_l_r = 0.3107;
         // float coefficient.c_l_deltaa = 0.25;
         // float coefficient.c_l_deltar = -0.037;
-        // coefficient.c_m_0 = 0;
+        coefficient.c_m_0 = 0;
         coefficient.c_m_a = 0.0718;
         coefficient.c_m_q = -2.4487;
         coefficient.c_m_deltae = -0.0836;
