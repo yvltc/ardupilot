@@ -59,6 +59,9 @@ Plane::Plane(const char *frame_str) :
         dspoilers = true;
     } else if (strstr(frame_str, "-flyingwing")) {
         elevons = true;
+        mass = 1.2650;
+        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+
         coefficient.s = 0.44;
         coefficient.b = 1.55;
         coefficient.c = 0.2839;
@@ -184,7 +187,6 @@ float Plane::dragCoeff(float alpha) const
 	double AR = pow(b,2)/s;
 	double c_drag_a = c_drag_p + pow(c_lift_0+c_lift_a0*alpha,2)/(M_PI*oswald*AR);
 
-    printf("%f", c_drag_a);
 	return c_drag_a;
 }
 
