@@ -19,6 +19,7 @@
 
 #include "SIM_Plane.h"
 
+#include <iostream.h>
 #include <stdio.h>
 #include <AP_Filesystem/AP_Filesystem_config.h>
 
@@ -183,6 +184,7 @@ float Plane::dragCoeff(float alpha) const
 	double AR = pow(b,2)/s;
 	double c_drag_a = c_drag_p + pow(c_lift_0+c_lift_a0*alpha,2)/(M_PI*oswald*AR);
 
+    printf("%f", c_drag_a);
 	return c_drag_a;
 }
 
