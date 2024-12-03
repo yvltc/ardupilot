@@ -62,7 +62,7 @@ Plane::Plane(const char *frame_str) :
         // mass = 1.2650;
         // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
-        coefficient.s = 0.44;
+        // coefficient.s = 0.44;
         coefficient.b = 1.55;
         coefficient.c = 0.2839;
         // coefficient.c_lift_0 = 0;
