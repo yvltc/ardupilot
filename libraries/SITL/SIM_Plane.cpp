@@ -59,8 +59,8 @@ Plane::Plane(const char *frame_str) :
         dspoilers = true;
     } else if (strstr(frame_str, "-flyingwing")) {
         elevons = true;
-        mass = 1.2650;
-        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        // mass = 1.2650;
+        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
         coefficient.s = 0.44;
         coefficient.b = 1.55;
@@ -70,7 +70,7 @@ Plane::Plane(const char *frame_str) :
         // coefficient.c_lift_a = 3.9934;
         // coefficient.c_lift_q = 3.1851;
         // float coefficient.mcoeff = 50;
-        // coefficient.oswald = 0.9;
+        coefficient.oswald = 0.9;
         // float coefficient.alpha_stall = 0.4712;
         // float coefficient.c_drag_q = 0;
         // coefficient.c_drag_deltae = 0.0054;
