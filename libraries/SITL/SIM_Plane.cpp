@@ -70,10 +70,10 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_lift_a = 3.9934;
         coefficient.c_lift_q = 3.1851;
         // float coefficient.mcoeff = 50;
-        // float coefficient.oswald = 0.9;
+        coefficient.oswald = 0.9;
         // float coefficient.alpha_stall = 0.4712;
         // float coefficient.c_drag_q = 0;
-        // float coefficient.c_drag_deltae = 0.0;
+        coefficient.c_drag_deltae = 0.0054;
         // float coefficient.c_drag_p = 0.1;
         coefficient.c_y_0 = 0;
         coefficient.c_y_b = -0.0025;
@@ -91,18 +91,16 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_m_a = 0.0718;
         coefficient.c_m_q = -2.4487;
         coefficient.c_m_deltae = -0.0836;
-        // float coefficient.c_n_0 = 0;
-        // float coefficient.c_n_b = 0.25;
-        // float coefficient.c_n_p = 0.022;
-        // float coefficient.c_n_r = -1;
-        // float coefficient.c_n_deltaa = 0.00;
+        coefficient.c_n_0 = 0;
+        coefficient.c_n_b = 0.0390;
+        coefficient.c_n_p = -0.1890;
+        coefficient.c_n_r = 0.0028;
+        coefficient.c_n_deltaa = 0.0004195;
         // float coefficient.c_n_deltar = 0.1;
         // float coefficient.deltaa_max = 0.3491;
         // float coefficient.deltae_max = 0.3491;
         // float coefficient.deltar_max = 0.3491;
-        // the X CoG offset should be -0.02, but that makes the plane too tail heavy
-        // in manual flight. Adjusted to -0.15 gives reasonable flight
-        // coefficient.CGOffset{-0.15, 0, -0.05};
+        coefficient.CGOffset{0.1260, 0, 0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
         reverse_elevator_rudder = true;
