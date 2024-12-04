@@ -58,6 +58,7 @@ Plane::Plane(const char *frame_str) :
     } else if (strstr(frame_str, "-dspoilers")) {
         dspoilers = true;
     } else if (strstr(frame_str, "-flyingwing")) {
+        custom_dynamics = true;
         elevons = true;
         mass = 1.2650;
         thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
@@ -73,8 +74,8 @@ Plane::Plane(const char *frame_str) :
         coefficient.oswald = 0.9;
         coefficient.alpha_stall = 0.2618;
         // float coefficient.c_drag_q = 0;
-        coefficient.c_drag_deltae = 0.0054;
-        // float coefficient.c_drag_p = 0.1;
+        coefficient.c_drag_deltae = 0.0024;
+        coefficient.c_drag_p = 0.0017;        // drag p ou drag 0??
         coefficient.c_y_0 = 0;
         coefficient.c_y_b = -0.0025;
         coefficient.c_y_p = 0.2620;
@@ -436,6 +437,10 @@ void Plane::update(const struct sitl_input &input)
     Vector3f rot_accel;
 
     update_wind(input);
+
+    if (custom_dynamics) {
+        printf("Custom dynamics working\n");
+    }
     
     calculate_forces(input, rot_accel);
     
