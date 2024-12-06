@@ -360,8 +360,8 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
     const float C_l_b = coefficient.c_l_b;
     const float C_l_p = coefficient.c_l_p;
     const float C_l_r = coefficient.c_l_r;
-    const float C_l_deltaa = coefficient.c_l_deltaa;
-    const float C_l_deltar = coefficient.c_l_deltar;
+    const float C_l_da = coefficient.c_l_deltaa;
+    const float C_l_dr = coefficient.c_l_deltar;
     const float C_m_0 = coefficient.c_m_0;
     const float C_m_a = coefficient.c_m_a;
     const float C_m_q = coefficient.c_m_q;
