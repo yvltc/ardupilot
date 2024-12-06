@@ -20,6 +20,7 @@
 #include "SIM_Plane.h"
 
 #include <iostream>
+#include <cmath>
 #include <stdio.h>
 #include <AP_Filesystem/AP_Filesystem_config.h>
 
@@ -92,6 +93,7 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_m_a = 0.0718;
         coefficient.c_m_q = -2.4487;
         coefficient.c_m_deltae = -0.0836;
+        coefficient.c_m_adot = -0.4897;
         coefficient.c_n_0 = 0;
         coefficient.c_n_b = 0.0390;
         coefficient.c_n_p = -0.1890;
@@ -315,6 +317,136 @@ Vector3f Plane::getForce(float inputAileron, float inputElevator, float inputRud
     return Vector3f(ax, ay, az);
 }
 
+// Custom dynamics
+float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
+{
+    const float C_L_0 = coefficient.c_lift_0;
+    const float C_L_a = coefficient.c_lift_a;
+    const float C_L_q = coefficient.c_lift_q;
+    const float C_L_dd = coefficient.c_lift_deltad;
+    const float c = coefficient.c;
+    float q = gyro.y;
+
+    double C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
+
+	return C_L;
+}
+
+float Plane::CustomDynamics_dragCoeff(float alpha, float dl, float dr)
+{
+    const float b = coefficient.b;
+    const float s = coefficient.s;
+    const float C_D_0 = coefficient.c_drag_p;
+    const float C_L_0 = coefficient.c_lift_0;
+    const float C_L_a = coefficient.c_lift_a;
+    const float C_L_de = coefficient.c_lift_deltae;
+    const float oswald = coefficient.oswald;
+    
+	double AR = pow(b,2)/s;
+    double C_D_dd = (C_L_0 + C_L_a*alpha)*C_L_de*(M_PI*oswald*AR);
+	double C_D = C_D_0 + C_D_a*alpha + C_D_dd*(abs(dl) + abs(dr));
+
+	return C_D;
+}
+//
+
+Vector3f Plane::CustomDynamics_getTorque(float da, float de)
+{
+    const float alpha = angle_of_attack;
+    const float s = coefficient.s;
+    const float c = coefficient.c;
+    const float b = coefficient.b;
+    const float C_l_0 = coefficient.c_l_0;
+    const float C_l_b = coefficient.c_l_b;
+    const float C_l_p = coefficient.c_l_p;
+    const float C_l_r = coefficient.c_l_r;
+    const float C_l_deltaa = coefficient.c_l_deltaa;
+    const float C_l_deltar = coefficient.c_l_deltar;
+    const float C_m_0 = coefficient.c_m_0;
+    const float C_m_a = coefficient.c_m_a;
+    const float C_m_q = coefficient.c_m_q;
+    const float C_m_de = coefficient.c_m_deltae;
+    const float C_n_0 = coefficient.c_n_0;
+    const float C_n_b = coefficient.c_n_b;
+    const float C_n_p = coefficient.c_n_p;
+    const float C_n_r = coefficient.c_n_r;
+    const float C_n_da = coefficient.c_n_deltaa;
+    const float C_n_deltar = coefficient.c_n_deltar;
+    const Vector3f &CGOffset = coefficient.CGOffset;    
+    
+    float rho = air_density;
+
+    float p = gyro.x;
+    float q = gyro.y;
+    float r = gyro.z;
+
+    double pdyn = 0.5*rho*pow(airspeed,2);
+    double la, na, ma;
+    double C_l, C_m, C_n;
+
+    Vector3 M_aero;
+    float alphadot = 0;     // first test adot = 0
+
+    if (is_zero(airspeed)) {
+		M_aero = {0, 0, 0};
+	}
+	else {
+        C_l = C_l_b*beta + C_l_da*da + (C_l_p*p + C_l_r*r)*b/(2*airspeed);
+        C_m = C_m_0 + C_m_a*alpha + C_m_de*de + (C_m_adot*alphadot + C_m_q*q)*c/(2*airspeed);
+        C_n = C_n_b*beta + C_n_da*da + (C_n_p*p + C_n_r*r)*b/(2*airspeed);
+
+        M_aero = pdyn*s*Vector3f(b*C_l, c*C_m, b*C_n);
+    }
+    
+    return M_aero;
+}
+
+Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
+{
+    const float alpha = angle_of_attack;
+    const float c_drag_q = coefficient.c_drag_q;
+    const float c_lift_q = coefficient.c_lift_q;
+    const float s = coefficient.s;
+    const float c = coefficient.c;
+    const float b = coefficient.b;
+    const float c_drag_deltae = coefficient.c_drag_deltae;
+    const float c_lift_deltae = coefficient.c_lift_deltae;
+    const float C_Y_0 = coefficient.c_y_0;
+    const float C_Y_b = coefficient.c_y_b;
+    const float C_Y_p = coefficient.c_y_p;
+    const float C_Y_r = coefficient.c_y_r;
+    const float C_Y_deltaa = coefficient.c_y_deltaa;
+    const float C_Y_deltar = coefficient.c_y_deltar;
+    
+    float rho = air_density;
+
+    float p = gyro.x;
+    float q = gyro.y;
+    float r = gyro.z;
+
+	//request lift and drag coefficients from the corresponding functions
+	double C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
+	double C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
+    double C_Y;
+    if is_zero(airspeed) {
+        C_Y = 0;
+    } else {
+        C_Y = C_Y_b*beta + (C_Y_p*p + C_Y_r*r)*b/(2*airspeed);
+    }
+
+    double pdyn = 0.5*rho*pow(airspeed,2);
+    Vector3f F_aero;
+    Matrix3f Ra2b;
+    Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
+    Ra2b.b = {sin(beta), cos(beta), 0};
+    Ra2b.c = {sin(alpha)*cos(beta), -sin(alpha)*sin(beta), cos(alpha)};
+    Vector3f coeffs = {-C_D, C_Y, -C_L};
+
+    F_aero = pdyn*s*Ra2b*coeffs;
+
+    return F_aero;
+}
+
 void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel)
 {
     float aileron  = filtered_servo_angle(input, 0);
@@ -328,11 +460,15 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     }
     if (elevons) {
         // fake an elevon plane
-        float ch1 = aileron;
+        float ch1 = aileron;        // confirmar se ch1 ch2 têm o aileron elevator ou elevonL elevonR -> ch1 dL, ch2 dR
         float ch2 = elevator;
-        aileron  = (ch2-ch1)/2.0f;
+        aileron  = (ch2-ch1)/2.0f;  
         // the minus does away with the need for RC2_REVERSED=-1
         elevator = -(ch2+ch1)/2.0f;
+
+        if (flyingwing) {
+            elevator = (ch2+ch1)/2.0f;
+        }
 
         // assume no rudder
         rudder = 0;
@@ -384,9 +520,15 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         elevator *= 4;
         rudder *= 4;
     }
-    
-    Vector3f force = getForce(aileron, elevator, rudder);
-    rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
+
+    if (custom_dynamics) {
+        //printf("Custom dynamics working");
+        Vector3f force = CustomDynamics_getForce(ch1, ch2);        // aerodynamic force
+        rot_accel = CustomDynamics_getTorque(aileron, elevator);
+    } else {
+        Vector3f force = getForce(aileron, elevator, rudder);
+        rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
+    }
 
     if (have_launcher) {
         /*
@@ -437,10 +579,6 @@ void Plane::update(const struct sitl_input &input)
     Vector3f rot_accel;
 
     update_wind(input);
-
-    if (custom_dynamics) {
-        printf("Custom dynamics working\n");
-    }
     
     calculate_forces(input, rot_accel);
     

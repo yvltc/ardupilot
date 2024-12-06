@@ -53,6 +53,7 @@ protected:
         float c = 0.24;
         float c_lift_0 = 0.56;
         float c_lift_deltae = 0;
+        float c_lift_deltad;
         float c_lift_a = 6.9;
         float c_lift_q = 0;
         float mcoeff = 50;
@@ -77,6 +78,7 @@ protected:
         float c_m_a = -0.7;
         float c_m_q = -20;
         float c_m_deltae = 1.0;
+        float c_m_adot;
         float c_n_0 = 0;
         float c_n_b = 0.25;
         float c_n_p = 0.022;
