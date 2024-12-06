@@ -384,7 +384,7 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
     double la, na, ma;
     double C_l, C_m, C_n;
 
-    Vector3 M_aero;
+    Vector3f M_aero;
     float alphadot = 0;     // first test adot = 0
 
     if (is_zero(airspeed)) {
