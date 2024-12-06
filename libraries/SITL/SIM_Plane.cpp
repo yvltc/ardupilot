@@ -343,12 +343,12 @@ float Plane::CustomDynamics_dragCoeff(float alpha, float dl, float dr)
     const float oswald = coefficient.oswald;
     
 	double AR = pow(b,2)/s;
-    double C_D_dd = (C_L_0 + C_L_a*alpha)*C_L_de*(M_PI*oswald*AR);
-	double C_D = C_D_0 + C_D_a*alpha + C_D_dd*(abs(dl) + abs(dr));
+    double C_L = C_L_0 + C_L_a*alpha;
+    double C_D_dd = C_L*C_L_de/(M_PI*oswald*AR);
+	double C_D = C_D_0 + pow(C_L, 2)/(M_PI*oswald*AR) + C_D_dd*(abs(dl) + abs(dr));
 
 	return C_D;
 }
-//
 
 Vector3f Plane::CustomDynamics_getTorque(float da, float de)
 {
