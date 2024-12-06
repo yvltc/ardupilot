@@ -381,9 +381,8 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
     float q = gyro.y;
     float r = gyro.z;
 
-    double pdyn = 0.5*rho*pow(airspeed,2);
-    double la, na, ma;
-    double C_l, C_m, C_n;
+    float pdyn = 0.5*rho*pow(airspeed,2);
+    float C_l, C_m, C_n;
 
     Vector3f M_aero;
     float alphadot = 0;     // first test adot = 0
