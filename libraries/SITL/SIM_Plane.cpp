@@ -408,7 +408,6 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     float rho = air_density;
 
     float p = gyro.x;
-    float q = gyro.y;
     float r = gyro.z;
 
 	//request lift and drag coefficients from the corresponding functions
