@@ -404,8 +404,6 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     const float C_Y_b = coefficient.c_y_b;
     const float C_Y_p = coefficient.c_y_p;
     const float C_Y_r = coefficient.c_y_r;
-    const float C_Y_deltaa = coefficient.c_y_deltaa;
-    const float C_Y_deltar = coefficient.c_y_deltar;
     
     float rho = air_density;
 
