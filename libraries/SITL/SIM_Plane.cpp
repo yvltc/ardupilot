@@ -401,7 +401,6 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     const float alpha = angle_of_attack;
     const float s = coefficient.s;
     const float b = coefficient.b;
-    const float C_Y_0 = coefficient.c_y_0;
     const float C_Y_b = coefficient.c_y_b;
     const float C_Y_p = coefficient.c_y_p;
     const float C_Y_r = coefficient.c_y_r;
