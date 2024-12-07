@@ -314,7 +314,7 @@ void AP_Baro::calibrate(bool save)
         do {
             update();
             if (AP_HAL::millis() - tstart > 520) {
-                //AP_BoardConfig::config_error("%d", AP_HAL::millis()-tstart);
+                AP_BoardConfig::config_error("%d", AP_HAL::millis()-tstart);
                 AP_BoardConfig::config_error("Baro: unable to calibrate");
             }
             hal.scheduler->delay(10);
