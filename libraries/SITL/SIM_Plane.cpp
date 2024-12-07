@@ -356,24 +356,19 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
     const float s = coefficient.s;
     const float c = coefficient.c;
     const float b = coefficient.b;
-    const float C_l_0 = coefficient.c_l_0;
     const float C_l_b = coefficient.c_l_b;
     const float C_l_p = coefficient.c_l_p;
     const float C_l_r = coefficient.c_l_r;
     const float C_l_da = coefficient.c_l_deltaa;
-    const float C_l_dr = coefficient.c_l_deltar;
     const float C_m_0 = coefficient.c_m_0;
     const float C_m_a = coefficient.c_m_a;
     const float C_m_q = coefficient.c_m_q;
     const float C_m_de = coefficient.c_m_deltae;
-    const float C_n_0 = coefficient.c_n_0;
     const float C_n_b = coefficient.c_n_b;
     const float C_n_p = coefficient.c_n_p;
     const float C_n_r = coefficient.c_n_r;
     const float C_n_da = coefficient.c_n_deltaa;
-    const float C_n_deltar = coefficient.c_n_deltar;
-    const float C_m_adot = coefficient.c_m_adot;
-    const Vector3f &CGOffset = coefficient.CGOffset;    
+    const float C_m_adot = coefficient.c_m_adot;  
     
     float rho = air_density;
 
@@ -404,13 +399,9 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
 Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
 {
     const float alpha = angle_of_attack;
-    const float c_drag_q = coefficient.c_drag_q;
-    const float c_lift_q = coefficient.c_lift_q;
     const float s = coefficient.s;
     const float c = coefficient.c;
     const float b = coefficient.b;
-    const float c_drag_deltae = coefficient.c_drag_deltae;
-    const float c_lift_deltae = coefficient.c_lift_deltae;
     const float C_Y_0 = coefficient.c_y_0;
     const float C_Y_b = coefficient.c_y_b;
     const float C_Y_p = coefficient.c_y_p;
