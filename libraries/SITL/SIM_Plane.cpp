@@ -395,7 +395,7 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
         C_m = C_m_0 + C_m_a*alpha + C_m_de*de + (C_m_adot*alphadot + C_m_q*q)*c/(2*airspeed);
         C_n = C_n_b*beta + C_n_da*da + (C_n_p*p + C_n_r*r)*b/(2*airspeed);
 
-        M_aero = pdyn*s*Vector3f(b*C_l, c*C_m, b*C_n);
+        M_aero = Vector3f(pdyn*s*b*C_l, pdyn*s*c*C_m, pdyn*s*b*C_n);
     }
     
     return M_aero;
@@ -440,9 +440,9 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
     Ra2b.b = {sin(beta), cos(beta), 0};
     Ra2b.c = {sin(alpha)*cos(beta), -sin(alpha)*sin(beta), cos(alpha)};
-    Vector3f coeffs = {-C_D, C_Y, -C_L};
+    Vector3f force_windaxis = {-pdyn*s*C_D, pdyn*s*C_Y, -pdyn*s*C_L};
 
-    F_aero = pdyn*s*Ra2b*coeffs;
+    F_aero = Ra2b*force_windaxis;
 
     return F_aero;
 }
