@@ -509,7 +509,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (custom_dynamics) {
         //printf("Custom dynamics working");
-        Vector3f force = CustomDynamics_getForce(ch1, ch2);        // aerodynamic force
+        Vector3f force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
         rot_accel = CustomDynamics_getTorque(aileron, elevator);
     } else {
         Vector3f force = getForce(aileron, elevator, rudder);
