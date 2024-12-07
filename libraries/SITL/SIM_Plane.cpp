@@ -416,9 +416,9 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     float r = gyro.z;
 
 	//request lift and drag coefficients from the corresponding functions
-	double C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
-	double C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
-    double C_Y;
+	float C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
+	float C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
+    float C_Y;
     if (is_zero(airspeed)) {
         C_Y = 0;
     } else {
