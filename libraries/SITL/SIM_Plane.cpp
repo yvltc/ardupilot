@@ -425,7 +425,7 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
         C_Y = C_Y_b*beta + (C_Y_p*p + C_Y_r*r)*b/(2*airspeed);
     }
 
-    double pdyn = 0.5*rho*pow(airspeed,2);
+    float pdyn = 0.5*rho*pow(airspeed,2);
     Vector3f F_aero;
     Matrix3f Ra2b;
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
