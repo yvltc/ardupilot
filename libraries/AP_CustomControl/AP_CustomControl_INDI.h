@@ -45,6 +45,10 @@ protected:
     Matrix3f SOD_B;
     Matrix3f SOD_C;
     Matrix3f SOD_D;
+    Matrix3f SODu_A;
+    Matrix3f SODu_B;
+    Matrix3f SODu_C;
+    Matrix3f SODu_D;
 
     Vector3f xSOD_p;
     Vector3f xSOD_q;
