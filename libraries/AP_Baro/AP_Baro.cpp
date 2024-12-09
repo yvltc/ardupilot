@@ -946,6 +946,7 @@ void AP_Baro::update(void)
     // ensure the climb rate filter is updated
     if (healthy()) {
         _climb_rate_filter.update(get_altitude(), get_last_update());
+        printf("Here I am\n")
     }
 
     // choose primary sensor
@@ -995,7 +996,6 @@ bool AP_Baro::healthy(uint8_t instance) const {
 bool AP_Baro::healthy(uint8_t instance) const {
     // If the requested instance was outside max instances it is not healthy (it doesn't exist)
     if (instance >= BARO_MAX_INSTANCES) {
-        printf("Error\n");
         return false;
     }
     return sensors[instance].healthy && sensors[instance].alt_ok && sensors[instance].calibrated;
