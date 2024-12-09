@@ -986,7 +986,6 @@ void AP_Baro::update(void)
 // calibration and alt check not valid for AP_Periph
 bool AP_Baro::healthy(uint8_t instance) const {
     // If the requested instance was outside max instances it is not healthy (it doesn't exist)
-    printf("Here I am\n");
     if (instance >= BARO_MAX_INSTANCES) {
         return false;
     }
@@ -995,6 +994,7 @@ bool AP_Baro::healthy(uint8_t instance) const {
 #else
 bool AP_Baro::healthy(uint8_t instance) const {
     // If the requested instance was outside max instances it is not healthy (it doesn't exist)
+    printf("Here I am\n");
     if (instance >= BARO_MAX_INSTANCES) {
         return false;
     }
