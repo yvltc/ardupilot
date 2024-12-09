@@ -21,6 +21,7 @@
 
 #include <utility>
 #include <stdio.h>
+#include <iostream>
 
 #include <GCS_MAVLink/GCS.h>
 #include <AP_Common/AP_Common.h>
@@ -994,6 +995,7 @@ bool AP_Baro::healthy(uint8_t instance) const {
 bool AP_Baro::healthy(uint8_t instance) const {
     // If the requested instance was outside max instances it is not healthy (it doesn't exist)
     if (instance >= BARO_MAX_INSTANCES) {
+        printf("Error\n");
         return false;
     }
     return sensors[instance].healthy && sensors[instance].alt_ok && sensors[instance].calibrated;
