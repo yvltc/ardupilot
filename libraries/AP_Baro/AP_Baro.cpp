@@ -942,7 +942,7 @@ void AP_Baro::update(void)
             }
         }
     }
-    printf("Healthy = %d\n", healthy());
+    // printf("Healthy = %d\n", healthy());
     // ensure the climb rate filter is updated
     if (healthy()) {
         _climb_rate_filter.update(get_altitude(), get_last_update());
@@ -994,11 +994,10 @@ bool AP_Baro::healthy(uint8_t instance) const {
 #else
 bool AP_Baro::healthy(uint8_t instance) const {
     // If the requested instance was outside max instances it is not healthy (it doesn't exist)
-    
     if (instance >= BARO_MAX_INSTANCES) {
-        printf("Here I am\n");
         return false;
     }
+    printf("%d\n", sensors[instance].healthy);
     return sensors[instance].healthy && sensors[instance].alt_ok && sensors[instance].calibrated;
 }
 #endif
