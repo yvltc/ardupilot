@@ -408,6 +408,7 @@ float AP_Baro::get_altitude_difference(float base_pressure, float pressure) cons
 {
     float temp    = C_TO_KELVIN(get_ground_temperature());
     float scaling = pressure / base_pressure;
+    printf("%f %f %f\n", temp, scaling, _field_elevation_active);
 
     // This is an exact calculation that is within +-2.5m of the standard
     // atmosphere tables in the troposphere (up to 11,000 m amsl).
@@ -929,7 +930,7 @@ void AP_Baro::update(void)
 #if HAL_BARO_WIND_COMP_ENABLED
                 corrected_pressure -= wind_pressure_correction(i);
 #endif
-                printf("altitude %f\n", altitude);
+                // até aqui tudo bem
                 altitude = get_altitude_difference(sensors[i].ground_pressure, corrected_pressure);
             } else if (sensors[i].type == BARO_TYPE_WATER) {
                 //101325Pa is sea level air pressure, 9800 Pascal/ m depth in water.
