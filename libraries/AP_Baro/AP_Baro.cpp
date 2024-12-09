@@ -931,7 +931,7 @@ void AP_Baro::update(void)
 #endif
                 printf("Aqui\n");
                 altitude = get_altitude_difference(sensors[i].ground_pressure, corrected_pressure);
-                printf("altitude %d\n", altitude);
+                printf("altitude %f\n", altitude);
             } else if (sensors[i].type == BARO_TYPE_WATER) {
                 //101325Pa is sea level air pressure, 9800 Pascal/ m depth in water.
                 //No temperature or depth compensation for density of water.
