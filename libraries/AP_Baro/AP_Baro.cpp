@@ -937,6 +937,7 @@ void AP_Baro::update(void)
             }
             // sanity check altitude
             sensors[i].alt_ok = !(isnan(altitude) || isinf(altitude));
+            printf("isnan %d\n", isnan(altitude));
             if (sensors[i].alt_ok) {
                 sensors[i].altitude = altitude + _alt_offset_active;
             }
@@ -997,7 +998,7 @@ bool AP_Baro::healthy(uint8_t instance) const {
     if (instance >= BARO_MAX_INSTANCES) {
         return false;
     }
-    printf("%d\n", sensors[instance].alt_ok);
+    // printf("%d\n", sensors[instance].alt_ok);
     return sensors[instance].healthy && sensors[instance].alt_ok && sensors[instance].calibrated;
 }
 #endif
