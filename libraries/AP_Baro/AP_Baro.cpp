@@ -997,7 +997,7 @@ bool AP_Baro::healthy(uint8_t instance) const {
     if (instance >= BARO_MAX_INSTANCES) {
         return false;
     }
-    printf("%d\n", sensors[instance].healthy);
+    printf("%d\n", sensors[instance].alt_ok);
     return sensors[instance].healthy && sensors[instance].alt_ok && sensors[instance].calibrated;
 }
 #endif
