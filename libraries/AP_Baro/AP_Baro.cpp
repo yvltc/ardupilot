@@ -408,7 +408,7 @@ float AP_Baro::get_altitude_difference(float base_pressure, float pressure) cons
 {
     float temp    = C_TO_KELVIN(get_ground_temperature());
     float scaling = pressure / base_pressure;
-    printf("%f %f %f\n", temp, scaling, _field_elevation_active);
+    printf("%f %f %f\n", scaling, pressure, base_pressure);
 
     // This is an exact calculation that is within +-2.5m of the standard
     // atmosphere tables in the troposphere (up to 11,000 m amsl).
