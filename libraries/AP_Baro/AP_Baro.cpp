@@ -942,11 +942,10 @@ void AP_Baro::update(void)
             }
         }
     }
-
+    printf("Healthy = %d\n", healthy());
     // ensure the climb rate filter is updated
     if (healthy()) {
         _climb_rate_filter.update(get_altitude(), get_last_update());
-        printf("Here I am\n");
     }
 
     // choose primary sensor
