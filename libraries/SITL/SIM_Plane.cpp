@@ -300,10 +300,10 @@ Vector3f Plane::getForce(float inputAileron, float inputElevator, float inputRud
 	//calculate aerodynamic force
 	double qbar = 1.0/2.0*rho*pow(airspeed,2)*s; //Calculate dynamic pressure
 	double ax, ay, az;
-    if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
-    {
-        printf("airspeed %f\n", airspeed);
-    }
+    // if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
+    // {
+    //     printf("airspeed %f\n", airspeed);
+    // }
 	if (is_zero(airspeed))
 	{
 		ax = 0;
@@ -520,7 +520,8 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (custom_dynamics) {
         //printf("Custom dynamics working");
-        force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
+        // force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
+        force = getForce(aileron, elevator, rudder);
         rot_accel = CustomDynamics_getTorque(aileron, elevator);
         
     } else {
