@@ -664,6 +664,7 @@ void Aircraft::update_dynamics(const Vector3f &rot_accel)
 
     // airspeed
     airspeed = velocity_air_ef.length();
+    printf("SIM_Aircraft \n");
 
     // airspeed as seen by a fwd pitot tube (limited to 120m/s)
     airspeed_pitot = constrain_float(velocity_air_bf * Vector3f(1.0f, 0.0f, 0.0f), 0.0f, 120.0f);
