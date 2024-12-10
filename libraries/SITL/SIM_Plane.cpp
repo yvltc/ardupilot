@@ -300,7 +300,7 @@ Vector3f Plane::getForce(float inputAileron, float inputElevator, float inputRud
 	//calculate aerodynamic force
 	double qbar = 1.0/2.0*rho*pow(airspeed,2)*s; //Calculate dynamic pressure
 	double ax, ay, az;
-    if (AP_HAL::millis() > 1500 && AP_HAL::millis < 1550)
+    if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
     {
         printf("airspeed ");
     }
