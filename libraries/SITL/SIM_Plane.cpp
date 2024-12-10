@@ -429,7 +429,7 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     Vector3f force_windaxis = {-pdyn*s*C_D, pdyn*s*C_Y, -pdyn*s*C_L};
 
     F_aero = Ra2b*force_windaxis;
-    printf("SIM_Plane F_aero %f %f %f\n", F_aero.x, F_aero.y, F_aero.z);
+    printf("SIM_Plane force_windaxis %f %f %f\n", force_windaxis.x, force_windaxis.y, force_windaxis.z);
     return F_aero;
 }
 
