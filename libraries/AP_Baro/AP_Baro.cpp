@@ -929,6 +929,7 @@ void AP_Baro::update(void)
             if (sensors[i].type == BARO_TYPE_AIR) {
 #if HAL_BARO_WIND_COMP_ENABLED
                 corrected_pressure -= wind_pressure_correction(i);
+                printf("Estou aqui %f\n", corrected_pressure);
 #endif
                 // até aqui tudo bem
                 altitude = get_altitude_difference(sensors[i].ground_pressure, corrected_pressure);
