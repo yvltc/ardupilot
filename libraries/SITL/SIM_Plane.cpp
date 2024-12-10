@@ -429,7 +429,7 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     Vector3f force_windaxis = {-pdyn*s*C_D, pdyn*s*C_Y, -pdyn*s*C_L};
 
     F_aero = Ra2b*force_windaxis;
-
+    printf("SIM_Plane F_aero %f %f %f\n", F_aero.x, F_aero.y, F_aero.z);
     return F_aero;
 }
 
@@ -514,7 +514,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         //printf("Custom dynamics working");
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
         rot_accel = CustomDynamics_getTorque(aileron, elevator);
-        printf("SIM_Plane force %f %f %f\n", force.x, force.y, force.z);
+        
     } else {
         force = getForce(aileron, elevator, rudder);
         rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
