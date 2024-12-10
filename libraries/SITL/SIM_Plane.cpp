@@ -302,7 +302,7 @@ Vector3f Plane::getForce(float inputAileron, float inputElevator, float inputRud
 	double ax, ay, az;
     if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
     {
-        printf("airspeed ");
+        printf("airspeed %f\n", airspeed);
     }
 	if (is_zero(airspeed))
 	{
