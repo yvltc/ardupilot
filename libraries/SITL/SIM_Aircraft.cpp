@@ -637,7 +637,8 @@ void Aircraft::update_dynamics(const Vector3f &rot_accel)
 
     Vector3f accel_earth = dcm * accel_body;
     accel_earth += Vector3f(0.0f, 0.0f, GRAVITY_MSS);
-    printf("SIM_Aircraft accel_body %f %f %f\n", accel_body.x, accel_body.y, accel_body.z);
+    //printf("SIM_Aircraft accel_body %f %f %f\n", accel_body.x, accel_body.y, accel_body.z);
+
     // if we're on the ground, then our vertical acceleration is limited
     // to zero. This effectively adds the force of the ground on the aircraft
     if (on_ground() && accel_earth.z > 0) {
@@ -660,7 +661,6 @@ void Aircraft::update_dynamics(const Vector3f &rot_accel)
 
     // velocity relative to airmass in body frame
     velocity_air_bf = dcm.transposed() * velocity_air_ef;
-    
 
     // airspeed
     airspeed = velocity_air_ef.length();

@@ -546,6 +546,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     thrust *= thrust_scale;
 
     accel_body = Vector3f(thrust, 0, 0) + force;
+    printf("SIM_Plane accel_body %f %f %f\n", accel_body.x, accel_body.y, accel_body.z);
     accel_body /= mass;
 
     // add some noise
