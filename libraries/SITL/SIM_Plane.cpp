@@ -421,7 +421,7 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     }
 
     float pdyn = 0.5*rho*pow(airspeed,2);
-    printf("airspeed %f\n", airspeed);    // airspeed nan?
+    printf("airspeed ", airspeed);    // airspeed nan?
     Vector3f F_aero;
     Matrix3f Ra2b;
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
