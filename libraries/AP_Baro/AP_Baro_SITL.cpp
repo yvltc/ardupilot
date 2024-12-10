@@ -2,6 +2,7 @@
 
 #if AP_SIM_BARO_ENABLED
 
+#include <iostream>
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Vehicle/AP_Vehicle_Type.h>
 
@@ -163,6 +164,7 @@ float AP_Baro_SITL::wind_pressure_correction(uint8_t instance)
 
     // correct for static pressure position errors
     const Vector3f &airspeed_vec_bf = AP::sitl()->state.velocity_air_bf;
+    printf("airspeed %f %f %f\n", airspeed_vec_bf.x, airspeed_vec_bf.y, airspeed_vec_bf.z);
 
     float error = 0.0;
     const float sqx = sq(airspeed_vec_bf.x);
