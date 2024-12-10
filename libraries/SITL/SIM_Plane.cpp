@@ -421,7 +421,10 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     }
 
     float pdyn = 0.5*rho*pow(airspeed,2);
-    printf("airspeed ");    // airspeed nan?
+    if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
+    {
+        printf("airspeed ");    // airspeed nan?
+    }
     Vector3f F_aero;
     Matrix3f Ra2b;
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
