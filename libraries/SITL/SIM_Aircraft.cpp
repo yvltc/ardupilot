@@ -660,7 +660,7 @@ void Aircraft::update_dynamics(const Vector3f &rot_accel)
 
     // velocity relative to airmass in body frame
     velocity_air_bf = dcm.transposed() * velocity_air_ef;
-    printf("SIM_Aircraft velocity_air_ef %f %f %f\n", velocity_air_ef.x, velocity_air_ef.y, velocity_air_ef.z);
+    printf("SIM_Aircraft velocity_ef %f %f %f\n", velocity_ef.x, velocity_ef.y, velocity_ef.z);
 
     // airspeed
     airspeed = velocity_air_ef.length();
