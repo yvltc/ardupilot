@@ -497,7 +497,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     // calculate angle of attack
     angle_of_attack = atan2f(velocity_air_bf.z, velocity_air_bf.x);
     beta = atan2f(velocity_air_bf.y,velocity_air_bf.x);
-    printf("airspeed SIM_Plane %f %f %f\n", airspeed_vec_bf.x, airspeed_vec_bf.y, airspeed_vec_bf.z);
+    printf("airspeed SIM_Plane %f %f %f\n", velocity_air_bf.x, velocity_air_bf.y, velocity_air_bf.z);
 
     if (tailsitter || aerobatic) {
         /*
