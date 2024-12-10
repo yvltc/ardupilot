@@ -300,6 +300,10 @@ Vector3f Plane::getForce(float inputAileron, float inputElevator, float inputRud
 	//calculate aerodynamic force
 	double qbar = 1.0/2.0*rho*pow(airspeed,2)*s; //Calculate dynamic pressure
 	double ax, ay, az;
+    if (AP_HAL::millis() > 1500 && AP_HAL::millis < 1550)
+    {
+        printf("airspeed ");
+    }
 	if (is_zero(airspeed))
 	{
 		ax = 0;
@@ -421,10 +425,10 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     }
 
     float pdyn = 0.5*rho*pow(airspeed,2);
-    if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
-    {
-        printf("airspeed ");    // airspeed nan?
-    }
+    // if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
+    // {
+    //     printf("airspeed ");    // airspeed nan? primeiro é este
+    // }
     Vector3f F_aero;
     Matrix3f Ra2b;
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
