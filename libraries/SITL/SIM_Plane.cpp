@@ -421,7 +421,7 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     }
 
     float pdyn = 0.5*rho*pow(airspeed,2);
-    printf("pdyn %f\n", pdyn);
+    printf("airspeed %f\n", airspeed);
     Vector3f F_aero;
     Matrix3f Ra2b;
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
@@ -498,7 +498,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     // calculate angle of attack
     angle_of_attack = atan2f(velocity_air_bf.z, velocity_air_bf.x);
     beta = atan2f(velocity_air_bf.y,velocity_air_bf.x);
-    printf("airspeed SIM_Plane %f %f %f\n", velocity_air_bf.x, velocity_air_bf.y, velocity_air_bf.z);
+    // printf("airspeed SIM_Plane %f %f %f\n", velocity_air_bf.x, velocity_air_bf.y, velocity_air_bf.z);
 
     if (tailsitter || aerobatic) {
         /*
