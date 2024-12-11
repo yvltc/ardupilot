@@ -347,7 +347,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // código de motorizado
         u.z = u_0.z + du.z;
 
-        saturate(dtmin, dtmax, &u.z);
+        saturate(0, dtmax, &u.z);
     }
 
     // command filter
