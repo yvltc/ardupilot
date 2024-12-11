@@ -351,7 +351,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     }
 
     // command filter
-    sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+    // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
     
     // snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
