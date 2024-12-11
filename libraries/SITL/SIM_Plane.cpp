@@ -331,6 +331,8 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     const float c = coefficient.c;
     float q = gyro.y;
 
+    printf("dl dr %f %f\n", dl, dr);
+
     float C_L;
     if (is_zero(airspeed))
     {
