@@ -384,6 +384,7 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de, Vector3f force)
     const float C_n_r = coefficient.c_n_r;
     const float C_n_da = coefficient.c_n_deltaa;
     const float C_m_adot = coefficient.c_m_adot;  
+    Vector3f CGOffset = coefficient.CGOffset;
     
     float rho = air_density;
 
