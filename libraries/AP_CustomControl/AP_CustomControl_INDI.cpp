@@ -48,7 +48,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // saturation limits
     ddmax = 30*M_PI/180;
     dtmax = 1;
-    dtmin = 0.1;
+    dtmin = 0;
 
     // SOD - each vector is a row
     // SOD_A.a = {0.846153846153846,0.003076923076923,0};
@@ -101,24 +101,24 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     xSOD_u.z = 0;
 
     // command filter
-    // _CF_A = 0.9608;
-    // _CF_B = 0.0392;
-    // _CF_C = 0.9804;
-    // _CF_D = 0.0196;
+    _CF_A = 0.9608;
+    _CF_B = 0.0392;
+    _CF_C = 0.9804;
+    _CF_D = 0.0196;
 
-    // _CFu_A = 0.9950;
-    // _CFu_B = 0.0050;
-    // _CFu_C = 0.9975;
-    // _CFu_D = 0.0025;
-    _CF_A = 0;
-    _CF_B = 1;
-    _CF_C = 0.5;
-    _CF_D = 0.5;
+    _CFu_A = 0.9950;
+    _CFu_B = 0.0050;
+    _CFu_C = 0.9975;
+    _CFu_D = 0.0025;
+    // _CF_A = 0;
+    // _CF_B = 1;
+    // _CF_C = 0.5;
+    // _CF_D = 0.5;
 
-    _CFu_A = 0.8182;
-    _CFu_B = 0.1818;
-    _CFu_C = 0.9091;
-    _CFu_D = 0.09091;
+    // _CFu_A = 0.8182;
+    // _CFu_B = 0.1818;
+    // _CFu_C = 0.9091;
+    // _CFu_D = 0.09091;
 
     // initial values for CF state vectors
     xCF.x = 0;
@@ -179,7 +179,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return u_0[0]*18000/M_PI;
+    return -u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
@@ -196,7 +196,7 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return u_0[1]*18000/M_PI;
+    return -u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -240,14 +240,14 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         invG.a = {-397.6476,397.6476,-6.1354};
         invG.b = {-47.4484,-47.4484,-0.0598};
         invG.c = {0.4008,0.4008,6.2293};
-        Kff = 120;
-        Ktt = 75;
-        Kp = 65;
-        Kq = 14;
-        // Kff = 100;
-        // Ktt = 300;
-        // Kp = 100;
-        // Kq = 1500;
+        // Kff = 120;
+        // Ktt = 75;
+        // Kp = 65;
+        // Kq = 14;
+        Kff = 100;
+        Ktt = 300;
+        Kp = 100;
+        Kq = 1500;
         lambda = 0.3;
     }
 
@@ -347,7 +347,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // código de motorizado
         u.z = u_0.z + du.z;
 
-        saturate(0, dtmax, &u.z);
+        saturate(dtmin, dtmax, &u.z);
     }
 
     // command filter
