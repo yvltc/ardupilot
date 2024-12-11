@@ -331,8 +331,15 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     const float c = coefficient.c;
     float q = gyro.y;
 
-    double C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
-
+    float C_L;
+    if (is_zero(airspeed))
+    {
+        C_L = C_L_O + C_L_a*alpha + C_L_dd*(dl+dr);
+    } else 
+    { 
+        C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
+    }
+    
 	return C_L;
 }
 
@@ -415,8 +422,8 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     float r = gyro.z;
 
 	//request lift and drag coefficients from the corresponding functions
-	// float C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
-    float C_L = liftCoeff(alpha);
+	float C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
+    // float C_L = liftCoeff(alpha);
 	float C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
     float C_Y;
     if (is_zero(airspeed)) {
