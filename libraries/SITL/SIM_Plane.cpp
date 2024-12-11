@@ -331,7 +331,8 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     const float c = coefficient.c;
     float q = gyro.y;
 
-    printf("dl dr %f %f\n", dl, dr);
+    //printf("dl dr %f %f\n", dl, dr);
+    printf("CLdd %f\n", C_L_dd);
 
     float C_L;
     if (is_zero(airspeed))
@@ -470,9 +471,9 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         // the minus does away with the need for RC2_REVERSED=-1
         elevator = -(ch2+ch1)/2.0f;
 
-        // if (custom_dynamics) {
-        //     elevator = (ch2+ch1)/2.0f;
-        // }
+        if (custom_dynamics) {
+            elevator = (ch2+ch1)/2.0f;
+        }
 
         // assume no rudder
         rudder = 0;

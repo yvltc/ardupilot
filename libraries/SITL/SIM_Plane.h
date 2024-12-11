@@ -78,7 +78,7 @@ protected:
         float c_m_a = -0.7;
         float c_m_q = -20;
         float c_m_deltae = 1.0;
-        float c_m_adot;
+        float c_m_adot = 0.4897;
         float c_n_0 = 0;
         float c_n_b = 0.25;
         float c_n_p = 0.022;
