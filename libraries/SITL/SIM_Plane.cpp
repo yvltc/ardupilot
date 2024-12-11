@@ -365,7 +365,7 @@ float Plane::CustomDynamics_dragCoeff(float alpha, float dl, float dr)
 	return C_D;
 }
 
-Vector3f Plane::CustomDynamics_getTorque(float da, float de)
+Vector3f Plane::CustomDynamics_getTorque(float da, float de, Vector3f force)
 {
     const float alpha = angle_of_attack;
     const float s = coefficient.s;
@@ -407,6 +407,12 @@ Vector3f Plane::CustomDynamics_getTorque(float da, float de)
 
         M_aero = Vector3f(pdyn*s*b*C_l, pdyn*s*c*C_m, pdyn*s*b*C_n);
     }
+
+    // Add torque to force misalignment with CG
+	// r x F, where r is the distance from CoG to CoL
+	M_aero.x +=  CGOffset.y * force.z - CGOffset.z * force.y;
+	M_aero.y += -CGOffset.x * force.z + CGOffset.z * force.x;
+	M_aero.z += -CGOffset.y * force.x + CGOffset.x * force.y;
     
     return M_aero;
 }
@@ -534,7 +540,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         //printf("Custom dynamics working");
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
         // force = getForce(aileron, elevator, rudder);
-        rot_accel = CustomDynamics_getTorque(aileron, elevator);
+        rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
         
     } else {
         force = getForce(aileron, elevator, rudder);

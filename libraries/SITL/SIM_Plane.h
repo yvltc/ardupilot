@@ -130,7 +130,7 @@ protected:
     Vector3f getTorque(float inputAileron, float inputElevator, float inputRudder, float inputThrust, const Vector3f &force) const;
     void calculate_forces(const struct sitl_input &input, Vector3f &rot_accel);
 
-    Vector3f CustomDynamics_getTorque(float da, float de);
+    Vector3f CustomDynamics_getTorque(float da, float de, Vector3f force);
     Vector3f CustomDynamics_getForce(float dl, float dr);
     float CustomDynamics_dragCoeff(float alpha, float dl, float dr);
     float CustomDynamics_liftCoeff (float alpha, float dl, float dr);
