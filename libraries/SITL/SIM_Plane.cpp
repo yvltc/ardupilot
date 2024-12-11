@@ -327,7 +327,8 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     const float C_L_0 = coefficient.c_lift_0;
     const float C_L_a = coefficient.c_lift_a;
     const float C_L_q = coefficient.c_lift_q;
-    const float C_L_dd = coefficient.c_lift_deltad;
+    //const float C_L_dd = coefficient.c_lift_deltad;
+    const float C_L_dd = 0.5*coefficient.c_lift_deltae;
     const float c = coefficient.c;
     float q = gyro.y;
 
