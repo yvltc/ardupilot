@@ -334,7 +334,7 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     float C_L;
     if (is_zero(airspeed))
     {
-        C_L = C_L_O + C_L_a*alpha + C_L_dd*(dl+dr);
+        C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr);
     } else 
     { 
         C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
