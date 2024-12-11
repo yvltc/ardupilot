@@ -179,7 +179,7 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return -u_0[0]*18000/M_PI;
+    return u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
@@ -196,7 +196,7 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return -u_0[1]*18000/M_PI;
+    return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -347,11 +347,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // código de motorizado
         u.z = u_0.z + du.z;
 
-        // saturate(0, dtmax, &u.z);
+        saturate(0, dtmax, &u.z);
     }
 
     // command filter
-    // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+    sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
     
     // snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
