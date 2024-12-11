@@ -54,6 +54,7 @@ Plane::Plane(const char *frame_str) :
     }
     if (strstr(frame_str, "-elevon")) {
         elevons = true;
+        custom_dynamics = true;
     } else if (strstr(frame_str, "-vtail")) {
         vtail = true;
     } else if (strstr(frame_str, "-dspoilers")) {
@@ -333,7 +334,6 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     float q = gyro.y;
 
     //printf("dl dr %f %f\n", dl, dr);
-    printf("CLdd %f\n", C_L_dd);
 
     float C_L;
     if (is_zero(airspeed))
