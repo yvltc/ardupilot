@@ -324,7 +324,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
-    snprintf(buffer, sizeof(buffer), "p q r: %.4f %.4f %.4f", angular_rates.x, angular_rates.y, angular_rates.z);
+    snprintf(buffer, sizeof(buffer), "p q r: %.4f %.4f %.4f", p_dot, q_dot, Vt_dot);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
