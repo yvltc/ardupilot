@@ -333,6 +333,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
 
+    snprintf(buffer, sizeof(buffer), "du: %.4f %.4f %.4f", du.x*180/M_PI, du.y*180/M_PI, du.z*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "u: %.4f %.4f %.4f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
 
@@ -349,6 +354,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         saturate(dtmin, dtmax, &u.z);
     }
 
+    
     // command filter
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
@@ -360,8 +366,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_0.y = u.y;
     u_0.z = u.z;
 
-    snprintf(buffer, sizeof(buffer), "du: %.4f %.4f %.4f", du.x*180/M_PI, du.y*180/M_PI, du.z*100);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    
 
 }
 
