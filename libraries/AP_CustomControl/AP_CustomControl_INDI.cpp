@@ -301,7 +301,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float arspd_target = _tecs.get_TAS_demand();
 
     //debug
-    // char buffer[80];  // Create a buffer to hold the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
     // roll_target = 3000;
     // pitch_target = 0;
     // arspd_target = 20;
@@ -324,8 +324,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
-    // snprintf(buffer, sizeof(buffer), "roll error, niu: %.4f %.4f", error.x, niu.x);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "p q r: %.4f %.4f %.4f", angular_rates.x, angular_rates.y, angular_rates.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda*(niu.x - p_dot) + invG.b.y*lambda*(niu.y - q_dot) + invG.b.z*lambda*(niu.z - Vt_dot);
