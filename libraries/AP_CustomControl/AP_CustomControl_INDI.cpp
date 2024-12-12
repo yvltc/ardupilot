@@ -333,7 +333,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
 
-    snprintf(buffer, sizeof(buffer), "niu: %.4f %.4f %.4f", niu.x*180/M_PI, niu.y*180/M_PI, niu.z*100);
+    snprintf(buffer, sizeof(buffer), "target: %.4f %.4f %.4f", roll_target*M_PI/18000, pitch_target*M_PI/18000, arspd_target);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "error: %.4f %.4f %.4f", error.x*180/M_PI, error.y*180/M_PI, error.z*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "niu: %.4f %.4f %.4f", niu.x, niu.y, niu.z);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     snprintf(buffer, sizeof(buffer), "du: %.4f %.4f %.4f", du.x*180/M_PI, du.y*180/M_PI, du.z*100);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
