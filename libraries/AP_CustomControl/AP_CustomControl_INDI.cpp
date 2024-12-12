@@ -324,8 +324,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
-    snprintf(buffer, sizeof(buffer), "roll pitch airspeed target: %.4f %.4f %.4f", roll_target*M_PI/180, pitch_target*M_PI/180, arspd_target);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    
 
     du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda*(niu.x - p_dot) + invG.b.y*lambda*(niu.y - q_dot) + invG.b.z*lambda*(niu.z - Vt_dot);
@@ -361,7 +360,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_0.y = u.y;
     u_0.z = u.z;
 
-    
+    snprintf(buffer, sizeof(buffer), "u_0: %.4f %.4f %.4f", u_0*M_PI/180, u_0*M_PI/180, u_0);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
 }
 
