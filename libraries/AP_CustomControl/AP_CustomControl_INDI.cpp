@@ -360,7 +360,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_0.y = u.y;
     u_0.z = u.z;
 
-    snprintf(buffer, sizeof(buffer), "u_0: %.4f %.4f %.4f", u_0.x*M_PI/180, u_0.y*M_PI/180, u_0.z);
+    snprintf(buffer, sizeof(buffer), "u_0: %.4f %.4f %.4f", u_0.x*180/M_PI, u_0.y*180/M_PI, u_0.z*100);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
 }
