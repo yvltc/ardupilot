@@ -282,6 +282,13 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     aux.y = 0;
     aux.z = 0;
 
+    snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
     aux.x = angular_rates[0];       // p
     sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
     p_dot = SOD_out[0];
@@ -324,21 +331,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
-    
-    // du mal calculado
     du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda*(niu.x - p_dot) + invG.b.y*lambda*(niu.y - q_dot) + invG.b.z*lambda*(niu.z - Vt_dot);
     du.z = invG.c.x*lambda*(niu.x - p_dot) + invG.c.y*lambda*(niu.y - q_dot) + invG.c.z*lambda*(niu.z - Vt_dot);
 
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
-
-    snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target*M_PI/18000, pitch_target*M_PI/18000, arspd_target);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
