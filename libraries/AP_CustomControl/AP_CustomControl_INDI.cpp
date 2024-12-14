@@ -281,7 +281,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     Vector3f aux;
     aux.y = 0;
     aux.z = 0;
-
+    
+    char buffer[80];  // Create a buffer to hold the formatted message
     snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -308,7 +309,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float arspd_target = _tecs.get_TAS_demand();
 
     //debug
-    char buffer[80];  // Create a buffer to hold the formatted message
+    
     // roll_target = 3000;
     // pitch_target = 0;
     // arspd_target = 20;
