@@ -374,10 +374,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // código de motorizado
         u.z = u_0.z + du.z;
 
+        saturate(dtmin, dtmax, &u.z);
+
         snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
         gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-
-        saturate(dtmin, dtmax, &u.z);
+        snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     }
 
     
