@@ -62,8 +62,8 @@ Plane::Plane(const char *frame_str) :
     } else if (strstr(frame_str, "-flyingwing")) {
         custom_dynamics = false;
         elevons = true;
-        // mass = 1.2650;
-        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        mass = 1.2650;
+        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
         // coefficient.s = 0.44;
         // coefficient.b = 1.55;
