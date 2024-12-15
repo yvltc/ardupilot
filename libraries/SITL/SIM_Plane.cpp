@@ -91,11 +91,11 @@ Plane::Plane(const char *frame_str) :
         // // float coefficient.c_l_deltaa = 0.25;
         // // float coefficient.c_l_deltar = -0.037;
         // Cm causa problemas!
-        coefficient.c_m_0 = -0.0148;       
+        // coefficient.c_m_0 = -0.0148;       
         coefficient.c_m_a = 0.0718;
-        coefficient.c_m_q = -2.4487;
-        coefficient.c_m_deltae = -0.0836;
-        coefficient.c_m_adot = -0.4897;
+        // coefficient.c_m_q = -2.4487;
+        // coefficient.c_m_deltae = -0.0836;
+        // coefficient.c_m_adot = -0.4897;
         // Cn também não é particularmente bom com os outros mas aguenta-se sozinho
         // coefficient.c_n_0 = 0;
         // coefficient.c_n_b = 0.0390;
@@ -106,6 +106,7 @@ Plane::Plane(const char *frame_str) :
         // float coefficient.deltaa_max = 0.3491;
         // float coefficient.deltae_max = 0.3491;
         // float coefficient.deltar_max = 0.3491;
+        // CGoffset mau
         // coefficient.CGOffset = {0.1260, 0, 0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
