@@ -68,7 +68,7 @@ Plane::Plane(const char *frame_str) :
         coefficient.s = 0.44;
         coefficient.b = 1.55;
         coefficient.c = 0.2839;
-        // coefficient.c_lift_0 = 0.2050;
+        coefficient.c_lift_0 = 0.2050;
         coefficient.c_lift_deltae = 0.3993;
         coefficient.c_lift_a = 3.9934;
         // coefficient.c_lift_q = 3.1851;
@@ -78,10 +78,10 @@ Plane::Plane(const char *frame_str) :
         // // float coefficient.c_drag_q = 0;
         coefficient.c_drag_deltae = 0.0024;
         coefficient.c_drag_p = 0.0017;        
-        // coefficient.c_y_0 = 0;
-        // coefficient.c_y_b = -0.0025;
-        // coefficient.c_y_p = 0.2620;
-        // coefficient.c_y_r = -0.0673;
+        coefficient.c_y_0 = 0;
+        coefficient.c_y_b = -0.0025;
+        coefficient.c_y_p = 0.2620;
+        coefficient.c_y_r = -0.0673;
         // // float coefficient.c_y_deltaa = 0;
         // // float coefficient.c_y_deltar = -0.2;
         // coefficient.c_l_0 = 0;
