@@ -104,7 +104,7 @@ Plane::Plane(const char *frame_str) :
         // float coefficient.deltaa_max = 0.3491;
         // float coefficient.deltae_max = 0.3491;
         // float coefficient.deltar_max = 0.3491;
-        coefficient.CGOffset = {0.1260, 0, 0.0136};
+        // coefficient.CGOffset = {0.1260, 0, 0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
         reverse_elevator_rudder = true;
