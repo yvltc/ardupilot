@@ -361,8 +361,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
-    saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
-    saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
+    // saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
+    // saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
 
     if (is_gliding)
     {
@@ -374,10 +374,17 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // código de motorizado
         u.z = u_0.z + du.z;
 
-        saturate(dtmin, dtmax, &u.z);
-
+        snprintf(buffer, sizeof(buffer), "u_0: %.6f %.6f %.6f", u_0.x, u_0.y, u_0.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
         snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
         gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x, u.y, u.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
+        saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
+        saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
+        saturate(dtmin, dtmax, &u.z);
+
         snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
         gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     }
@@ -385,7 +392,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     // command filter
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
-
+    // snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     
     // snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
