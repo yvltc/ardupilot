@@ -283,12 +283,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     aux.z = 0;
     
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     aux.x = angular_rates[0];       // p
     sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
@@ -350,10 +350,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
@@ -373,6 +373,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     {
         // código de motorizado
         u.z = u_0.z + du.z;
+
+        snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
         saturate(dtmin, dtmax, &u.z);
     }
