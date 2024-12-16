@@ -98,8 +98,8 @@ Plane::Plane(const char *frame_str) :
         // coefficient.c_m_adot = -0.4897;
         // Cn também não é particularmente bom com os outros mas aguenta-se sozinho
         coefficient.c_n_0 = 0;
-        coefficient.c_n_b = 0.0390;
-        // coefficient.c_n_p = -0.1890;
+        // coefficient.c_n_b = 0.0390;
+        coefficient.c_n_p = -0.1890;
         // coefficient.c_n_r = 0.0028;
         // coefficient.c_n_deltaa = 0.0004195;      // não está bom
         // float coefficient.c_n_deltar = 0.1;
