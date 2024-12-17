@@ -97,11 +97,11 @@ Plane::Plane(const char *frame_str) :
         // coefficient.c_m_deltae = -0.0836;       // não está bom
         // coefficient.c_m_adot = -0.4897;
         // Cn também não é particularmente bom com os outros mas aguenta-se sozinho
-        coefficient.c_n_0 = 0;
-        coefficient.c_n_b = 0.0390;
-        coefficient.c_n_p = -0.1890;
-        coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
-        coefficient.c_n_deltaa = 0.0004195;      
+        // coefficient.c_n_0 = 0;
+        // coefficient.c_n_b = 0.0390;
+        // coefficient.c_n_p = -0.1890;
+        // coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
+        // coefficient.c_n_deltaa = 0.0004195;      
         // float coefficient.c_n_deltar = 0.1;
         // float coefficient.deltaa_max = 0.3491;
         // float coefficient.deltae_max = 0.3491;
@@ -436,30 +436,31 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     float r = gyro.z;
 
 	//request lift and drag coefficients from the corresponding functions
-	float C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
-    // float C_L = liftCoeff(alpha);
-	float C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
+	float C_L;
+	float C_D;
     float C_Y;
-    if (is_zero(airspeed)) {
-        C_Y = 0;
-    } else {
-        C_Y = C_Y_b*beta + (C_Y_p*p + C_Y_r*r)*b/(2*airspeed);
-    }
 
-    float pdyn = 0.5*rho*pow(airspeed,2);
-    // if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
-    // {
-    //     printf("airspeed ");    // airspeed nan? primeiro é este
-    // }
     Vector3f F_aero;
+
     Matrix3f Ra2b;
     Ra2b.a = {cos(alpha)*cos(beta), -cos(alpha)*sin(beta) , -sin(alpha)};
     Ra2b.b = {sin(beta), cos(beta), 0};
     Ra2b.c = {sin(alpha)*cos(beta), -sin(alpha)*sin(beta), cos(alpha)};
-    Vector3f force_windaxis = {-pdyn*s*C_D, pdyn*s*C_Y, -pdyn*s*C_L};
 
-    F_aero = Ra2b*force_windaxis;
-    //printf("SIM_Plane force_windaxis %f %f %f\n", force_windaxis.x, force_windaxis.y, force_windaxis.z);
+    float pdyn = 0.5*rho*pow(airspeed,2);
+
+    if (is_zero(airspeed)) {
+        F_aero = {0, 0, 0}
+    } else {
+        C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
+        C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
+        C_Y = C_Y_b*beta + (C_Y_p*p + C_Y_r*r)*b/(2*airspeed);
+
+        Vector3f force_windaxis = {-pdyn*s*C_D, pdyn*s*C_Y, -pdyn*s*C_L};
+
+        F_aero = Ra2b*force_windaxis;
+    }
+    
     return F_aero;
 }
 
