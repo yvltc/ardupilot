@@ -450,7 +450,7 @@ Vector3f Plane::CustomDynamics_getForce(float dl, float dr)
     float pdyn = 0.5*rho*pow(airspeed,2);
 
     if (is_zero(airspeed)) {
-        F_aero = {0, 0, 0}
+        F_aero = {0, 0, 0};
     } else {
         C_L = CustomDynamics_liftCoeff(alpha, dl, dr);
         C_D = CustomDynamics_dragCoeff(alpha, dl, dr);
