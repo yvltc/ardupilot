@@ -339,13 +339,7 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     //printf("dl dr %f %f\n", dl, dr);
 
     float C_L;
-    if (is_zero(airspeed))
-    {
-        C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr);
-    } else 
-    { 
-        C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
-    }
+    C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
     
 	return C_L;
 }
@@ -543,8 +537,10 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (custom_dynamics) {
         //printf("Custom dynamics working");
+        force = getForce(aileron, elevator, rudder);
+        printf("Force SITL: %f %f %f", force.x, force.y, force.z);
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
-        // force = getForce(aileron, elevator, rudder);
+        printf("Force custom: %f %f %f", force.x, force.y, force.z);
         rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
         
     } else {
