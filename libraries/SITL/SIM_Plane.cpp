@@ -167,7 +167,7 @@ float Plane::liftCoeff(float alpha) const
 	double flatPlate = sigmoid*(2*copysign(1,alpha)*pow(sin(alpha),2)*cos(alpha)); //Lift beyond stall
 
 	float result  = linear+flatPlate;
-    printf("liftCoeff SITL: %f\n", result);
+    // printf("liftCoeff SITL: %f\n", result);
 	return result;
 }
 
@@ -183,6 +183,7 @@ float Plane::dragCoeff(float alpha) const
 	double AR = pow(b,2)/s;
 	double c_drag_a = c_drag_p + pow(c_lift_0+c_lift_a0*alpha,2)/(M_PI*oswald*AR);
 
+    printf("dragCoeff SITL: %f\n", c_drag_a);
 	return c_drag_a;
 }
 
@@ -332,7 +333,7 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     float C_L;
     C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
     
-    printf("liftCoeff custom: %f\n", C_L);
+    // printf("liftCoeff custom: %f\n", C_L);
 	return C_L;
 }
 
@@ -351,6 +352,7 @@ float Plane::CustomDynamics_dragCoeff(float alpha, float dl, float dr)
     double C_D_dd = C_L*C_L_de/(M_PI*oswald*AR);
 	double C_D = C_D_0 + pow(C_L, 2)/(M_PI*oswald*AR) + C_D_dd*(abs(dl) + abs(dr));
 
+    printf("dragCoeff custom: %f\n", C_D);
 	return C_D;
 }
 
