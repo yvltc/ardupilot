@@ -60,36 +60,30 @@ Plane::Plane(const char *frame_str) :
     } else if (strstr(frame_str, "-dspoilers")) {
         dspoilers = true;
     } else if (strstr(frame_str, "-flyingwing")) {
-        custom_dynamics = true;
+        custom_dynamics = false;
         elevons = true;
-        mass = 1.2650;
-        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        // mass = 1.2650;
+        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
-        coefficient.s = 0.44;
-        coefficient.b = 1.55;
-        coefficient.c = 0.2839;
-        coefficient.c_lift_0 = 0.2050;
-        coefficient.c_lift_deltae = 0.3993;
-        coefficient.c_lift_a = 3.9934;
-        coefficient.c_lift_q = 3.1851;
-        // // float coefficient.mcoeff = 50;
-        coefficient.oswald = 0.9;
-        coefficient.alpha_stall = 0.2618;
-        // // float coefficient.c_drag_q = 0;
-        coefficient.c_drag_deltae = 0.0024;
-        coefficient.c_drag_p = 0.0017;        
-        coefficient.c_y_0 = 0;
-        coefficient.c_y_b = -0.0025;
-        coefficient.c_y_p = 0.2620;
-        coefficient.c_y_r = -0.0673;
-        // // float coefficient.c_y_deltaa = 0;
-        // // float coefficient.c_y_deltar = -0.2;
-        coefficient.c_l_0 = 0;
-        coefficient.c_l_p = -0.4506;
-        coefficient.c_l_b = -0.1604;
-        coefficient.c_l_r = 0.3107;
-        // // float coefficient.c_l_deltaa = 0.25;
-        // // float coefficient.c_l_deltar = -0.037;
+        // coefficient.s = 0.44;
+        // coefficient.b = 1.55;
+        // coefficient.c = 0.2839;
+        // coefficient.c_lift_0 = 0.2050;
+        // coefficient.c_lift_deltae = 0.3993;
+        // coefficient.c_lift_a = 3.9934;
+        // coefficient.c_lift_q = 3.1851;
+        // coefficient.oswald = 0.9;
+        // coefficient.alpha_stall = 0.2618;
+        // coefficient.c_drag_deltae = 0.0024;
+        // coefficient.c_drag_p = 0.0017;        
+        // coefficient.c_y_0 = 0;
+        // coefficient.c_y_b = -0.0025;
+        // coefficient.c_y_p = 0.2620;
+        // coefficient.c_y_r = -0.0673;
+        // coefficient.c_l_0 = 0;
+        // coefficient.c_l_p = -0.4506;
+        // coefficient.c_l_b = -0.1604;
+        // coefficient.c_l_r = 0.3107;
         // Cm causa problemas!
         // coefficient.c_m_0 = -0.0148;       
         // coefficient.c_m_a = 0.0718;
@@ -102,12 +96,8 @@ Plane::Plane(const char *frame_str) :
         // coefficient.c_n_p = -0.1890;
         // coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
         // coefficient.c_n_deltaa = 0.0004195;      
-        // float coefficient.c_n_deltar = 0.1;
-        // float coefficient.deltaa_max = 0.3491;
-        // float coefficient.deltae_max = 0.3491;
-        // float coefficient.deltar_max = 0.3491;
-        // CGoffset mau
-        coefficient.CGOffset = {-0.1260, 0, -0.0136};
+        // CGoffset mau - troquei o sinal
+        // coefficient.CGOffset = {-0.1260, 0, -0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
         reverse_elevator_rudder = true;
@@ -542,9 +532,9 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
         // printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
         rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
-        printf("rot_accel SITL: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
+        // printf("rot_accel SITL: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
-        printf("rot_accel custom: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
+        // printf("rot_accel custom: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         
     } else {
         force = getForce(aileron, elevator, rudder);
