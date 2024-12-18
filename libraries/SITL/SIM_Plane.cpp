@@ -183,7 +183,7 @@ float Plane::dragCoeff(float alpha) const
 	double AR = pow(b,2)/s;
 	double c_drag_a = c_drag_p + pow(c_lift_0+c_lift_a0*alpha,2)/(M_PI*oswald*AR);
 
-    printf("dragCoeff SITL: %f\n", c_drag_a);
+    // printf("dragCoeff SITL: %f\n", c_drag_a);
 	return c_drag_a;
 }
 
@@ -352,7 +352,7 @@ float Plane::CustomDynamics_dragCoeff(float alpha, float dl, float dr)
     double C_D_dd = C_L*C_L_de/(M_PI*oswald*AR);
 	double C_D = C_D_0 + pow(C_L, 2)/(M_PI*oswald*AR) + C_D_dd*(abs(dl) + abs(dr));
 
-    printf("dragCoeff custom: %f\n", C_D);
+    // printf("dragCoeff custom: %f\n", C_D);
 	return C_D;
 }
 
@@ -532,9 +532,9 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     if (custom_dynamics) {
         //printf("Custom dynamics working");
         force = getForce(aileron, elevator, rudder);
-        // printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
+        printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
-        // printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
+        printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
         // rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
         // printf("rot_accel SITL: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
