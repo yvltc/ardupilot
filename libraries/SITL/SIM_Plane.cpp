@@ -471,9 +471,9 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         // the minus does away with the need for RC2_REVERSED=-1
         elevator = -(ch2+ch1)/2.0f;
 
-        if (custom_dynamics) {
-            elevator = (ch2+ch1)/2.0f;
-        }
+        // if (custom_dynamics) {
+        //     elevator = (ch2+ch1)/2.0f;
+        // }
 
         // assume no rudder
         rudder = 0;
