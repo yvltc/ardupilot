@@ -467,9 +467,11 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         // fake an elevon plane
         float ch1 = aileron;        // confirmar se ch1 ch2 têm o aileron elevator ou elevonL elevonR -> ch1 dL, ch2 dR
         float ch2 = elevator;
+        printf("ch1 ch2: %f %f\n", ch1, ch2);
         aileron  = (ch2-ch1)/2.0f;  
         // the minus does away with the need for RC2_REVERSED=-1
         elevator = -(ch2+ch1)/2.0f;
+        printf("da de: %f %f\n", aileron, elevator);
 
         // if (custom_dynamics) {
         //     elevator = (ch2+ch1)/2.0f;
@@ -532,9 +534,9 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     if (custom_dynamics) {
         //printf("Custom dynamics working");
         force = getForce(aileron, elevator, rudder);
-        printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
+        // printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
-        printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
+        // printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
         // rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
         // printf("rot_accel SITL: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
