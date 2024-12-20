@@ -62,28 +62,28 @@ Plane::Plane(const char *frame_str) :
     } else if (strstr(frame_str, "-flyingwing")) {
         custom_dynamics = true;
         elevons = true;
-        // mass = 1.2650;
-        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        mass = 1.2650;
+        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
-        // coefficient.s = 0.44;
-        // coefficient.b = 1.55;
-        // coefficient.c = 0.2839;
-        // coefficient.c_lift_0 = 0.2050;
-        // coefficient.c_lift_deltae = 0.3993;
-        // coefficient.c_lift_a = 3.9934;
-        // coefficient.c_lift_q = 3.1851;
-        // coefficient.oswald = 0.9;
-        // coefficient.alpha_stall = 0.2618;
-        // coefficient.c_drag_deltae = 0.0024;
-        // coefficient.c_drag_p = 0.0017;        
-        // coefficient.c_y_0 = 0;
-        // coefficient.c_y_b = -0.0025;
-        // coefficient.c_y_p = 0.2620;
-        // coefficient.c_y_r = -0.0673;
-        // coefficient.c_l_0 = 0;
-        // coefficient.c_l_p = -0.4506;
-        // coefficient.c_l_b = -0.1604;
-        // coefficient.c_l_r = 0.3107;
+        coefficient.s = 0.44;
+        coefficient.b = 1.55;
+        coefficient.c = 0.2839;
+        coefficient.c_lift_0 = 0.2050;
+        coefficient.c_lift_deltae = 0.3993;
+        coefficient.c_lift_a = 3.9934;
+        coefficient.c_lift_q = 3.1851;
+        coefficient.oswald = 0.9;
+        coefficient.alpha_stall = 0.2618;
+        coefficient.c_drag_deltae = 0.0024;
+        coefficient.c_drag_p = 0.0017;        
+        coefficient.c_y_0 = 0;
+        coefficient.c_y_b = -0.0025;
+        coefficient.c_y_p = 0.2620;
+        coefficient.c_y_r = -0.0673;
+        coefficient.c_l_0 = 0;
+        coefficient.c_l_p = -0.4506;
+        coefficient.c_l_b = -0.1604;
+        coefficient.c_l_r = 0.3107;
         // Cm causa problemas!
         // coefficient.c_m_0 = -0.0148;       
         // coefficient.c_m_a = 0.0718;
@@ -97,7 +97,7 @@ Plane::Plane(const char *frame_str) :
         // coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
         // coefficient.c_n_deltaa = 0.0004195;      
         // CGoffset mau - troquei o sinal
-        // coefficient.CGOffset = {-0.1260, 0, -0.0136};
+        coefficient.CGOffset = {-0.1260, 0, -0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
         reverse_elevator_rudder = true;
@@ -467,11 +467,11 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         // fake an elevon plane
         float ch1 = aileron;        // confirmar se ch1 ch2 têm o aileron elevator ou elevonL elevonR -> ch1 dL, ch2 dR
         float ch2 = elevator;
-        printf("ch1 ch2: %f %f\n", ch1, ch2);
+        // printf("ch1 ch2: %f %f\n", ch1, ch2);
         aileron  = (ch2-ch1)/2.0f;  
         // the minus does away with the need for RC2_REVERSED=-1
         elevator = -(ch2+ch1)/2.0f;
-        printf("da de: %f %f\n", aileron, elevator);
+        // printf("da de: %f %f\n", aileron, elevator);
 
         // if (custom_dynamics) {
         //     elevator = (ch2+ch1)/2.0f;
