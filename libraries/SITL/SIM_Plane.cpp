@@ -85,11 +85,11 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_l_b = -0.1604;
         coefficient.c_l_r = 0.3107;
         // Cm causa problemas!
-        // coefficient.c_m_0 = -0.0148;       
-        // coefficient.c_m_a = 0.0718;
-        // coefficient.c_m_q = -2.4487;
-        // coefficient.c_m_deltae = -0.0836;       // não está bom
-        // coefficient.c_m_adot = -0.4897;
+        coefficient.c_m_0 = -0.0148;       
+        coefficient.c_m_a = 0.0718;
+        coefficient.c_m_q = -2.4487;
+        coefficient.c_m_deltae = -0.0836;       // não está bom
+        coefficient.c_m_adot = -0.4897;
         // Cn também não é particularmente bom com os outros mas aguenta-se sozinho
         // coefficient.c_n_0 = 0;
         // coefficient.c_n_b = 0.0390;
