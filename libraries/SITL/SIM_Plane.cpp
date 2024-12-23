@@ -88,14 +88,14 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_m_0 = 0.0148;       
         coefficient.c_m_a = -0.0718;
         coefficient.c_m_q = -2.4487;
-        coefficient.c_m_deltae = 0.0836;       // não está bom
+        coefficient.c_m_deltae = 0.0836;       
         coefficient.c_m_adot = -0.4897;
         // Cn também não é particularmente bom com os outros mas aguenta-se sozinho
-        // coefficient.c_n_0 = 0;
-        // coefficient.c_n_b = 0.0390;
-        // coefficient.c_n_p = -0.1890;
-        // coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
-        // coefficient.c_n_deltaa = 0.0004195;      
+        coefficient.c_n_0 = 0;
+        coefficient.c_n_b = 0.0390;
+        coefficient.c_n_p = -0.1890;
+        coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
+        coefficient.c_n_deltaa = 0.0004195;      
         // CGoffset mau - troquei o sinal
         coefficient.CGOffset = {-0.1260, 0, -0.0136};
     }
