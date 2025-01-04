@@ -93,7 +93,7 @@ Plane::Plane(const char *frame_str) :
         // Cn também não é particularmente bom com os outros mas aguenta-se sozinho
         coefficient.c_n_0 = 0;
         coefficient.c_n_b = 0.0390;
-        // coefficient.c_n_p = -0.1890;
+        coefficient.c_n_p = -0.1890;
         // coefficient.c_n_r = 0.0028;         // não está famoso mas aguenta-se
         // coefficient.c_n_deltaa = 0.0004195;      
         // CGoffset mau - troquei o sinal
