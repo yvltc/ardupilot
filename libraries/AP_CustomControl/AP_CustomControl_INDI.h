@@ -2,7 +2,7 @@
 
 #include "AP_CustomControl_Backend.h"
 #include <AP_HAL/AP_HAL.h>
-#include <AP_Math/AP_Math.h"
+#include <AP_Math/AP_Math.h>
 
 #ifndef CUSTOMCONTROL_INDI_ENABLED
     #define CUSTOMCONTROL_INDI_ENABLED AP_CUSTOMCONTROL_ENABLED
