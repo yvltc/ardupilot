@@ -5,6 +5,7 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_HAL/AP_HAL.h>
+#include <AP_Math/AP_Math.h>
 
 // table of user settable parameters
 const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
