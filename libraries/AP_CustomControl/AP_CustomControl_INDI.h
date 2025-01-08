@@ -75,10 +75,10 @@ protected:
 
     // valores a afinar
     float lambda;
-    float Kff;      // AP_Float?
+    // float Kff;      // AP_Float?
     // float Ktt;
     // float KVt;
-    // AP_Float Kff;
+    AP_Float Kff;
     AP_Float Ktt;
     AP_Float KVt;
     float Kp;
