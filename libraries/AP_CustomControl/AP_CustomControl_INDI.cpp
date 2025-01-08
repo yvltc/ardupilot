@@ -143,8 +143,10 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     lambda = 0.6;
     // Kff = 140;
     Kff.set(140);
-    Ktt = 50;
-    KVt = 10;
+    // Ktt = 50;
+    Ktt.set(50);
+    // KVt = 10;
+    KVt.set(10);
     Kp = 55;
     Kq = 10;
 }
@@ -246,7 +248,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         invG.c = {0.4008,0.4008,6.2293};
         // Kff = 120;
         Kff.set(120);
-        Ktt = 75;
+        // Ktt = 75;
+        Ktt.set(75);
         Kp = 65;
         Kq = 14;
         // Kff = 100;
