@@ -13,7 +13,8 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
     // @DisplayName: INDI param1
     // @Description: Dummy parameter for INDI custom controller backend
     // @User: Advanced
-    AP_GROUPINFO("INDI_KFF", 1, AP_CustomControl_INDI, Kff, AP_Float),
+    AP_GROUPINFO(Kff, "INDI_KFF", 1, AP_CustomControl_INDI, AP_Float),
+    // AP_GROUPINFO("INDI_KFF", 1, AP_CustomControl_INDI, Kff, AP_Float),
 
     // @Param: PARAM2
     // @DisplayName: INDI param2
