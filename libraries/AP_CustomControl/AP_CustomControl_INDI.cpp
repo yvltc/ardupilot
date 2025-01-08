@@ -27,7 +27,7 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
     // @User: Advanced
     // AP_GROUPINFO(KVt, "INDI_KVT", 3, AP_CustomControl_INDI, AP_Float),
 
-    AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
+    // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
     AP_GROUPEND
 };
