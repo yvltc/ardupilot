@@ -13,7 +13,7 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
     // @DisplayName: INDI param1
     // @Description: Dummy parameter for INDI custom controller backend
     // @User: Advanced
-    // AP_GROUPINFO(Kff, "INDI_KFF", 1, AP_CustomControl_INDI, AP_Float),
+    AP_GROUPINFO("INDI_KFF", 1, AP_CustomControl_INDI, Kff, 0.0f),
 
     // @Param: PARAM2
     // @DisplayName: INDI param2
@@ -143,8 +143,8 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
 
     // valores a afinar
     lambda = 0.6;
-    // Kff = 140;
-    Kff.set(140);
+    Kff = 140;
+    // Kff.set(140);
     // Ktt = 50;
     Ktt.set(50);
     // KVt = 10;
@@ -248,8 +248,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         invG.a = {-397.6476,397.6476,-6.1354};
         invG.b = {-47.4484,-47.4484,-0.0598};
         invG.c = {0.4008,0.4008,6.2293};
-        // Kff = 120;
-        Kff.set(120);
+        Kff = 120;
+        // Kff.set(120);
         // Ktt = 75;
         Ktt.set(75);
         Kp = 65;
