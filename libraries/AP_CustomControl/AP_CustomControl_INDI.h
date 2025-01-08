@@ -27,7 +27,7 @@ public:
     void update(float roll_target, float pitch_target) override;
 
     // user settable parameters
-    // static const struct AP_Param::GroupInfo var_info[];
+    static const struct AP_Param::GroupInfo var_info[];
 
 protected:
     // declare parameters here
@@ -91,6 +91,8 @@ protected:
     AP_PitchController *_pitchController;
     AP_RollController *_rollController;
     AP_YawController *_yawController;
+
+    AP_Float param1;
 };
 
 #endif
