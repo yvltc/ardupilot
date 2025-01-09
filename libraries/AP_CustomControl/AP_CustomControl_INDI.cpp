@@ -410,8 +410,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // command filter
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
-    // snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "x_next_CF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     
