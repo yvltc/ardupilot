@@ -27,7 +27,7 @@ public:
     void update(float roll_target, float pitch_target) override;
 
     // user settable parameters
-    static const struct AP_Param::GroupInfo var_info[];
+    // static const struct AP_Param::GroupInfo var_info[];
 
 protected:
     // declare parameters here
@@ -75,12 +75,12 @@ protected:
 
     // valores a afinar
     float lambda;
-    // float Kff;      // AP_Float?
-    // float Ktt;
-    // float KVt;
-    AP_Float Kff;
-    AP_Float Ktt;
-    AP_Float KVt;
+    float Kff;      // AP_Float?
+    float Ktt;
+    float KVt;
+    // AP_Float Kff;
+    // AP_Float Ktt;
+    // AP_Float KVt;
     float Kp;
     float Kq;
 
