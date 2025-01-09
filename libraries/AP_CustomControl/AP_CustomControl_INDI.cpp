@@ -259,7 +259,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Ktt = 300;
         // Kp = 100;
         // Kq = 1500;
-        lambda = 0.6;
+        lambda = 0.1;
     }
 
     invert_G = invG.invert();
