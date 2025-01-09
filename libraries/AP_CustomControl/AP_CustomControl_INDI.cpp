@@ -246,9 +246,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     }
     else
     {
-        invG.a = {-397.6476,397.6476,-6.1354};
-        invG.b = {-47.4484,-47.4484,-0.0598};
-        invG.c = {0.4008,0.4008,6.2293};
+        // invG.a = {-397.6476,397.6476,-6.1354};
+        // invG.b = {-47.4484,-47.4484,-0.0598};
+        // invG.c = {0.4008,0.4008,6.2293};
+        invG.a = {788.1938,0,-8.0174};
+        invG.b = {0,-94.0491, -0.1493};
+        invG.c = {0,0.8085,8.1225};
         Kff = 123.3015;
         // Kff.set(120);
         Ktt = 78.2422;
@@ -259,7 +262,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Ktt = 300;
         // Kp = 100;
         // Kq = 1500;
-        lambda = 0.1;
+        lambda = 0.3;
     }
 
     invert_G = invG.invert();
