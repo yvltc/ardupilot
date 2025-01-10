@@ -9,7 +9,7 @@
 #include <iostream>
 
 // table of user settable parameters
-// const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
+const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 //     // @Param: INDI_KFF
 //     // @DisplayName: INDI param1
 //     // @Description: Dummy parameter for INDI custom controller backend
@@ -29,16 +29,16 @@
 //     // @User: Advanced
 //     // AP_GROUPINFO(KVt, "INDI_KVT", 3, AP_CustomControl_INDI, AP_Float),
 
-//     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
+    AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
-//     AP_GROUPEND
-// };
+    AP_GROUPEND
+};
 
 // initialize in the constructor
 AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_PitchController *pitchController, AP_RollController *rollController, AP_YawController *yawController, AP_AHRS &ahrs, AP_TECS &tecs, float dt) :
     AP_CustomControl_Backend(frontend, ahrs, tecs, dt)
 {
-    // AP_Param::setup_object_defaults(this, var_info);
+    AP_Param::setup_object_defaults(this, var_info);
 
     _dt = dt;
 
