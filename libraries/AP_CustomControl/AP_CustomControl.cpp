@@ -96,11 +96,11 @@ void AP_CustomControl::update(float roll_target, float pitch_target)
         yaw_out = _backend->get_yaw_out();
         Vt_out = _backend->get_Vt_out();
 
-        bool is_gliding = _tecs.get_is_gliding();
-        if(!is_gliding)
-        {
-            Vt_out = _backend->get_Vt_out();
-        }
+        // bool is_gliding = _tecs.get_is_gliding();
+        // if(!is_gliding)
+        // {
+        //     Vt_out = _backend->get_Vt_out();
+        // }
 
         servo_set(roll_out, pitch_out, yaw_out, Vt_out);
     }
