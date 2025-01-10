@@ -40,7 +40,7 @@ const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
     AP_GROUPINFO("_THR_MASK", 3, AP_CustomControl, _custom_controller_thr, 0),
 
     // parameters for INDI controller
-    AP_SUBGROUPVARPTR(_backend, "2_", 7, AP_CustomControl, _backend_var_info[2]),
+    AP_SUBGROUPVARPTR(_backend, "2_", 4, AP_CustomControl, _backend_var_info[2]),
     
     AP_GROUPEND
 };
