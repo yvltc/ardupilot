@@ -238,7 +238,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // cada vetor é uma linha
     // afinar valores depois
 
-    du.x = param1;
+    
 
     is_gliding = _tecs.get_is_gliding();
     if (is_gliding)
@@ -308,7 +308,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-
+    du.x = param1;
     aux.x = angular_rates[0];       // p
     sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
     p_dot = SOD_out[0];
