@@ -395,10 +395,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
         snprintf(buffer, sizeof(buffer), "u_0: %.6f %.6f %.6f", u_0.x, u_0.y, u_0.z);
         gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-        snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
-        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-        snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x, u.y, u.z);
-        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
+        // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x, u.y, u.z);
+        // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
@@ -455,7 +455,6 @@ void AP_CustomControl_INDI::reset(void)
     u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
     u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
     u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
-    printf("%f\n", u_0.z*100);
 }
 
 #endif
