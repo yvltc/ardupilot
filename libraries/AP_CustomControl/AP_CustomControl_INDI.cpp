@@ -238,6 +238,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // cada vetor é uma linha
     // afinar valores depois
 
+    du = param1;
+
     is_gliding = _tecs.get_is_gliding();
     if (is_gliding)
     {
