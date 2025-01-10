@@ -6,6 +6,7 @@
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Math/AP_Math.h>
+#include <iostream>
 
 // table of user settable parameters
 // const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
@@ -400,6 +401,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
         saturate(dtmin, dtmax, &u.z);
+        printf("estou aqui\n");
 
         // snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
         // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
