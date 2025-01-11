@@ -10,26 +10,31 @@
 
 // table of user settable parameters
 const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
-//     // @Param: INDI_KFF
-//     // @DisplayName: INDI param1
-//     // @Description: Dummy parameter for INDI custom controller backend
-//     // @User: Advanced
-//     AP_GROUPINFO(Kff, "INDI_KFF", 1, AP_CustomControl_INDI, AP_Float),
-//     // AP_GROUPINFO("INDI_KFF", 1, AP_CustomControl_INDI, Kff, AP_Float),
+    // @Param: INDI_KFF
+    // @DisplayName: INDI param1
+    // @Description: Dummy parameter for INDI custom controller backend
+    // @User: Advanced
+    AP_GROUPINFO("INDI_KFF", 1, AP_CustomControl_INDI, Kff, 123.3015),
 
-//     // @Param: PARAM2
-//     // @DisplayName: INDI param2
-//     // @Description: Dummy parameter for INDI custom controller backend
-//     // @User: Advanced
-//     // AP_GROUPINFO(Ktt, "INDI_KTT", 2, AP_CustomControl_INDI, AP_Float),
+    // @Param: PARAM2
+    // @DisplayName: INDI param2
+    // @Description: Dummy parameter for INDI custom controller backend
+    // @User: Advanced
+    AP_GROUPINFO("INDI_KTT", 2, AP_CustomControl_INDI, Ktt, 78.2422),
 
-//     // @Param: PARAM3
-//     // @DisplayName: INDI param3
-//     // @Description: Dummy parameter for INDI custom controller backend
-//     // @User: Advanced
-//     // AP_GROUPINFO(KVt, "INDI_KVT", 3, AP_CustomControl_INDI, AP_Float),
+    // @Param: PARAM3
+    // @DisplayName: INDI param3
+    // @Description: Dummy parameter for INDI custom controller backend
+    // @User: Advanced
+    AP_GROUPINFO("INDI_KVT", 3, AP_CustomControl_INDI, KVt, 6.2656),
 
-    AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
+    AP_GROUPINFO("INDI_KP", 4, AP_CustomControl_INDI, Kp, 75.5625),
+
+    AP_GROUPINFO("INDI_KQ", 5, AP_CustomControl_INDI, Kq, 8.8438),
+
+    AP_GROUPINFO("INDI_LL", 6, AP_CustomControl_INDI, lambda, 0.3),
+
+    // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
     AP_GROUPEND
 };
@@ -144,15 +149,15 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     CF_D.c = {0,0,_CFu_D};
 
     // valores a afinar
-    lambda = 0.6;
-    Kff = 140;
+    // lambda = 0.6;
+    // Kff = 140;
     // Kff.set(140);
-    Ktt = 50;
+    // Ktt = 50;
     // Ktt.set(50);
-    KVt = 6.2656;
+    // KVt = 6.2656;
     // KVt.set(10);
-    Kp = 55;
-    Kq = 10;
+    // Kp = 55;
+    // Kq = 10;
 }
 
 void AP_CustomControl_INDI::sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
@@ -257,9 +262,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // invG.a = {788.1938,0,-8.0174};
         // invG.b = {0,-94.0491, -0.1493};
         // invG.c = {0,0.8085,8.1225};
-        Kff = 123.3015;
+        // Kff = 123.3015;
         // Kff.set(120);
-        Ktt = 78.2422;
+        // Ktt = 78.2422;
         // Ktt.set(75);
         Kp = 75.5625;
         Kq = 8.8438;
@@ -267,7 +272,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Ktt = 300;
         // Kp = 100;
         // Kq = 1500;
-        lambda = 0.3;
+        // lambda = 0.3;
     }
 
     invert_G = invG.invert();

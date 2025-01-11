@@ -74,15 +74,18 @@ protected:
     Matrix3f CF_D;
 
     // valores a afinar
-    float lambda;
-    float Kff;      // AP_Float?
-    float Ktt;
-    float KVt;
-    // AP_Float Kff;
-    // AP_Float Ktt;
-    // AP_Float KVt;
-    float Kp;
-    float Kq;
+    // float lambda;
+    // float Kff;      // AP_Float?
+    // float Ktt;
+    // float KVt;
+    AP_Float Kff;
+    AP_Float Ktt;
+    AP_Float KVt;
+    AP_Float Kp;
+    AP_Float Kq;
+    AP_Float lambda;
+    // float Kp;
+    // float Kq;
 
     Matrix3f invG;
     
