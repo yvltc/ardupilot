@@ -357,9 +357,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     du.z = invG.c.x*lambda*(niu.x - p_dot) + invG.c.y*lambda*(niu.y - q_dot) + invG.c.z*lambda*(niu.z - Vt_dot);
 
     // test
-    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
-    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
-    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    // u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
+    // u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
+    // u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
 
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
