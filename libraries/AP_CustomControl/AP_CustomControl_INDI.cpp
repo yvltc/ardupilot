@@ -262,17 +262,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // invG.a = {788.1938,0,-8.0174};
         // invG.b = {0,-94.0491, -0.1493};
         // invG.c = {0,0.8085,8.1225};
-        // Kff = 123.3015;
-        // Kff.set(120);
-        // Ktt = 78.2422;
-        // Ktt.set(75);
-        // Kp = 75.5625;
-        // Kq = 8.8438;
-        // Kff = 100;
-        // Ktt = 300;
-        // Kp = 100;
-        // Kq = 1500;
-        // lambda = 0.3;
     }
 
     invert_G = invG.invert();
@@ -367,6 +356,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     du.y = invG.b.x*lambda*(niu.x - p_dot) + invG.b.y*lambda*(niu.y - q_dot) + invG.b.z*lambda*(niu.z - Vt_dot);
     du.z = invG.c.x*lambda*(niu.x - p_dot) + invG.c.y*lambda*(niu.y - q_dot) + invG.c.z*lambda*(niu.z - Vt_dot);
 
+    // test
+    u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
+    u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
 
@@ -402,24 +396,24 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
         // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
         // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-        snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x, u.y, u.z);
-        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x, u.y, u.z);
+        // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
         saturate(dtmin, dtmax, &u.z);
 
-        snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
-        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        // snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
+        // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     }
 
-    snprintf(buffer, sizeof(buffer), "xCF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "xCF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // command filter
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
-    snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "x_next_CF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     
