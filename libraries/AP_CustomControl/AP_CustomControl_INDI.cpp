@@ -270,6 +270,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float phi = _ahrs.get_roll();       // radians
     float theta = _ahrs.get_pitch();
     float Vt;
+
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
 
     if (!use_TAS)
@@ -295,14 +296,14 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     aux.y = 0;
     aux.z = 0;
     
-    // char buffer[80];  // Create a buffer to hold the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    du.x = param1;
+ 
     aux.x = angular_rates[0];       // p
     sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
     p_dot = SOD_out[0];
@@ -329,18 +330,13 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float arspd_target = _tecs.get_TAS_demand();
 
     //debug
-    
-    // roll_target = 3000;
-    // pitch_target = 0;
-    // arspd_target = 20;
-    // phi = 29*M_PI/180;
-    // theta = -4*M_PI/180;
-    // Vt = 19.8;
-    // float p = 1*M_PI/180;
-    // float q = 0.1*M_PI/180;
-    // p_dot = 0;
-    // q_dot = 0;
-    // Vt_dot = 0;
+    roll_target = 0;
+    pitch_target = -0.0015*18000/M_PI;
+    arspd_target = 20;
+    phi = 0.0035;
+    theta = -0.0012;
+    Vt = 20.1521;
+    angular_rates = {-0.0024, 0.0047, 20.1521};
 
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
@@ -366,18 +362,18 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     // snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target*M_PI/18000, pitch_target*M_PI/18000, arspd_target);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);

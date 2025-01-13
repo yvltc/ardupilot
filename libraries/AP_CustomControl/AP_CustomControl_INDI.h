@@ -95,7 +95,6 @@ protected:
     AP_RollController *_rollController;
     AP_YawController *_yawController;
 
-    AP_Float param1;
 };
 
 #endif
