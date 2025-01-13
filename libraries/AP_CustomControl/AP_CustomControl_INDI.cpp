@@ -243,7 +243,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // cada vetor é uma linha
     // afinar valores depois
 
-    
+    float arspd_target = _tecs.get_TAS_demand();
 
     is_gliding = _tecs.get_is_gliding();
     if (is_gliding)
@@ -295,7 +295,16 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     Vector3f aux;
     aux.y = 0;
     aux.z = 0;
-    
+
+    //debug
+    roll_target = 0;
+    pitch_target = -0.0015*18000/M_PI;
+    arspd_target = 20;
+    phi = -0.0108;
+    theta = -0.0189;
+    Vt = 19.9519;
+    angular_rates = {-0.3286, 0.2890, 19.9519};
+    u_0 = {0.0783, -0.2300, 0.0572};
     char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
@@ -325,19 +334,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
-
-    //arspd_target = _tecs.get_target_airspeed():
-    float arspd_target = _tecs.get_TAS_demand();
-
-    //debug
-    roll_target = 0;
-    pitch_target = -0.0015*18000/M_PI;
-    arspd_target = 20;
-    phi = -0.0108;
-    theta = -0.0189;
-    Vt = 19.9519;
-    angular_rates = {-0.3286, 0.2890, 19.9519};
-    u_0 = {0.0783, -0.2300, 0.0572};
 
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
