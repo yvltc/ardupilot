@@ -333,10 +333,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     roll_target = 0;
     pitch_target = -0.0015*18000/M_PI;
     arspd_target = 20;
-    phi = 0.0035;
-    theta = -0.0012;
-    Vt = 20.1521;
-    angular_rates = {-0.0024, 0.0047, 20.1521};
+    phi = -0.0108;
+    theta = -0.0189;
+    Vt = 19.9519;
+    angular_rates = {-0.3286, 0.2890, 19.9519};
+    u_0 = {0.0783, -0.2300, 0.0572};
 
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
