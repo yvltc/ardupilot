@@ -63,7 +63,7 @@ Plane::Plane(const char *frame_str) :
         custom_dynamics = true;
         elevons = true;
         mass = 1.2650;
-        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
         coefficient.s = 0.44;
         coefficient.b = 1.55;
@@ -533,7 +533,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (custom_dynamics) {
         //printf("Custom dynamics working");
-        force = getForce(aileron, elevator, rudder);
+        // force = getForce(aileron, elevator, rudder);
         // printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
         // printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
