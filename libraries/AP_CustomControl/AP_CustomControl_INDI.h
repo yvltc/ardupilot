@@ -97,9 +97,6 @@ protected:
 
     // PID
     Vector3f error_0;
-    float K_p;
-    float K_d;
-    float K_i;
 
 };
 

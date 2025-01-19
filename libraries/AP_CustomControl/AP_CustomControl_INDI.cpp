@@ -431,9 +431,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // PID
-    K_p = 1;
-    K_d = 1;
-    K_i = 1;
+    Vector3f K_p = {1,-0.11,1};
+    Vector3f K_d = {0.04,0.3,0};
+    Vector3f K_i = {0,0,0};
 
     Vector3f u_Kp;
     Vector3f u_Kd;
@@ -450,15 +450,15 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_i.y += 0.5*(error.y + error_0.y)*_dt;
     error_i.z += 0.5*(error.z + error_0.z)*_dt;
 
-    u_Kp.x = K_p*error.x;
-    u_Kd.x = K_d*error_d.x;
-    u_Ki.x = K_i*error_i.x;
-    u_Kp.y = K_p*error.y;
-    u_Kd.y = K_d*error_d.y;
-    u_Ki.y = K_i*error_i.y;
-    u_Kp.z = K_p*error.z;
-    u_Kd.z = K_d*error_d.z;
-    u_Ki.z = K_i*error_i.z;
+    u_Kp.x = K_p.x*error.x;
+    u_Kd.x = K_d.x*error_d.x;
+    u_Ki.x = K_i.x*error_i.x;
+    u_Kp.y = K_p.y*error.y;
+    u_Kd.y = K_d.y*error_d.y;
+    u_Ki.y = K_i.y*error_i.y;
+    u_Kp.z = K_p.z*error.z;
+    u_Kd.z = K_d.z*error_d.z;
+    u_Ki.z = K_i.z*error_i.z;
 
     u = u_Kp + u_Kd + u_Ki;
     u_0 = u;
