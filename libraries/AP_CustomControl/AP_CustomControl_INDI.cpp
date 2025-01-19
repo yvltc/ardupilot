@@ -163,6 +163,9 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // KVt.set(10);
     // Kp = 55;
     // Kq = 10;
+
+    // PID
+    error_0 = 0;
 }
 
 void AP_CustomControl_INDI::sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
@@ -427,6 +430,32 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // snprintf(buffer, sizeof(buffer), "u post-sat: %.4f %.4f %.4f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
+    // PID
+    K_p = 1;
+    K_d = 1;
+    K_i = 1;
+
+    Vector3f u_Kp;
+    Vector3f u_Kd;
+    Vector3f u_Ki;
+
+    Vector3f error_d;
+    Vector3f error_i;
+
+    error_d.x = (error.x - error_0.x)/_dt;
+    error_d.y = (error.y - error_0.y)/_dt;
+    error_d.z = (error.z - error_0.z)/_dt;
+
+    error_i.x += 0.5*(error.x + error_0.x)*_dt;
+    error_i.y += 0.5*(error.y + error_0.y)*_dt;
+    error_i.z += 0.5*(error.z + error_0.z)*_dt;
+
+    u_Kp = K_p*error;
+    u_Kd = K_d*error_d;
+    u_Ki = K_i*error_i;
+
+    u = u_Kp + u_Kd + u_Ki;
+    u_0 = u;
 }
 
 // reset controller to avoid build up on the ground

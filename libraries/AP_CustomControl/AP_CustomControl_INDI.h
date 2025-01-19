@@ -95,6 +95,12 @@ protected:
     AP_RollController *_rollController;
     AP_YawController *_yawController;
 
+    // PID
+    Vector3f error_0;
+    float K_p;
+    float K_d;
+    float K_i;
+
 };
 
 #endif
