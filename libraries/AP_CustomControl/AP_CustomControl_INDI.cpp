@@ -165,7 +165,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // Kq = 10;
 
     // PID
-    error_0 = 0;
+    error_0 = {0,0,0};
 }
 
 void AP_CustomControl_INDI::sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
