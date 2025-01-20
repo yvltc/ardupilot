@@ -58,7 +58,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // saturation limits
     ddmax = 30*M_PI/180;
     dtmax = 1;
-    dtmin = 0.1;
+    dtmin = 0;
 
     // SOD - each vector is a row
     // SOD_A.a = {0.846153846153846,0.003076923076923,0};
@@ -413,7 +413,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     snprintf(buffer, sizeof(buffer), "xCF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // command filter
-    sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+    // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
     snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
@@ -461,7 +461,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_Ki.z = K_i.z*error_i.z;
 
     u = u_Kp + u_Kd + u_Ki;
-    u_0 = u;
+    // u_0 = u;
 }
 
 // reset controller to avoid build up on the ground
