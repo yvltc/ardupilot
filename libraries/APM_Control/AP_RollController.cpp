@@ -183,7 +183,7 @@ float AP_RollController::_get_rate_out(float desired_rate, float scaler, bool di
     // note that we run AC_PID in radians so that the normal scaling
     // range for IMAX in AC_PID applies (usually an IMAX value less than 1.0)
     rate_pid.update_all(radians(desired_rate) * scaler * scaler, rate_x * scaler * scaler, dt, limit_I);
-    printf("%f\n", radians(desired_rate));
+    // printf("%f\n", radians(desired_rate));
 
     if (underspeed) {
         // when underspeed we lock the integrator
