@@ -437,6 +437,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     Vector3f K_p = {0.08,0.04,0.01};
     Vector3f K_d = {0,0,0};
     Vector3f K_i = {0.15,0.15,0};
+    Vector3f K_ff = {0.345, 0.345, 0};
 
     // {p, i, d, ...}
     // AC_PID rate_pid{0.08, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Roll
@@ -445,6 +446,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     Vector3f u_Kp;
     Vector3f u_Kd;
     Vector3f u_Ki;
+    Vector3f u_Kff;
 
     Vector3f error_d;
     Vector3f error_i;
@@ -466,8 +468,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_Kp.z = K_p.z*error.z;
     u_Kd.z = K_d.z*error_d.z;
     u_Ki.z = K_i.z*error_i.z;
+    u_Kff.x = K_ff.x*roll_target*M_PI/18000;
+    u_Kff.y = K_ff.y*pitch_target*M_PI/18000;
+    u_Kff.z = K_ff.z*arspd_target;
 
-    u = u_Kp + u_Kd + u_Ki;
+    u = u_Kp + u_Kd + u_Ki + u_Kff;
     // u_0 = u;
 }
 
