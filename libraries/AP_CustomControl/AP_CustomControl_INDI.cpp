@@ -473,6 +473,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_Kff.z = K_ff.z*arspd_target;
 
     u = u_Kp + u_Kd + u_Ki + u_Kff;
+    printf("%f\n", roll_target*M_PI/18000);
     // u_0 = u;
 }
 
