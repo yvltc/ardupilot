@@ -12,6 +12,8 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 
+#include <iostream>
+
 // table of user settable parameters
 const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
     // @Param: _TYPE
@@ -90,6 +92,7 @@ void AP_CustomControl::update(float roll_target, float pitch_target)
         float roll_out, pitch_out, yaw_out, Vt_out;
 
         // update tem de receber roll_target pitch_target e TAS_dem
+        printf("%f %f\n", roll_target, pitch_target);
         _backend->update(roll_target, pitch_target);
         roll_out = _backend->get_roll_out(roll_target);
         pitch_out = _backend->get_pitch_out(pitch_target);
