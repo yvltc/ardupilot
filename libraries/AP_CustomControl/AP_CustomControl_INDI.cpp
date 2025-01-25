@@ -200,8 +200,8 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return -u_0[0]*18000/M_PI;
-    // return u_0[0]*18000/M_PI;
+    // return -u_0[0]*18000/M_PI;
+    return u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
@@ -218,8 +218,8 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return -u_0[1]*18000/M_PI;
-    // return u_0[1]*18000/M_PI;
+    // return -u_0[1]*18000/M_PI;
+    return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -432,7 +432,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     // PID
     Vector3f K_p = {1,-0.11,0.01};
-    Vector3f K_d = {0.04,-0.3,0};
+    Vector3f K_d = {-0.04,-0.3,0};
     Vector3f K_i = {0,0,0};
     // Vector3f K_p = {0.08,0.04,0.01};
     // Vector3f K_d = {0,0,0};
