@@ -468,9 +468,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_Kp.z = K_p.z*error.z;
     u_Kd.z = K_d.z*error_d.z;
     u_Ki.z = K_i.z*error_i.z;
-    u_Kff.x = K_ff.x*roll_target*M_PI/18000;
-    u_Kff.y = K_ff.y*pitch_target*M_PI/18000;
-    u_Kff.z = K_ff.z*arspd_target;
+    // u_Kff.x = K_ff.x*roll_target*M_PI/18000;
+    // u_Kff.y = K_ff.y*pitch_target*M_PI/18000;
+    // u_Kff.z = K_ff.z*arspd_target;
 
     u = u_Kp + u_Kd + u_Ki; //+ u_Kff;
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
