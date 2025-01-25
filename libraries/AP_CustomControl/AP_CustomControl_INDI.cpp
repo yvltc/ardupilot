@@ -431,8 +431,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // PID
-    Vector3f K_p = {-1,-0.11,0.01};
-    Vector3f K_d = {-0.04,-0.3,0};
+    Vector3f K_p = {1,-0.11,0.01};
+    Vector3f K_d = {0.04,-0.3,0};
     Vector3f K_i = {0,0,0};
     // Vector3f K_p = {0.08,0.04,0.01};
     // Vector3f K_d = {0,0,0};
