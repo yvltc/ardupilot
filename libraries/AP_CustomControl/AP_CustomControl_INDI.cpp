@@ -431,13 +431,13 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // PID
-    // Vector3f K_p = {1,-0.11,0.01};
-    // Vector3f K_d = {-0.04,-0.3,0};
-    // Vector3f K_i = {0,0,0};
-    Vector3f K_p = {0.08,0.04,0.01};
-    Vector3f K_d = {0,0,0};
-    Vector3f K_i = {0.15,0.15,0};
-    Vector3f K_ff = {0.345, 0.345, 0};
+    Vector3f K_p = {1,-0.11,0.01};
+    Vector3f K_d = {-0.04,-0.3,0};
+    Vector3f K_i = {0,0,0};
+    // Vector3f K_p = {0.08,0.04,0.01};
+    // Vector3f K_d = {0,0,0};
+    // Vector3f K_i = {0.15,0.15,0};
+    // Vector3f K_ff = {0.345, 0.345, 0};
 
     // {p, i, d, ...}
     // AC_PID rate_pid{0.08, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Roll
@@ -472,7 +472,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_Kff.y = K_ff.y*pitch_target*M_PI/18000;
     u_Kff.z = K_ff.z*arspd_target;
 
-    u = u_Kp + u_Kd + u_Ki + u_Kff;
+    u = u_Kp + u_Kd + u_Ki; //+ u_Kff;
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
     // printf("%f\n", roll_target*M_PI/18000);
