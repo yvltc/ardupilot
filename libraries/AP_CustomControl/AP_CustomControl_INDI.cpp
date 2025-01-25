@@ -218,8 +218,8 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    // return -u_0[1]*18000/M_PI;
-    return u_0[1]*18000/M_PI;
+    return -u_0[1]*18000/M_PI;
+    // return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
