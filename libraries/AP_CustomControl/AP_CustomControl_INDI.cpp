@@ -153,17 +153,6 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     CF_D.b = {0,_CF_D,0};
     CF_D.c = {0,0,_CFu_D};
 
-    // valores a afinar
-    // lambda = 0.6;
-    // Kff = 140;
-    // Kff.set(140);
-    // Ktt = 50;
-    // Ktt.set(50);
-    // KVt = 6.2656;
-    // KVt.set(10);
-    // Kp = 55;
-    // Kq = 10;
-
     // PID
     error_0 = {0,0,0};
 }
@@ -263,14 +252,14 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     }
     else
     {
-        // dae
-        invG.a = {-397.6476,397.6476,-6.1354};
-        invG.b = {-47.4484,-47.4484,-0.0598};
-        invG.c = {0.4008,0.4008,6.2293};
-        // dLR
-        // invG.a = {788.1938,0,-8.0174};
-        // invG.b = {0,-94.0491, -0.1493};
-        // invG.c = {0,0.8085,8.1225};
+        // X.G
+        // invG.a = {-397.6476,397.6476,-6.1354};
+        // invG.b = {-47.4484,-47.4484,-0.0598};
+        // invG.c = {0.4008,0.4008,6.2293};
+        // fwztrim.G
+        invG.a = {788.1938,0,-8.0174};
+        invG.b = {0,-94.0491, -0.1493};
+        invG.c = {0,0.8085,8.1225};
     }
 
     invert_G = invG.invert();
