@@ -302,7 +302,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // theta = -0.0197;
     // Vt = 19.9523;
     // angular_rates = {-0.3086, -0.3094, 19.9523};
-    u_0 = {0.0767, -0.2121, 0.0572};
+    // u_0 = {0.0767, -0.2121, 0.0572};
     xCF = {0.0785, -0.2183, 0.0594};
     char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
