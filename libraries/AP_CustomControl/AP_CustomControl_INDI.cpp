@@ -304,7 +304,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // angular_rates = {-0.3086, -0.3094, 19.9523};
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
-    char buffer[80];  // Create a buffer to hold the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -360,8 +360,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u.x = u_0.x + du.x;
     u.y = u_0.y + du.y;
 
-    snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target, pitch_target, arspd_target);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target, pitch_target, arspd_target);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
@@ -408,8 +408,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // command filter
     // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
-    snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "x_next_CF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     
@@ -426,7 +426,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     Vector3f K_p = {1,-0.11,0.01};
     Vector3f K_d = {-0.04,-0.3,0};
-    Vector3f K_i = {70,0,0};
+    Vector3f K_i = {70,70,0};
     // Vector3f K_p = {0.08,0.04,0.01};
     // Vector3f K_d = {0,0,0};
     // Vector3f K_i = {0.15,0.15,0};
