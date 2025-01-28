@@ -426,7 +426,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     Vector3f K_p = {1,-0.11,0.01};
     Vector3f K_d = {-0.04,-0.3,0};
-    Vector3f K_i = {50,0,0};
+    Vector3f K_i = {70,0,0};
     // Vector3f K_p = {0.08,0.04,0.01};
     // Vector3f K_d = {0,0,0};
     // Vector3f K_i = {0.15,0.15,0};
@@ -470,7 +470,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
     // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
     // printf("%f\n", roll_target*M_PI/18000);
-    // u_0 = u;
+    u_0 = u;
 }
 
 // reset controller to avoid build up on the ground
