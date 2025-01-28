@@ -334,9 +334,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
     //
-    p_dot = -1.5921;
-    q_dot = -1.6886;
-    Vt_dot = 80.5147;
+    // p_dot = -1.5921;
+    // q_dot = -1.6886;
+    // Vt_dot = 80.5147;
 
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
