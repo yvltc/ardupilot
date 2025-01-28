@@ -471,7 +471,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
     // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
     // printf("%f\n", roll_target*M_PI/18000);
-    // u_0 = u;
+    u_0 = u;
 }
 
 // reset controller to avoid build up on the ground
