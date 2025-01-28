@@ -93,7 +93,7 @@ void AP_CustomControl::update(float roll_target, float pitch_target)
         // roll_target = 0;
         // pitch_target = 0;
         // update tem de receber roll_target pitch_target e TAS_dem
-        printf("%f %f\n", roll_target, pitch_target);
+        // printf("%f %f\n", roll_target, pitch_target);
         _backend->update(roll_target, pitch_target);
         roll_out = _backend->get_roll_out(roll_target);
         pitch_out = _backend->get_pitch_out(pitch_target);
