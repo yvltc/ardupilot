@@ -500,6 +500,7 @@ void AP_CustomControl_INDI::reset(void)
     u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
     // u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
     // printf("%f\n", u_0.z*100);
+    printf("%f\n", g.kff_throttle_to_pitch);
 }
 
 #endif
