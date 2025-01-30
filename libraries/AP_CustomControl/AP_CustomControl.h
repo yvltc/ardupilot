@@ -27,7 +27,7 @@ public:
     CLASS_NO_COPY(AP_CustomControl);  /* Do not allow copies */
 
     void init(void);
-    void update(float roll_target, float pitch_target, float pitch_trim);
+    void update(float roll_target, float pitch_target);
     void servo_set(float roll_out, float pitch_out, float yaw_out, float Vt_out);
     void set_custom_controller(bool enabled);
     void reset_main_att_controller(void);

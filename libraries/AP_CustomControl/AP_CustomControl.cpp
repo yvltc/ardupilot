@@ -86,7 +86,7 @@ void AP_CustomControl::init(void)
 }
 
 // run custom controller if it is activated by RC switch and appropriate type is selected
-void AP_CustomControl::update(float roll_target, float pitch_target, float pitch_trim)
+void AP_CustomControl::update(float roll_target, float pitch_target)
 {
     if (is_safe_to_run()) {
         float roll_out, pitch_out, yaw_out, Vt_out;

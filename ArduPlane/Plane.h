@@ -905,7 +905,7 @@ private:
     int16_t calc_nav_yaw_ground(void);
 
 #if AP_CUSTOMCONTROL_ENABLED == ENABLED
-    void custom_stabilize() { custom_control.update(nav_roll_cd, nav_pitch_cd, int32_t(g.pitch_trim * 100.0) + SRV_Channels::get_output_scaled(SRV_Channel::k_throttle) * g.kff_throttle_to_pitch); }
+    void custom_stabilize() { custom_control.update(nav_roll_cd, nav_pitch_cd + int32_t(g.pitch_trim * 100.0) + SRV_Channels::get_output_scaled(SRV_Channel::k_throttle) * g.kff_throttle_to_pitch); }
 #endif
 
     // Log.cpp
