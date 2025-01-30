@@ -905,7 +905,7 @@ private:
     int16_t calc_nav_yaw_ground(void);
 
 #if AP_CUSTOMCONTROL_ENABLED == ENABLED
-    void custom_stabilize() { custom_control.update(nav_roll_cd, nav_pitch_cd, pitch_trim); }
+    void custom_stabilize() { custom_control.update(nav_roll_cd, nav_pitch_cd, g.pitch_trim); }
 #endif
 
     // Log.cpp
