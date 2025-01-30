@@ -86,7 +86,7 @@ void AP_CustomControl::init(void)
 }
 
 // run custom controller if it is activated by RC switch and appropriate type is selected
-void AP_CustomControl::update(float roll_target, float pitch_target)
+void AP_CustomControl::update(float roll_target, float pitch_target, float pitch_trim)
 {
     if (is_safe_to_run()) {
         float roll_out, pitch_out, yaw_out, Vt_out;
@@ -94,6 +94,7 @@ void AP_CustomControl::update(float roll_target, float pitch_target)
         // pitch_target = 0;
         // update tem de receber roll_target pitch_target e TAS_dem
         // printf("%f %f\n", roll_target, pitch_target);
+        printf("%f\n", pitch_trim);
         _backend->update(roll_target, pitch_target);
         roll_out = _backend->get_roll_out(roll_target);
         pitch_out = _backend->get_pitch_out(pitch_target);
