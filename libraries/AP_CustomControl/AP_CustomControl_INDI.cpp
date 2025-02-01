@@ -420,7 +420,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_ardupilot.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
     u_ardupilot.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
     u_ardupilot.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
-    snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x,  u_ardupilot.y, u_ardupilot.z);
+    snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x/100,  u_ardupilot.y/100, u_ardupilot.z);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     u_0.x = u.x;
