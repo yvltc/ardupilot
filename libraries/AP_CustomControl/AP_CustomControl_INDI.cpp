@@ -183,9 +183,9 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "Timestamp: %d miliseconds", timestamp);
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
-    // char buffer[80];  // Create a buffer to hold the formatted message
-    // snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
@@ -304,7 +304,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // angular_rates = {-0.3086, -0.3094, 19.9523};
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
-    // char buffer[80];  // Create a buffer to hold the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -415,6 +415,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
     // snprintf(buffer, sizeof(buffer), "roll pitch: %.4f %.4f", phi, theta);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
+    snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     u_0.x = u.x;
     u_0.y = u.y;
