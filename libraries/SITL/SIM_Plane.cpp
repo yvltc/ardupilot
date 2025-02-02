@@ -97,8 +97,8 @@ Plane::Plane(const char *frame_str) :
         // coefficient.c_n_r = -0.0028;         // problema
         coefficient.c_n_deltaa = 0.0004195;      
         // CGoffset mau - troquei o sinal
-        // coefficient.CGOffset = {-0.1260, 0, -0.0136};
-        coefficient.CGOffset = {-0.1, 0, -0.0136};
+        coefficient.CGOffset = {-0.1260, 0, -0.0136};
+        // coefficient.CGOffset = {-0.1, 0, -0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
         reverse_elevator_rudder = true;
