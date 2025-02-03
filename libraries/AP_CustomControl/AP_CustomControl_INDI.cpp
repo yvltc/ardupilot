@@ -34,6 +34,8 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_LL", 6, AP_CustomControl_INDI, lambda, 0.3),
 
+    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, 0);
+
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
     AP_GROUPEND
@@ -431,54 +433,61 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // PID
-    Vector3f K_p = {1,-0.11,1};
-    Vector3f K_d = {-0.04,-0.3,0};
-    Vector3f K_i = {70,0,0};
-    // Vector3f K_p = {0.08,0.04,0.01};
-    // Vector3f K_d = {0,0,0};
-    // Vector3f K_i = {0.15,0.15,0};
-    // Vector3f K_ff = {0.345, 0.345, 0};
+    if (PID_debugger)
+    {
+        Vector3f K_p = {1,-0.11,1};
+        Vector3f K_d = {-0.04,-0.3,0};
+        Vector3f K_i = {70,0,0};
+        // Vector3f K_p = {0.08,0.04,0.01};
+        // Vector3f K_d = {0,0,0};
+        // Vector3f K_i = {0.15,0.15,0};
+        // Vector3f K_ff = {0.345, 0.345, 0};
 
-    // {p, i, d, ...}
-    // AC_PID rate_pid{0.08, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Roll
-    // AC_PID rate_pid{0.04, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Pitch
+        // {p, i, d, ...}
+        // AC_PID rate_pid{0.08, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Roll
+        // AC_PID rate_pid{0.04, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Pitch
 
-    Vector3f u_Kp;
-    Vector3f u_Kd;
-    Vector3f u_Ki;
-    Vector3f u_Kff;
+        Vector3f u_Kp;
+        Vector3f u_Kd;
+        Vector3f u_Ki;
+        Vector3f u_Kff;
 
-    Vector3f error_d;
-    Vector3f error_i;
+        Vector3f error_d;
+        Vector3f error_i;
 
-    error_d.x = (error.x - error_0.x)/_dt;
-    error_d.y = (error.y - error_0.y)/_dt;
-    error_d.z = (error.z - error_0.z)/_dt;
+        error_d.x = (error.x - error_0.x)/_dt;
+        error_d.y = (error.y - error_0.y)/_dt;
+        error_d.z = (error.z - error_0.z)/_dt;
 
-    error_i.x += 0.5*(error.x + error_0.x)*_dt;
-    error_i.y += 0.5*(error.y + error_0.y)*_dt;
-    error_i.z += 0.5*(error.z + error_0.z)*_dt;
+        error_i.x += 0.5*(error.x + error_0.x)*_dt;
+        error_i.y += 0.5*(error.y + error_0.y)*_dt;
+        error_i.z += 0.5*(error.z + error_0.z)*_dt;
 
-    u_Kp.x = K_p.x*error.x;
-    u_Kd.x = K_d.x*error_d.x;
-    u_Ki.x = K_i.x*error_i.x;
-    u_Kp.y = K_p.y*error.y;
-    u_Kd.y = K_d.y*error_d.y;
-    u_Ki.y = K_i.y*error_i.y;
-    u_Kp.z = K_p.z*error.z;
-    u_Kd.z = K_d.z*error_d.z;
-    u_Ki.z = K_i.z*error_i.z;
-    // u_Kff.x = K_ff.x*roll_target*M_PI/18000;
-    // u_Kff.y = K_ff.y*pitch_target*M_PI/18000;
-    // u_Kff.z = K_ff.z*arspd_target;
+        u_Kp.x = K_p.x*error.x;
+        u_Kd.x = K_d.x*error_d.x;
+        u_Ki.x = K_i.x*error_i.x;
+        u_Kp.y = K_p.y*error.y;
+        u_Kd.y = K_d.y*error_d.y;
+        u_Ki.y = K_i.y*error_i.y;
+        u_Kp.z = K_p.z*error.z;
+        u_Kd.z = K_d.z*error_d.z;
+        u_Ki.z = K_i.z*error_i.z;
+        // u_Kff.x = K_ff.x*roll_target*M_PI/18000;
+        // u_Kff.y = K_ff.y*pitch_target*M_PI/18000;
+        // u_Kff.z = K_ff.z*arspd_target;
 
-    u = u_Kp + u_Kd + u_Ki; //+ u_Kff;
-    saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
-    saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
-    saturate(dtmin, dtmax, &u.z);
-    sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
-    // printf("%f\n", roll_target*M_PI/18000);
-    u_0 = u;
+        u = u_Kp + u_Kd + u_Ki; //+ u_Kff;
+        saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
+        saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
+        saturate(dtmin, dtmax, &u.z);
+        sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+        // printf("%f\n", roll_target*M_PI/18000);
+
+        u_0 = u;
+    }
+    
+    error_0 = {error.x, error.y, error.z};
+
 }
 
 // reset controller to avoid build up on the ground

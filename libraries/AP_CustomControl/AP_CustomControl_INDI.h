@@ -97,6 +97,7 @@ protected:
 
     // PID
     Vector3f error_0;
+    bool PID_debugger;
 
 };
 
