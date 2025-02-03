@@ -436,8 +436,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     if (PID_debugger == 1)
     {
         // char buffer[80];
-        Vector3f K_p = {1,0.11,1};
-        Vector3f K_d = {-0.04,0.3,0};
+        Vector3f K_p = {1,-0.11,1};
+        Vector3f K_d = {0.04,0.3,0};
         Vector3f K_i = {0,0,0};
         // Vector3f K_p = {0.08,0.04,0.01};
         // Vector3f K_d = {0,0,0};
