@@ -34,7 +34,7 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_LL", 6, AP_CustomControl_INDI, lambda, 0.3),
 
-    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, 0),
+    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, false),
 
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
