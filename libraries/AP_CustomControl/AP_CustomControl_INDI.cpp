@@ -191,8 +191,8 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    return -u_0[0]*18000/M_PI;
-    // return u_0[0]*18000/M_PI;
+    // return -u_0[0]*18000/M_PI;
+    return u_0[0]*18000/M_PI;
 }
 
 //return pitch controller output
@@ -209,8 +209,8 @@ float AP_CustomControl_INDI::get_pitch_out(float pitch_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-    return -u_0[1]*18000/M_PI;
-    // return u_0[1]*18000/M_PI;
+    // return -u_0[1]*18000/M_PI;
+    return u_0[1]*18000/M_PI;
 }
 
 //return yaw controller output
@@ -435,7 +435,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     if (PID_debugger == 1)
     {
-        char buffer[80];
+        // char buffer[80];
         Vector3f K_p = {1,-0.11,1};
         Vector3f K_d = {-0.04,-0.3,0};
         Vector3f K_i = {0,0,0};
@@ -464,10 +464,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         error_i.y += 0.5*(error.y + error_0.y)*_dt;
         error_i.z += 0.5*(error.z + error_0.z)*_dt;
 
-        snprintf(buffer, sizeof(buffer), "error_0: %.2f %.2f %.2f", error_0.x,  error_0.y, error_0.z);
-        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-        snprintf(buffer, sizeof(buffer), "error: %.2f %.2f %.2f", error.x,  error.y, error.z);
-        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        // snprintf(buffer, sizeof(buffer), "error_0: %.2f %.2f %.2f", error_0.x,  error_0.y, error_0.z);
+        // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        // snprintf(buffer, sizeof(buffer), "error: %.2f %.2f %.2f", error.x,  error.y, error.z);
+        // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
         u_Kp.x = K_p.x*error.x;
         u_Kd.x = K_d.x*error_d.x;
