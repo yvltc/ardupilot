@@ -486,7 +486,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         u_0 = u;
     }
 
-    error_0 = {error.x, error.y, error.z};
+    // error_0 = {error.x, error.y, error.z};
 
 }
 
