@@ -34,7 +34,7 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_LL", 6, AP_CustomControl_INDI, lambda, 0.3),
 
-    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, 0);
+    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, 0),
 
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
@@ -485,7 +485,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
         u_0 = u;
     }
-    
+
     error_0 = {error.x, error.y, error.z};
 
 }
