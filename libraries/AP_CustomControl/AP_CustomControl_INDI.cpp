@@ -34,7 +34,7 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_LL", 6, AP_CustomControl_INDI, lambda, 0.3),
 
-    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, false),
+    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, 0),
 
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
@@ -433,7 +433,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // PID
-    if (PID_debugger)
+    if (PID_debugger == 1)
     {
         Vector3f K_p = {1,-0.11,1};
         Vector3f K_d = {-0.04,-0.3,0};
