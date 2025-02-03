@@ -97,7 +97,7 @@ protected:
 
     // PID
     Vector3f error_0;
-    AP_Float PID_debugger;
+    AP_Int8 PID_debugger;
 
 };
 
