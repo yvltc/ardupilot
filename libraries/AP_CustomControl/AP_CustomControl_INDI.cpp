@@ -186,8 +186,8 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
@@ -422,8 +422,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_ardupilot.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
     u_ardupilot.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
     u_ardupilot.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
-    snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x/100,  u_ardupilot.y/100, u_ardupilot.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x/100,  u_ardupilot.y/100, u_ardupilot.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     u_0.x = u.x;
     u_0.y = u.y;
@@ -463,6 +463,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         error_i.y += 0.5*(error.y + error_0.y)*_dt;
         error_i.z += 0.5*(error.z + error_0.z)*_dt;
 
+        snprintf(buffer, sizeof(buffer), "error_0: %.2f %.2f %.2f", error_0.x,  error_0.y, error_0.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+        snprintf(buffer, sizeof(buffer), "error: %.2f %.2f %.2f", error.x,  error.y, error.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
         u_Kp.x = K_p.x*error.x;
         u_Kd.x = K_d.x*error_d.x;
         u_Ki.x = K_i.x*error_i.x;
@@ -486,7 +491,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         u_0 = u;
     }
 
-    // error_0 = {error.x, error.y, error.z};
+    error_0 = {error.x, error.y, error.z};
+    
 
 }
 
