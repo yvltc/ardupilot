@@ -576,7 +576,6 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
  */
 void Plane::update(const struct sitl_input &input)
 {
-    printf("%d\n", input.servos[2]);
     Vector3f rot_accel;
 
     update_wind(input);
