@@ -612,8 +612,6 @@ void Aircraft::update_model(const struct sitl_input &input)
     local_ground_level = 0.0f;
     if (sitl != nullptr) {
         update(input);
-        if (AP_HAL::micros() > 100 && AP_HAL::micros() < 1000)
-            printf("SIM_Aircraft\n");
     } else {
         time_advance();
     }

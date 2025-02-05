@@ -2,6 +2,8 @@
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL && !defined(HAL_BUILD_AP_PERIPH)
 
+#include <iostream>
+
 #include "AP_HAL_SITL.h"
 #include "AP_HAL_SITL_Namespace.h"
 #include "HAL_SITL_Class.h"
@@ -565,6 +567,7 @@ void SITL_State::_parse_command_line(int argc, char * const argv[])
         if (strncasecmp(model_constructors[i].name, model_str, strlen(model_constructors[i].name)) == 0) {
             // printf("Creating model %f,%f,%f,%f at speed %.1f\n", opos.lat, opos.lng, opos.alt, opos.hdg, speedup);
             sitl_model = model_constructors[i].constructor(model_str);
+            printf("Boas\n");
             if (home_str != nullptr) {
                 Location home;
                 float home_yaw;

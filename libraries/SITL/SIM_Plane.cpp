@@ -576,9 +576,6 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
  */
 void Plane::update(const struct sitl_input &input)
 {
-    if (AP_HAL::micros() > 100 && AP_HAL::micros() < 1000)
-        printf("SIM_Plane\n");
-
     Vector3f rot_accel;
 
     update_wind(input);
