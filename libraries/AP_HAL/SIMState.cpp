@@ -8,8 +8,6 @@
  *  there into here.
  */
 
-#include <iostream>
-
 #include <SITL/SIM_Multicopter.h>
 #include <SITL/SIM_Helicopter.h>
 #include <SITL/SIM_SingleCopter.h>
@@ -75,7 +73,6 @@ void SIMState::update()
     if (!init_done) {
         init_done = true;
         sitl_model = SITL::AP_SIM_FRAME_CLASS::create(AP_SIM_FRAME_STRING);
-        printf("Boas\n");
     }
 
     _fdm_input_step();
