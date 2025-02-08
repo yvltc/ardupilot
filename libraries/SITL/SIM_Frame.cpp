@@ -25,8 +25,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-#include <iostream>
-
 using namespace SITL;
 
 static Motor quad_plus_motors[] =
@@ -508,8 +506,6 @@ void Frame::init(const char *frame_str, Battery *_battery)
                                model.diagonal_size, power_factor, model.maxVoltage, effective_prop_area, velocity_max,
                                model.motor_pos[i], model.motor_thrust_vec[i], model.yaw_factor[i], true_prop_area,
                                model.mdrag_coef);
-
-        printf("Boasssssssssssssssssssss\n");
     }
 
     if (is_zero(model.moment_of_inertia.x) || is_zero(model.moment_of_inertia.y) || is_zero(model.moment_of_inertia.z)) {

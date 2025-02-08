@@ -25,6 +25,8 @@
 #include <SITL/SIM_JSBSim.h>
 #include <AP_HAL/utility/Socket_native.h>
 
+#include <iostream>
+
 extern const AP_HAL::HAL& hal;
 
 using namespace HALSITL;
@@ -469,6 +471,7 @@ void SITL_State::_simulator_servos(struct sitl_input &input)
             input.servos[i] = 0;
         } else {
             input.servos[i] = pwm_output[i];
+            printf("boasssssssssssssssssss\n");
         }
     }
 
