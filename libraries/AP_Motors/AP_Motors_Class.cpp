@@ -19,8 +19,6 @@
 #include <GCS_MAVLink/GCS.h>
 #include <AP_Notify/AP_Notify.h>
 
-#include <iostream>
-
 #define AP_MOTORS_SLEW_FILTER_CUTOFF 50.0f
 
 extern const AP_HAL::HAL& hal;
@@ -106,7 +104,6 @@ void AP_Motors::set_radio_passthrough(float roll_input, float pitch_input, float
  */
 void AP_Motors::rc_write(uint8_t chan, uint16_t pwm)
 {
-    printf("vivaaaaa\n");
     SRV_Channel::Aux_servo_function_t function = SRV_Channels::get_motor_function(chan);
     if ((1U<<chan) & _motor_pwm_range_mask) {
         // note that PWM_MIN/MAX has been forced to 1000/2000
