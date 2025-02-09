@@ -13,6 +13,8 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+
 #include "AP_MotorsMulticopter.h"
 #include <AP_HAL/AP_HAL.h>
 #include <AP_BattMonitor/AP_BattMonitor.h>
@@ -704,6 +706,7 @@ void AP_MotorsMulticopter::set_throttle_passthrough_for_esc_calibration(float th
 {
     if (armed()) {
         uint16_t pwm_out = get_pwm_output_min() + constrain_float(throttle_input, 0.0f, 1.0f) * (get_pwm_output_max() - get_pwm_output_min());
+        printf("%d\n", pwm_out);
         // send the pilot's input directly to each enabled motor
         for (uint16_t i = 0; i < AP_MOTORS_MAX_NUM_MOTORS; i++) {
             if (motor_enabled[i]) {
