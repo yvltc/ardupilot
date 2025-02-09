@@ -59,12 +59,13 @@ void RCOutput::write(uint8_t ch, uint16_t period_us)
             period_us = 0;
         }
     }
-    printf("Boassssssssss\n");
+
     _sitlState->output_ready = true;
     // FIXME: something in sitl is expecting to be able to read and write disabled channels
     if (ch < SITL_NUM_CHANNELS /*&& (_enable_mask & (1U<<ch))*/) {
         if (_corked) {
             _pending[ch] = period_us;
+            printf("boasssss\n");
         } else {
             _sitlState->pwm_output[ch] = period_us;
         }
