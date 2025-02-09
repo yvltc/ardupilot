@@ -17,8 +17,6 @@
 #include "AP_MotorsMatrix.h"
 #include <AP_Vehicle/AP_Vehicle_Type.h>
 
-#include <iostream>
-
 extern const AP_HAL::HAL& hal;
 
 // init
@@ -180,7 +178,6 @@ void AP_MotorsMatrix::output_to_motors()
     for (i = 0; i < AP_MOTORS_MAX_NUM_MOTORS; i++) {
         if (motor_enabled[i]) {
             rc_write(i, output_to_pwm(_actuator[i]));
-            printf("%d\n", output_to_pwm(_actuator[i]));
         }
     }
 }
