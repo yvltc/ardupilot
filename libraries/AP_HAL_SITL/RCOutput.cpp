@@ -67,7 +67,7 @@ void RCOutput::write(uint8_t ch, uint16_t period_us)
             _pending[ch] = period_us;
         } else {
             _sitlState->pwm_output[ch] = period_us;
-            printf("%d %d\n", pwm_output[ch], ch);
+            printf("%d %d\n", _sitlState->pwm_output[ch], ch);
         }
     }
 }
