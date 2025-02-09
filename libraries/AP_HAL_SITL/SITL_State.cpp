@@ -471,7 +471,7 @@ void SITL_State::_simulator_servos(struct sitl_input &input)
             input.servos[i] = 0;
         } else {
             input.servos[i] = pwm_output[i];
-            if (AP_HAL::micros() < 1500)
+            if (AP_HAL::micros() > 1000000 && AP_HAL::micros() < 1001000)
                 printf("%d %d\n", input.servos[i], i);
         }
     }
