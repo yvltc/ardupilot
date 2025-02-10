@@ -100,7 +100,8 @@ void SRV_Channel::output_ch(void)
 
     if (!(SRV_Channels::disabled_mask & (1U<<ch_num))) {
         hal.rcout->write(ch_num, output_pwm);
-        printf("Boas\n");
+        if (ch_num < 4)
+            printf("%d\n", output_pwm);
     }
 }
 
