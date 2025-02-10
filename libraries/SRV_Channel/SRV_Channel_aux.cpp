@@ -57,6 +57,7 @@ void SRV_Channel::output_ch(void)
         if (c) {
             if (SRV_Channels::passthrough_disabled()) {
                 output_pwm = c->get_radio_trim();
+                printf("Boas\n");
             } else {
                 // non-mapped rc passthrough
                 int16_t radio_in = c->get_radio_in();
@@ -101,7 +102,7 @@ void SRV_Channel::output_ch(void)
     if (!(SRV_Channels::disabled_mask & (1U<<ch_num))) {
         hal.rcout->write(ch_num, output_pwm);
         if (ch_num < 4)
-            printf("%d\n", output_pwm);
+            // printf("%d %d\n", output_pwm, ch_num);
     }
 }
 
