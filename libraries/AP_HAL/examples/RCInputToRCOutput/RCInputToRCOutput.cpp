@@ -8,6 +8,8 @@
 
 #include <AP_HAL/AP_HAL.h>
 
+#include <iostream>
+
 // we need a boardconfig created so that the io processor's enable
 // parameter is available
 #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
@@ -53,6 +55,7 @@ void loop(void)
             hal.rcout->write(i, v);
             changed = true;
             last_value[i] = v;
+            printf("Boas\n");
         }
         if (i > max_channels) {
             max_channels = i;
