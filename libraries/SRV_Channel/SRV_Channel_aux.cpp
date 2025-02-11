@@ -486,10 +486,10 @@ SRV_Channels::set_output_limit(SRV_Channel::Aux_servo_function_t function, SRV_C
         if (c.function == function) {
             uint16_t pwm = c.get_limit_pwm(limit);
             c.set_output_pwm(pwm);
+            printf("BOas");
 #if AP_RC_CHANNEL_ENABLED
             if (c.function == SRV_Channel::k_manual) {
                 RC_Channel *cin = rc().channel(c.ch_num);
-                printf("Boas");
                 if (cin != nullptr) {
                     // in order for output_ch() to work for k_manual we
                     // also have to override radio_in
