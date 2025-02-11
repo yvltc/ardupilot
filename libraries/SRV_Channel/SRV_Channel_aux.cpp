@@ -242,7 +242,6 @@ void SRV_Channels::enable_aux_servos()
     hal.rcout->set_default_rate(uint16_t(_singleton->default_rate.get()));
 
     update_aux_servo_function();
-    printf("Boas\n");
 
     // enable all channels that are set to a valid function. This
     // includes k_none servos, which allows those to get their initial
@@ -264,6 +263,7 @@ void SRV_Channels::enable_aux_servos()
         } else if (c.function == SRV_Channel::k_trim) {
             c.set_output_pwm(c.servo_trim);
             c.output_ch();
+            printf("%d\n", c.servo_trim);
         } else if (c.function == SRV_Channel::k_max) {
             c.set_output_pwm(c.servo_max);
             c.output_ch();
