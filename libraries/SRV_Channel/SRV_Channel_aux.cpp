@@ -58,7 +58,6 @@ void SRV_Channel::output_ch(void)
             if (SRV_Channels::passthrough_disabled()) {
                 output_pwm = c->get_radio_trim();
             } else {
-                printf("Boas\n");
                 // non-mapped rc passthrough
                 int16_t radio_in = c->get_radio_in();
                 if (passthrough_mapped) {
@@ -490,6 +489,7 @@ SRV_Channels::set_output_limit(SRV_Channel::Aux_servo_function_t function, SRV_C
 #if AP_RC_CHANNEL_ENABLED
             if (c.function == SRV_Channel::k_manual) {
                 RC_Channel *cin = rc().channel(c.ch_num);
+                printf("Boas")";"
                 if (cin != nullptr) {
                     // in order for output_ch() to work for k_manual we
                     // also have to override radio_in
