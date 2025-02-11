@@ -268,7 +268,6 @@ void SRV_Channels::enable_aux_servos()
             c.set_output_pwm(c.servo_max);
             c.output_ch();
         }
-        printf("%d\n", c.servo_trim.get());
     }
 
     // propagate channel masks to the ESCS
