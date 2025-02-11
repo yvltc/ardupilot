@@ -486,7 +486,6 @@ SRV_Channels::set_output_limit(SRV_Channel::Aux_servo_function_t function, SRV_C
         if (c.function == function) {
             uint16_t pwm = c.get_limit_pwm(limit);
             c.set_output_pwm(pwm);
-            printf("BOas");
 #if AP_RC_CHANNEL_ENABLED
             if (c.function == SRV_Channel::k_manual) {
                 RC_Channel *cin = rc().channel(c.ch_num);
@@ -527,6 +526,7 @@ SRV_Channels::move_servo(SRV_Channel::Aux_servo_function_t function,
     if (angle_max <= angle_min) {
         return;
     }
+    printf("BOas");
     float v = float(value - angle_min) / float(angle_max - angle_min);
     v = constrain_float(v, 0.0f, 1.0f);
     for (uint8_t i = 0; i < NUM_SERVO_CHANNELS; i++) {
