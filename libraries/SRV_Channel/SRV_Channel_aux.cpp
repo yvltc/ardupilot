@@ -260,10 +260,10 @@ void SRV_Channels::enable_aux_servos()
         if (c.function == SRV_Channel::k_min) {
             c.set_output_pwm(c.servo_min);
             c.output_ch();
+            printf("%d\n", c.servo_trim.get());
         } else if (c.function == SRV_Channel::k_trim) {
             c.set_output_pwm(c.servo_trim);
             c.output_ch();
-            printf("%d\n", c.servo_trim.get());
         } else if (c.function == SRV_Channel::k_max) {
             c.set_output_pwm(c.servo_max);
             c.output_ch();
