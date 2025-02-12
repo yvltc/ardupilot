@@ -312,10 +312,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp antes: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODq antes: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "xSODu antes: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    // snprintf(buffer, sizeof(buffer), "xSODq antes: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "xSODu antes: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
  
     aux.x = angular_rates[0];       // p
     sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
@@ -331,10 +331,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     // snprintf(buffer, sizeof(buffer), "xSODp depois: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODq depois: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "x_SODu depois: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    // snprintf(buffer, sizeof(buffer), "xSODq depois: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "x_SODu depois: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
     
