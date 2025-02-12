@@ -310,11 +310,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
     char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "xSODp antes: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
+    // snprintf(buffer, sizeof(buffer), "xSODp antes: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "xSODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    snprintf(buffer, sizeof(buffer), "xSODq antes: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "xSODu antes: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
  
     aux.x = angular_rates[0];       // p
@@ -329,11 +329,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
     Vt_dot = SOD_out[0];
 
-    snprintf(buffer, sizeof(buffer), "xSODp depois: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
+    // snprintf(buffer, sizeof(buffer), "xSODp depois: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "x_next_SODu: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
+    snprintf(buffer, sizeof(buffer), "xSODq depois: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "x_SODu depois: %.6f %.6f %.6f", xSOD_u.x, xSOD_u.y, xSOD_u.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     
     // MATLAB/Simulink dá as equações para converter espaço de estados diretamente
