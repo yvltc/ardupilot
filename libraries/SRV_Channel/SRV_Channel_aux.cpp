@@ -22,8 +22,6 @@
 #include <RC_Channel/RC_Channel.h>
 #include <GCS_MAVLink/GCS.h>
 
-#include <iostream>
-
 #if NUM_SERVO_CHANNELS == 0
 #pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
@@ -100,8 +98,6 @@ void SRV_Channel::output_ch(void)
 
     if (!(SRV_Channels::disabled_mask & (1U<<ch_num))) {
         hal.rcout->write(ch_num, output_pwm);
-        // if (ch_num < 4)
-            // printf("%d %d\n", output_pwm, ch_num);
     }
 }
 
@@ -260,7 +256,6 @@ void SRV_Channels::enable_aux_servos()
         if (c.function == SRV_Channel::k_min) {
             c.set_output_pwm(c.servo_min);
             c.output_ch();
-            
         } else if (c.function == SRV_Channel::k_trim) {
             c.set_output_pwm(c.servo_trim);
             c.output_ch();

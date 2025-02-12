@@ -25,8 +25,6 @@
 #include <SITL/SIM_JSBSim.h>
 #include <AP_HAL/utility/Socket_native.h>
 
-#include <iostream>
-
 extern const AP_HAL::HAL& hal;
 
 using namespace HALSITL;

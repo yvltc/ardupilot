@@ -98,6 +98,7 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_n_deltaa = 0.0004195;      
         // CGoffset mau - troquei o sinal
         coefficient.CGOffset = {-0.1260, 0, -0.0136};
+        // coefficient.CGOffset = {-0.1, 0, -0.0136};
     }
     if (strstr(frame_str, "-elevrev")) {
         reverse_elevator_rudder = true;
@@ -167,6 +168,7 @@ float Plane::liftCoeff(float alpha) const
 	double flatPlate = sigmoid*(2*copysign(1,alpha)*pow(sin(alpha),2)*cos(alpha)); //Lift beyond stall
 
 	float result  = linear+flatPlate;
+    // printf("liftCoeff SITL: %f\n", result);
 	return result;
 }
 
@@ -182,6 +184,7 @@ float Plane::dragCoeff(float alpha) const
 	double AR = pow(b,2)/s;
 	double c_drag_a = c_drag_p + pow(c_lift_0+c_lift_a0*alpha,2)/(M_PI*oswald*AR);
 
+    // printf("dragCoeff SITL: %f\n", c_drag_a);
 	return c_drag_a;
 }
 
@@ -294,7 +297,10 @@ Vector3f Plane::getForce(float inputAileron, float inputElevator, float inputRud
 	//calculate aerodynamic force
 	double qbar = 1.0/2.0*rho*pow(airspeed,2)*s; //Calculate dynamic pressure
 	double ax, ay, az;
-
+    // if (AP_HAL::millis() > 1500 && AP_HAL::millis() < 1550)
+    // {
+    //     printf("airspeed %f\n", airspeed);
+    // }
 	if (is_zero(airspeed))
 	{
 		ax = 0;
@@ -323,9 +329,12 @@ float Plane::CustomDynamics_liftCoeff (float alpha, float dl, float dr)
     const float c = coefficient.c;
     float q = gyro.y;
 
+    //printf("dl dr %f %f\n", dl, dr);
+
     float C_L;
     C_L = C_L_0 + C_L_a*alpha + C_L_dd*(dl+dr) + C_L_q*q*c/(2*airspeed);
     
+    // printf("liftCoeff custom: %f\n", C_L);
 	return C_L;
 }
 
@@ -344,6 +353,7 @@ float Plane::CustomDynamics_dragCoeff(float alpha, float dl, float dr)
     double C_D_dd = C_L*C_L_de/(M_PI*oswald*AR);
 	double C_D = C_D_0 + pow(C_L, 2)/(M_PI*oswald*AR) + C_D_dd*(abs(dl) + abs(dr));
 
+    // printf("dragCoeff custom: %f\n", C_D);
 	return C_D;
 }
 
@@ -458,9 +468,11 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         // fake an elevon plane
         float ch1 = aileron;        // confirmar se ch1 ch2 têm o aileron elevator ou elevonL elevonR -> ch1 dL, ch2 dR
         float ch2 = elevator;
+        // printf("ch1 ch2: %f %f\n", ch1, ch2);
         aileron  = (ch2-ch1)/2.0f;  
         // the minus does away with the need for RC2_REVERSED=-1
         elevator = -(ch2+ch1)/2.0f;
+        // printf("da de: %f %f\n", aileron, elevator);
 
         // if (custom_dynamics) {
         //     elevator = (ch2+ch1)/2.0f;
@@ -487,6 +499,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         elevator = (elevon_left+elevon_right)/2;
         rudder = fabsf(dspoiler1_right - dspoiler2_right)/2 - fabsf(dspoiler1_left - dspoiler2_left)/2;
     }
+    //printf("Aileron: %.1f elevator: %.1f rudder: %.1f\n", aileron, elevator, rudder);
 
     if (reverse_thrust) {
         throttle = filtered_servo_angle(input, 2);
@@ -506,6 +519,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     // calculate angle of attack
     angle_of_attack = atan2f(velocity_air_bf.z, velocity_air_bf.x);
     beta = atan2f(velocity_air_bf.y,velocity_air_bf.x);
+    // printf("airspeed SIM_Plane %f %f %f\n", velocity_air_bf.x, velocity_air_bf.y, velocity_air_bf.z);
 
     if (tailsitter || aerobatic) {
         /*
@@ -519,10 +533,15 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     Vector3f force;
 
     if (custom_dynamics) {
+        //printf("Custom dynamics working");
         // force = getForce(aileron, elevator, rudder);
+        // printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
+        // printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
         // rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
+        // printf("rot_accel SITL: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
+        // printf("rot_accel custom: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         
     } else {
         force = getForce(aileron, elevator, rudder);
