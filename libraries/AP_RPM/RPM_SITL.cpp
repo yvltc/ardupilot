@@ -19,6 +19,8 @@
 
 #include <AP_HAL/AP_HAL.h>
 
+#include <iostream>
+
 /*
    open the sensor in constructor
 */
@@ -42,6 +44,7 @@ void AP_RPM_SITL::update(void)
             if (count == instance) {
                 state.rate_rpm = sitl->state.rpm[i];
                 break;
+                printf("Boas\n");
             }
             count++;
         }

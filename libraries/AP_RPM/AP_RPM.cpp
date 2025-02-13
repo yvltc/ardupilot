@@ -229,7 +229,6 @@ bool AP_RPM::healthy(uint8_t instance) const
     if (state[instance].signal_quality < _params[instance].quality_min) {
         return false;
     }
-    printf("Boas\n");
 
     return true;
 }
