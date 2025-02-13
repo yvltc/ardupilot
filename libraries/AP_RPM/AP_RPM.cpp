@@ -27,6 +27,8 @@
 
 #include <AP_Logger/AP_Logger.h>
 
+#include <iostream>
+
 extern const AP_HAL::HAL& hal;
 
 // table of user settable parameters
@@ -102,6 +104,7 @@ void AP_RPM::init(void)
 #if AP_RPM_SIM_ENABLED
         case RPM_TYPE_SITL:
             drivers[i] = new AP_RPM_SITL(*this, i, state[i]);
+            printf("boas\n");
             break;
 #endif  // AP_RPM_SIM_ENABLED
         }

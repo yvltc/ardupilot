@@ -19,8 +19,6 @@
 #include <GCS_MAVLink/GCS.h>
 #include <AP_Notify/AP_Notify.h>
 
-#include <iostream>
-
 #define AP_MOTORS_SLEW_FILTER_CUTOFF 50.0f
 
 extern const AP_HAL::HAL& hal;
@@ -83,7 +81,6 @@ void AP_Motors::armed(bool arm)
             save_params_on_disarm();
         }
     }
-    printf("boas\n");
 };
 
 void AP_Motors::set_desired_spool_state(DesiredSpoolState spool)
