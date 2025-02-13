@@ -28,6 +28,8 @@ extern AP_IOMCU iomcu;
 #endif
 #include <AP_Scripting/AP_Scripting.h>
 
+#include <iostream>
+
 #define SCHED_TASK(func, rate_hz, max_time_micros, prio) SCHED_TASK_CLASS(AP_Vehicle, &vehicle, func, rate_hz, max_time_micros, prio)
 
 /*
@@ -678,6 +680,7 @@ void AP_Vehicle::update_throttle_notch(AP_InertialSensor::HarmonicNotch &notch)
 #if APM_BUILD_TYPE(APM_BUILD_ArduPlane)||APM_BUILD_COPTER_OR_HELI
     const AP_Motors* motors = AP::motors();
     const float motors_throttle = motors != nullptr ? MAX(0,motors->get_throttle_out()) : 0;
+    printf("Boas\n");
 #else  // APM_BUILD_Rover
     const AP_MotorsUGV *motors = AP::motors_ugv();
     const float motors_throttle = motors != nullptr ? abs(motors->get_throttle() / 100.0f) : 0;

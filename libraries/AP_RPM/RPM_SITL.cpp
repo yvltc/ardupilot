@@ -19,8 +19,6 @@
 
 #include <AP_HAL/AP_HAL.h>
 
-#include <iostream>
-
 /*
    open the sensor in constructor
 */
@@ -36,7 +34,6 @@ void AP_RPM_SITL::update(void)
     if (sitl == nullptr) {
         return;
     }
-    printf("Boas\n");
     const uint32_t motor_mask = sitl->state.motor_mask;
     uint8_t count = 0;
     // find the motor with the corresponding index
