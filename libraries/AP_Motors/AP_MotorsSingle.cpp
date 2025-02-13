@@ -19,8 +19,6 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 
-#include <iostream>
-
 extern const AP_HAL::HAL& hal;
 
 // init
@@ -69,7 +67,6 @@ void AP_MotorsSingle::output_to_motors()
     if (!initialised_ok()) {
         return;
     }
-    printf("BOAS\n");
     switch (_spool_state) {
         case SpoolState::SHUT_DOWN:
             // sends minimum values out to the motors
