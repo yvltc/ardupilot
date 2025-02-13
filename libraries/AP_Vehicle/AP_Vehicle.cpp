@@ -456,6 +456,7 @@ void AP_Vehicle::setup()
 
 void AP_Vehicle::loop()
 {
+    printf("Boas\n");
     scheduler.loop();
     G_Dt = scheduler.get_loop_period_s();
 
@@ -672,7 +673,6 @@ bool AP_Vehicle::is_crashed() const
 // update the harmonic notch filter for throttle based notch
 void AP_Vehicle::update_throttle_notch(AP_InertialSensor::HarmonicNotch &notch)
 {
-    printf("BOas\n");
 #if APM_BUILD_TYPE(APM_BUILD_ArduPlane)||APM_BUILD_COPTER_OR_HELI||APM_BUILD_TYPE(APM_BUILD_Rover)
     const float ref_freq = notch.params.center_freq_hz();
     const float ref = notch.params.reference();
