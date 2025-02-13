@@ -672,6 +672,7 @@ bool AP_Vehicle::is_crashed() const
 // update the harmonic notch filter for throttle based notch
 void AP_Vehicle::update_throttle_notch(AP_InertialSensor::HarmonicNotch &notch)
 {
+    printf("BOas\n");
 #if APM_BUILD_TYPE(APM_BUILD_ArduPlane)||APM_BUILD_COPTER_OR_HELI||APM_BUILD_TYPE(APM_BUILD_Rover)
     const float ref_freq = notch.params.center_freq_hz();
     const float ref = notch.params.reference();
@@ -680,7 +681,6 @@ void AP_Vehicle::update_throttle_notch(AP_InertialSensor::HarmonicNotch &notch)
 #if APM_BUILD_TYPE(APM_BUILD_ArduPlane)||APM_BUILD_COPTER_OR_HELI
     const AP_Motors* motors = AP::motors();
     const float motors_throttle = motors != nullptr ? MAX(0,motors->get_throttle_out()) : 0;
-    printf("Boas\n");
 #else  // APM_BUILD_Rover
     const AP_MotorsUGV *motors = AP::motors_ugv();
     const float motors_throttle = motors != nullptr ? abs(motors->get_throttle() / 100.0f) : 0;
