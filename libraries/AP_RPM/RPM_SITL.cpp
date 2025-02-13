@@ -36,6 +36,7 @@ void AP_RPM_SITL::update(void)
     if (sitl == nullptr) {
         return;
     }
+    printf("Boas\n");
     const uint32_t motor_mask = sitl->state.motor_mask;
     uint8_t count = 0;
     // find the motor with the corresponding index
@@ -44,7 +45,6 @@ void AP_RPM_SITL::update(void)
             if (count == instance) {
                 state.rate_rpm = sitl->state.rpm[i];
                 break;
-                printf("Boas\n");
             }
             count++;
         }
