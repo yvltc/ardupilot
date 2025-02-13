@@ -68,6 +68,8 @@ void AP_RPM::init(void)
         return;
     }
 
+    printf("Boas\n");
+
     convert_params();
 
     for (uint8_t i=0; i<RPM_MAX_INSTANCES; i++) {
@@ -104,7 +106,6 @@ void AP_RPM::init(void)
 #if AP_RPM_SIM_ENABLED
         case RPM_TYPE_SITL:
             drivers[i] = new AP_RPM_SITL(*this, i, state[i]);
-            printf("boas\n");
             break;
 #endif  // AP_RPM_SIM_ENABLED
         }
