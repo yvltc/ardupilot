@@ -71,30 +71,27 @@ void AP_RPM::init(void)
     convert_params();
 
     for (uint8_t i=0; i<RPM_MAX_INSTANCES; i++) {
+        printf("for\n");
         switch (_params[i].type) {
 #if AP_RPM_PIN_ENABLED
         case RPM_TYPE_PWM:
         case RPM_TYPE_PIN:
-            printf("RPM_PIN\n");
             // PWM option same as PIN option, for upgrade
             drivers[i] = new AP_RPM_Pin(*this, i, state[i]);
             break;
 #endif  // AP_RPM_PIN_ENABLED
 #if AP_RPM_ESC_TELEM_ENABLED
         case RPM_TYPE_ESC_TELEM:
-            printf("RPM_ESC\n");
             drivers[i] = new AP_RPM_ESC_Telem(*this, i, state[i]);
             break;
 #endif  // AP_RPM_ESC_TELEM_ENABLED
 #if AP_RPM_EFI_ENABLED
         case RPM_TYPE_EFI:
-            printf("RPM_EFI\n");
             drivers[i] = new AP_RPM_EFI(*this, i, state[i]);
             break;
 #endif  // AP_RPM_EFI_ENABLED
 #if AP_RPM_GENERATOR_ENABLED
         case RPM_TYPE_GENERATOR:
-            printf("RPM_GEN\n");
             drivers[i] = new AP_RPM_Generator(*this, i, state[i]);
             break;
 #endif  // AP_RPM_GENERATOR_ENABLED
@@ -102,13 +99,11 @@ void AP_RPM::init(void)
         // include harmonic notch last
         // this makes whatever process is driving the dynamic notch appear as an RPM value
         case RPM_TYPE_HNTCH:
-            printf("RPM_HNTCH\n");
             drivers[i] = new AP_RPM_HarmonicNotch(*this, i, state[i]);
             break;
 #endif  // AP_RPM_HARMONICNOTCH_ENABLED
 #if AP_RPM_SIM_ENABLED
         case RPM_TYPE_SITL:
-            printf("RPM_SITL\n");
             drivers[i] = new AP_RPM_SITL(*this, i, state[i]);
             break;
 #endif  // AP_RPM_SIM_ENABLED
