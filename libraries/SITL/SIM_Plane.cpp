@@ -63,7 +63,7 @@ Plane::Plane(const char *frame_str) :
         custom_dynamics = true;
         elevons = true;
         mass = 1.2650;
-        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
         coefficient.s = 0.44;
         coefficient.b = 1.55;
@@ -515,7 +515,6 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (ice_engine) {
         thrust = icengine.update(input);
-        printf("ice_engine\n");
     }
 
     // calculate angle of attack
