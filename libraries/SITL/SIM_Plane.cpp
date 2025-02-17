@@ -63,7 +63,7 @@ Plane::Plane(const char *frame_str) :
         custom_dynamics = true;
         elevons = true;
         mass = 1.2650;
-        // thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
+        thrust_scale = (mass * GRAVITY_MSS) / hover_throttle;
 
         coefficient.s = 0.44;
         coefficient.b = 1.55;
@@ -74,8 +74,8 @@ Plane::Plane(const char *frame_str) :
         coefficient.c_lift_q = 3.1851;
         coefficient.oswald = 0.9;
         coefficient.alpha_stall = 0.2618;
-        coefficient.c_drag_deltae = 0.0024;
-        coefficient.c_drag_p = 0.0017;        
+        // coefficient.c_drag_deltae = 0.0024;
+        // coefficient.c_drag_p = 0.0017;        
         coefficient.c_y_0 = 0;
         coefficient.c_y_b = -0.0025;
         coefficient.c_y_p = 0.2620;
