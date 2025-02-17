@@ -515,6 +515,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (ice_engine) {
         thrust = icengine.update(input);
+        printf("ice_engine\n");
     }
 
     // calculate angle of attack
