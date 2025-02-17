@@ -27,8 +27,6 @@
 
 #include <AP_Logger/AP_Logger.h>
 
-#include <iostream>
-
 extern const AP_HAL::HAL& hal;
 
 // table of user settable parameters
