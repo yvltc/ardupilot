@@ -76,7 +76,7 @@ Plane::Plane(const char *frame_str) :
         coefficient.alpha_stall = 0.2618;
         coefficient.c_drag_deltae = 0.0024;
         // coefficient.c_drag_p = 0.0017; 
-        coefficient.c_drag_p = 0.01;       
+        coefficient.c_drag_p = 0.05;       
         coefficient.c_y_0 = 0;
         coefficient.c_y_b = -0.0025;
         coefficient.c_y_p = 0.2620;
