@@ -456,6 +456,7 @@ void AP_Vehicle::setup()
 
 void AP_Vehicle::loop()
 {
+    printf("Boas\n");
     scheduler.loop();
     G_Dt = scheduler.get_loop_period_s();
 
