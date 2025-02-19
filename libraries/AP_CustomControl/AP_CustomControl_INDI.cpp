@@ -435,7 +435,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     if (PID_debugger == 1)
     {
-        ddmax = 30*M_PI/180;
+        ddmax = 45*M_PI/180;
         // char buffer[80];
         Vector3f K_p = {1,-0.11,1};
         Vector3f K_d = {-0.04,-0.3,0};
