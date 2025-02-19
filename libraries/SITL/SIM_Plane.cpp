@@ -508,7 +508,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     }
     
     float thrust     = throttle;
-    printf("Thrust (input): %f\n", thrust);
+    // printf("Thrust (input): %f\n", thrust);
 
     battery_voltage = sitl->batt_voltage - 0.7*throttle;
     battery_current = (battery_voltage/sitl->batt_voltage)*50.0f*sq(throttle);
@@ -571,11 +571,11 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     // simulate engine RPM
     motor_mask |= (1U<<2);
     rpm[2] = thrust * 7000;
-    printf("RPM: %f\n", rpm[2]);
+    // printf("RPM: %f\n", rpm[2]);
     
     // scale thrust to newtons
     thrust *= thrust_scale;
-    printf("Thrust scaled to newtons: %f\n", thrust);
+    // printf("Thrust scaled to newtons: %f\n", thrust);
 
     accel_body = Vector3f(thrust, 0, 0) + force;
     
