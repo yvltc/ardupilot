@@ -58,10 +58,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // u_0.z = 0.6428;
 
     // saturation limits
-    if (PID_debugger == 1)
-        ddmax = 45*M_PI/180;
-    else
-        ddmax = 30*M_PI/180;
+    ddmax = 30*M_PI/180;
     dtmax = 1;
     dtmin = 0;
 
@@ -438,6 +435,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     if (PID_debugger == 1)
     {
+        ddmax = 30*M_PI/180;
         // char buffer[80];
         Vector3f K_p = {1,-0.11,1};
         Vector3f K_d = {-0.04,-0.3,0};
