@@ -328,8 +328,8 @@ void SIMState::_simulator_servos(struct sitl_input &input)
             input.servos[i] = 0;
         } else {
             input.servos[i] = pwm_output[i];
-            printf("Boas\n");
         }
+        printf("boas\n");
     }
 
     if (_sitl != nullptr) {
