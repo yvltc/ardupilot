@@ -277,6 +277,7 @@ void SIMState::fdm_input_local(void)
  */
 void SIMState::_simulator_servos(struct sitl_input &input)
 {
+    printf("boas\n");
     // output at chosen framerate
     uint32_t now = AP_HAL::micros();
 
@@ -329,7 +330,6 @@ void SIMState::_simulator_servos(struct sitl_input &input)
         } else {
             input.servos[i] = pwm_output[i];
         }
-        printf("boas\n");
     }
 
     if (_sitl != nullptr) {
