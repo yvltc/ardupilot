@@ -72,6 +72,7 @@ using namespace AP_HAL;
 void SIMState::update()
 {
     static bool init_done;
+    printf("boas\n");
     if (!init_done) {
         init_done = true;
         sitl_model = SITL::AP_SIM_FRAME_CLASS::create(AP_SIM_FRAME_STRING);
@@ -277,7 +278,6 @@ void SIMState::fdm_input_local(void)
  */
 void SIMState::_simulator_servos(struct sitl_input &input)
 {
-    printf("boas\n");
     // output at chosen framerate
     uint32_t now = AP_HAL::micros();
 
