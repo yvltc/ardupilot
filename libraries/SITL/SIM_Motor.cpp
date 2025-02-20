@@ -19,6 +19,8 @@
 #include "SIM_Motor.h"
 #include <AP_Motors/AP_Motors.h>
 
+#include <iostream>
+
 using namespace SITL;
 
 // calculate rotational accel and thrust for a motor
@@ -214,6 +216,7 @@ float Motor::pwm_to_command(float pwm) const
 */
 float Motor::calc_thrust(float command, float air_density, float velocity_in, float voltage_scale) const
 {
+    printf("boas\n");
     float velocity_out = voltage_scale * max_outflow_velocity * sqrtf((1-mot_expo)*command + mot_expo*sq(command));
     float ret = 0.5 * air_density * effective_prop_area * (sq(velocity_out) - sq(velocity_in));
 #if 0
