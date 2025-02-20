@@ -24,6 +24,8 @@
 
 #include <AP_Baro/AP_Baro.h>
 
+#include <iostream>
+
 extern const AP_HAL::HAL& hal;
 
 using namespace AP_HAL;
@@ -326,6 +328,7 @@ void SIMState::_simulator_servos(struct sitl_input &input)
             input.servos[i] = 0;
         } else {
             input.servos[i] = pwm_output[i];
+            printf("Boas\n");
         }
     }
 
