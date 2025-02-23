@@ -24,8 +24,6 @@
 
 #include <AP_Baro/AP_Baro.h>
 
-#include <iostream>
-
 extern const AP_HAL::HAL& hal;
 
 using namespace AP_HAL;
@@ -72,7 +70,6 @@ using namespace AP_HAL;
 void SIMState::update()
 {
     static bool init_done;
-    printf("boas\n");
     if (!init_done) {
         init_done = true;
         sitl_model = SITL::AP_SIM_FRAME_CLASS::create(AP_SIM_FRAME_STRING);
