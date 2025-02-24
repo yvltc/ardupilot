@@ -443,7 +443,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Vector3f K_i = {-70,-150,0};
         Vector3f K_p = {1,-0.11,10};
         Vector3f K_d = {-0.04,-0.3,1};
-        Vector3f K_i = {-70,-150,-70};
+        Vector3f K_i = {-70,-150,-1};
         // Vector3f K_ff = {0.345, 0.345, 0};
 
         // {p, i, d, ...}
