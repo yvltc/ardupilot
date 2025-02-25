@@ -185,9 +185,9 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "Timestamp: %d miliseconds", timestamp);
 
     //gcs().send_text(MAV_SEVERITY_INFO, "roll INDI custom controller working");
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
+    // snprintf(buffer, sizeof(buffer), "roll INDI custom controller working, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_0[0]*180/M_PI,  u_0[1]*180/M_PI, u_0[2]*100);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
@@ -443,7 +443,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Vector3f K_i = {-70,-150,0};
         Vector3f K_p = {1,-0.11,50};
         Vector3f K_d = {-0.04,-0.3,0};
-        Vector3f K_i = {-70,-150,100};
+        Vector3f K_i = {-70,-150,200};
         // Vector3f K_ff = {0.345, 0.345, 0};
 
         // {p, i, d, ...}
