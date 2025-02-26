@@ -488,7 +488,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         saturate(-ddmax, ddmax, &u.x);
         saturate(-ddmax, ddmax, &u.y);
         saturate(dtmin, dtmax, &u.z);
-        // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+        sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
         // printf("%f\n", roll_target*M_PI/18000);
 
         u_0 = u;
