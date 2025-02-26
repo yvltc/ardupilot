@@ -442,7 +442,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Vector3f K_d = {-0.04,-0.3,0};
         // Vector3f K_i = {-70,-150,0};
         Vector3f K_p = {1,-0.11,5};
-        Vector3f K_d = {-0.04,-40,10};
+        Vector3f K_d = {-0.04,-40,1000};
         Vector3f K_i = {-70,-1000,100};
         // Vector3f K_ff = {0.345, 0.345, 0};
 
@@ -488,7 +488,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         saturate(-ddmax, ddmax, &u.x);
         saturate(-ddmax, ddmax, &u.y);
         saturate(dtmin, dtmax, &u.z);
-        // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+        sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
         // printf("%f\n", roll_target*M_PI/18000);
 
         u_0 = u;
