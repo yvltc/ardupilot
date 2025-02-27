@@ -118,19 +118,19 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     _CF_C = 0.8333;
     _CF_D = 0.1667;
 
-    // _CFu_A = 0.9048;
-    // _CFu_B = 0.0952;
-    // _CFu_C = 0.9524;
-    // _CFu_D = 0.0476;
+    _CFu_A = 0.9048;
+    _CFu_B = 0.0952;
+    _CFu_C = 0.9524;
+    _CFu_D = 0.0476;
     // _CF_A = 0;
     // _CF_B = 1;
     // _CF_C = 0.5;
     // _CF_D = 0.5;
 
-    _CFu_A = 0.8182;
-    _CFu_B = 0.1818;
-    _CFu_C = 0.9091;
-    _CFu_D = 0.09091;
+    // _CFu_A = 0.8182;
+    // _CFu_B = 0.1818;
+    // _CFu_C = 0.9091;
+    // _CFu_D = 0.09091;
 
     // _CFu_A = 0.3333;
     // _CFu_B = 0.6667;
@@ -443,7 +443,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Vector3f K_i = {-70,-150,0};
         Vector3f K_p = {1,-0.11,5};
         Vector3f K_d = {-0.04,-40,0};
-        Vector3f K_i = {-70,-1000,-10};
+        Vector3f K_i = {-70,-1000,-1000};
         // Vector3f K_ff = {0.345, 0.345, 0};
 
         // {p, i, d, ...}
@@ -488,7 +488,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         saturate(-ddmax, ddmax, &u.x);
         saturate(-ddmax, ddmax, &u.y);
         saturate(dtmin, dtmax, &u.z);
-        sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+        // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
         // printf("%f\n", roll_target*M_PI/18000);
 
         u_0 = u;
