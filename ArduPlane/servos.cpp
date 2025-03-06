@@ -1070,10 +1070,10 @@ void Plane::servos_auto_trim(void)
         return;
     }
     if (!arming.is_armed_and_safety_off()) {
+        printf("boas");
         return;
     }
     if (!is_flying()) {
-        printf("boas");
         return;
     }
 #if HAL_QUADPLANE_ENABLED
