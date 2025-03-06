@@ -187,7 +187,8 @@ void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, S
     SRV_Channels::set_output_scaled(func1_out, out1);
     SRV_Channels::set_output_scaled(func2_out, out2);
     printf("%f %f\n", out1, out2);
-    printf("%f %f\n", SRV_Channels::get_output_scaled(func1_out), SRV_Channels::get_output_scaled(func2_out));
+    // printf("%f %f\n", SRV_Channels::get_output_scaled(func1_out), SRV_Channels::get_output_scaled(func2_out));
+    // 1420 aqui mas 1370 no log?
 }
 
 
@@ -1103,6 +1104,7 @@ void Plane::servos_auto_trim(void)
 
     g2.servo_channels.adjust_trim(SRV_Channel::k_elevon_left,  pitch_I - roll_I);
     g2.servo_channels.adjust_trim(SRV_Channel::k_elevon_right, pitch_I + roll_I);
+    printf("boas");
 
     g2.servo_channels.adjust_trim(SRV_Channel::k_vtail_left,  pitch_I);
     g2.servo_channels.adjust_trim(SRV_Channel::k_vtail_right, pitch_I);
