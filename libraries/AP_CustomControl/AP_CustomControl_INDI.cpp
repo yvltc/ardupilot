@@ -58,7 +58,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // u_0.z = 0.6428;
 
     // saturation limits
-    ddmax = 30*M_PI/180;
+    ddmax = 45*M_PI/180;
     dtmax = 1;
     dtmin = 0;
 
