@@ -19,6 +19,8 @@
 #include "Plane.h"
 #include <utility>
 
+#include <iostream>
+
 /*****************************************
 * Throttle slew limit
 *****************************************/
@@ -170,6 +172,7 @@ void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, S
     // the order is setup so that non-reversed servos go "up", and
     // func1 is the "left" channel. Users can adjust with channel
     // reversal as needed
+    printf("boas\n");
     float in1 = SRV_Channels::get_output_scaled(func1_in);
     float in2 = SRV_Channels::get_output_scaled(func2_in);
 
