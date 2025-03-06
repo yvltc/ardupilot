@@ -172,7 +172,6 @@ void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, S
     // the order is setup so that non-reversed servos go "up", and
     // func1 is the "left" channel. Users can adjust with channel
     // reversal as needed
-    printf("boas\n");
     float in1 = SRV_Channels::get_output_scaled(func1_in);
     float in2 = SRV_Channels::get_output_scaled(func2_in);
 
@@ -187,6 +186,7 @@ void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, S
     float out2 = constrain_float((in2 + in1) * g.mixing_gain, -4500, 4500);
     SRV_Channels::set_output_scaled(func1_out, out1);
     SRV_Channels::set_output_scaled(func2_out, out2);
+    printf("%d %d\n", out1, out2);
 }
 
 
