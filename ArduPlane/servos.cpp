@@ -1070,7 +1070,7 @@ void Plane::servos_auto_trim(void)
         return;
     }
     if (!arming.is_armed_and_safety_off()) {
-        printf("boas");
+        printf("boas\n");
         return;
     }
     if (!is_flying()) {
