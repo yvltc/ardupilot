@@ -1067,6 +1067,7 @@ void Plane::servos_auto_trim(void)
 {
     // only in auto modes and FBWA
     if (!control_mode->does_auto_throttle() && control_mode != &mode_fbwa) {
+        printf("boas");
         return;
     }
     if (!arming.is_armed_and_safety_off()) {
@@ -1104,7 +1105,7 @@ void Plane::servos_auto_trim(void)
 
     g2.servo_channels.adjust_trim(SRV_Channel::k_elevon_left,  pitch_I - roll_I);
     g2.servo_channels.adjust_trim(SRV_Channel::k_elevon_right, pitch_I + roll_I);
-    printf("boas");
+    
 
     g2.servo_channels.adjust_trim(SRV_Channel::k_vtail_left,  pitch_I);
     g2.servo_channels.adjust_trim(SRV_Channel::k_vtail_right, pitch_I);
