@@ -1067,13 +1067,13 @@ void Plane::servos_auto_trim(void)
 {
     // only in auto modes and FBWA
     if (!control_mode->does_auto_throttle() && control_mode != &mode_fbwa) {
-        printf("boas");
         return;
     }
     if (!arming.is_armed_and_safety_off()) {
         return;
     }
     if (!is_flying()) {
+        printf("boas");
         return;
     }
 #if HAL_QUADPLANE_ENABLED
