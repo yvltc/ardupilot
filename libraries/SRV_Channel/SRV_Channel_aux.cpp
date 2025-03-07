@@ -368,6 +368,7 @@ SRV_Channels::set_output_pwm_trimmed(SRV_Channel::Aux_servo_function_t function,
                 value2 = 1500 - value + channels[i].get_trim();
             } else {
                 value2 = value - 1500 + channels[i].get_trim();
+                printf("%d\n", channels[i].get_trim());
             }
             channels[i].set_output_pwm(constrain_int16(value2,channels[i].get_output_min(),channels[i].get_output_max()));
             channels[i].output_ch();
@@ -689,7 +690,6 @@ void SRV_Channels::set_esc_scaling_for(SRV_Channel::Aux_servo_function_t functio
  */
 void SRV_Channels::adjust_trim(SRV_Channel::Aux_servo_function_t function, float v)
 {
-    printf("boas\n");
     if (is_zero(v)) {
         return;
     }
