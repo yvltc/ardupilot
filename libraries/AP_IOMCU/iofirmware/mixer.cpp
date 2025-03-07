@@ -21,6 +21,8 @@
 #include <SRV_Channel/SRV_Channel.h>
 #include "iofirmware.h"
 
+#include <iostream>
+
 #define ANGLE_SCALE ((int32_t)4500)
 #define RANGE_SCALE ((int32_t)1000)
 
@@ -78,6 +80,7 @@ uint16_t AP_IOMCU_FW::mix_output_angle(uint8_t channel, int16_t angle) const
     const uint16_t &srv_max = mixing.servo_max[channel];
     const uint16_t &srv_trim = mixing.servo_trim[channel];
     const uint16_t &reversed = mixing.servo_reversed[channel];
+    printf("boas\n");
     if (reversed) {
         angle = -angle;
     }
