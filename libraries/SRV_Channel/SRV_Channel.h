@@ -25,8 +25,6 @@
 
 #include "SRV_Channel_config.h"
 
-#include <iostream>
-
 static_assert(NUM_SERVO_CHANNELS <= 32, "More than 32 servos not supported");
 
 class SRV_Channels;
@@ -245,7 +243,6 @@ public:
         return servo_max;
     }
     uint16_t get_trim(void) const {
-        printf("%d\n", servo_trim.get());
         return servo_trim;
     }
 
