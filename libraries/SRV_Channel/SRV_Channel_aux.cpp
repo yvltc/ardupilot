@@ -22,6 +22,8 @@
 #include <RC_Channel/RC_Channel.h>
 #include <GCS_MAVLink/GCS.h>
 
+#include <iostream>
+
 #if NUM_SERVO_CHANNELS == 0
 #pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
@@ -687,6 +689,7 @@ void SRV_Channels::set_esc_scaling_for(SRV_Channel::Aux_servo_function_t functio
  */
 void SRV_Channels::adjust_trim(SRV_Channel::Aux_servo_function_t function, float v)
 {
+    printf("boas\n");
     if (is_zero(v)) {
         return;
     }
