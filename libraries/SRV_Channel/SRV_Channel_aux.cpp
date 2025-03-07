@@ -22,8 +22,6 @@
 #include <RC_Channel/RC_Channel.h>
 #include <GCS_MAVLink/GCS.h>
 
-#include <iostream>
-
 #if NUM_SERVO_CHANNELS == 0
 #pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
@@ -367,8 +365,7 @@ SRV_Channels::set_output_pwm_trimmed(SRV_Channel::Aux_servo_function_t function,
             if (channels[i].get_reversed()) {
                 value2 = 1500 - value + channels[i].get_trim();
             } else {
-                value2 = value - 1500 + channels[i].get_trim();
-                printf("%d\n", channels[i].get_trim());
+                value2 = value - 1500 + channels[i].get_trim();               
             }
             channels[i].set_output_pwm(constrain_int16(value2,channels[i].get_output_min(),channels[i].get_output_max()));
             channels[i].output_ch();
