@@ -191,7 +191,6 @@ float AP_CustomControl_INDI::get_roll_out(float roll_target)
 
     // return what ArduPlane main controller outputted
     //return SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
-    printf("%f\n", SRV_Channels::get_trim());
     return -u_0[0]*18000/M_PI;
     // return u_0[0]*18000/M_PI;
 }
