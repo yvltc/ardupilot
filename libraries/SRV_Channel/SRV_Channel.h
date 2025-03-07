@@ -245,7 +245,7 @@ public:
         return servo_max;
     }
     uint16_t get_trim(void) const {
-        printf("%d\n", servo_trim);
+        printf("%d\n", servo_trim.get());
         return servo_trim;
     }
 
