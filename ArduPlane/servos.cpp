@@ -187,7 +187,7 @@ void Plane::channel_function_mixer(SRV_Channel::Aux_servo_function_t func1_in, S
     SRV_Channels::set_output_scaled(func1_out, out1);
     SRV_Channels::set_output_scaled(func2_out, out2);
     // printf("%f %d\n", g.mixing_gain.get(), g.mixing_offset.get()); // 0.5 gain 0 offset
-    // printf("%f %f\n", out1, out2);
+    printf("%f %f\n", out1, out2);
     // printf("%f %f\n", SRV_Channels::get_output_scaled(func1_out), SRV_Channels::get_output_scaled(func2_out));
     // 1420 aqui mas 1370 no log?
 }
