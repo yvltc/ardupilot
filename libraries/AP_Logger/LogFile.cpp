@@ -247,7 +247,7 @@ void AP_Logger::Write_RCOUT(void)
     }
 #endif
 
-    printf("%d\n", hal.rcout->read(18));
+    printf("%d\n", hal.rcout->read(0));
 
 }
 
