@@ -19,6 +19,8 @@
 #include "AP_Logger_MAVLink.h"
 #include "LoggerMessageWriter.h"
 
+#include <iostream>
+
 extern const AP_HAL::HAL& hal;
 
 
@@ -182,6 +184,7 @@ void AP_Logger::Write_RCIN(void)
 // Write an SERVO packet
 void AP_Logger::Write_RCOUT(void)
 {
+    printf("boas\n");
     const uint32_t enabled_mask = ~SRV_Channels::get_output_channel_mask(SRV_Channel::k_GPIO);
 
     if ((enabled_mask & 0x3FFF) != 0) {
