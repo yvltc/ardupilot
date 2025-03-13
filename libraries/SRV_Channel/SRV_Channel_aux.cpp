@@ -22,6 +22,8 @@
 #include <RC_Channel/RC_Channel.h>
 #include <GCS_MAVLink/GCS.h>
 
+#include <iostream>
+
 #if NUM_SERVO_CHANNELS == 0
 #pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
