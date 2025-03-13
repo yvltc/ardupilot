@@ -593,6 +593,7 @@ SRV_Channel *SRV_Channels::get_channel_for(SRV_Channel::Aux_servo_function_t fun
 
 void SRV_Channels::set_output_scaled(SRV_Channel::Aux_servo_function_t function, float value)
 {
+    printf("boas\n");
     if (SRV_Channel::valid_function(function)) {
         functions[function].output_scaled = value;
         SRV_Channel::have_pwm_mask &= ~functions[function].channel_mask;
