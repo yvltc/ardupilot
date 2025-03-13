@@ -26,6 +26,8 @@
 #include <AP_Logger/AP_Logger.h>
 #include <AP_KDECAN/AP_KDECAN.h>
 
+#include <iostream>
+
 #if HAL_MAX_CAN_PROTOCOL_DRIVERS
   #include <AP_CANManager/AP_CANManager.h>
   #include <AP_DroneCAN/AP_DroneCAN.h>
@@ -469,6 +471,7 @@ void SRV_Channels::calc_pwm(void)
 // set output value for a specific function channel as a pwm value
 void SRV_Channels::set_output_pwm_chan(uint8_t chan, uint16_t value)
 {
+    printf("boas\n");
     if (chan < NUM_SERVO_CHANNELS) {
         channels[chan].set_output_pwm(value);
     }
