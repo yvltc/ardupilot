@@ -719,6 +719,7 @@ void SRV_Channels::adjust_trim(SRV_Channel::Aux_servo_function_t function, float
 // get pwm output for the first channel of the given function type.
 bool SRV_Channels::get_output_pwm(SRV_Channel::Aux_servo_function_t function, uint16_t &value)
 {
+    printf("boas\n");
     uint8_t chan;
     if (!find_channel(function, chan)) {
         return false;
@@ -728,7 +729,6 @@ bool SRV_Channels::get_output_pwm(SRV_Channel::Aux_servo_function_t function, ui
     }
     channels[chan].calc_pwm(functions[function].output_scaled);
     value = channels[chan].get_output_pwm();
-    printf("%d\n", value);
     return true;
 }
 
