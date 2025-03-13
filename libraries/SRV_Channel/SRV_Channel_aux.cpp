@@ -339,6 +339,7 @@ void SRV_Channels::enable_by_mask(uint32_t mask)
  */
 void SRV_Channels::set_output_pwm(SRV_Channel::Aux_servo_function_t function, uint16_t value)
 {
+    printf("boas\n")
     if (!function_assigned(function)) {
         return;
     }
@@ -719,7 +720,6 @@ void SRV_Channels::adjust_trim(SRV_Channel::Aux_servo_function_t function, float
 // get pwm output for the first channel of the given function type.
 bool SRV_Channels::get_output_pwm(SRV_Channel::Aux_servo_function_t function, uint16_t &value)
 {
-    printf("boas\n");
     uint8_t chan;
     if (!find_channel(function, chan)) {
         return false;
