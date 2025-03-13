@@ -726,6 +726,7 @@ bool SRV_Channels::get_output_pwm(SRV_Channel::Aux_servo_function_t function, ui
     }
     channels[chan].calc_pwm(functions[function].output_scaled);
     value = channels[chan].get_output_pwm();
+    printf("%f\n", value);
     return true;
 }
 

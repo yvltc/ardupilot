@@ -19,8 +19,6 @@
 #include "AP_Logger_MAVLink.h"
 #include "LoggerMessageWriter.h"
 
-#include <iostream>
-
 extern const AP_HAL::HAL& hal;
 
 /*
@@ -246,8 +244,6 @@ void AP_Logger::Write_RCOUT(void)
         WriteBlock(&pkt3, sizeof(pkt3));
     }
 #endif
-
-    printf("%d\n", hal.rcout->read(0));
 
 }
 
