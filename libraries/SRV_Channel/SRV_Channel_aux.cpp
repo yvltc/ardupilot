@@ -22,8 +22,6 @@
 #include <RC_Channel/RC_Channel.h>
 #include <GCS_MAVLink/GCS.h>
 
-#include <iostream>
-
 #if NUM_SERVO_CHANNELS == 0
 #pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
@@ -595,7 +593,6 @@ void SRV_Channels::set_output_scaled(SRV_Channel::Aux_servo_function_t function,
 {
     if (SRV_Channel::valid_function(function)) {
         functions[function].output_scaled = value;
-        printf("%f\n", value);
         SRV_Channel::have_pwm_mask &= ~functions[function].channel_mask;
     }
 }
