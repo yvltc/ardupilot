@@ -339,7 +339,7 @@ void SRV_Channels::enable_by_mask(uint32_t mask)
  */
 void SRV_Channels::set_output_pwm(SRV_Channel::Aux_servo_function_t function, uint16_t value)
 {
-    printf("boas\n")
+    printf("boas\n");
     if (!function_assigned(function)) {
         return;
     }
