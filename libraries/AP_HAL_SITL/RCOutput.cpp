@@ -7,6 +7,8 @@
 
 #include "RCOutput.h"
 
+#include <iostream>
+
 #define ENABLE_DEBUG 0
 
 #if ENABLE_DEBUG
@@ -65,6 +67,7 @@ void RCOutput::write(uint8_t ch, uint16_t period_us)
             _pending[ch] = period_us;
         } else {
             _sitlState->pwm_output[ch] = period_us;
+            printf("boas\n");
         }
     }
 }
