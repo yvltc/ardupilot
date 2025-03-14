@@ -32,9 +32,13 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_KQ", 5, AP_CustomControl_INDI, Kq, 8.8438),
 
-    AP_GROUPINFO("INDI_LL", 6, AP_CustomControl_INDI, lambda, 0.3),
+    AP_GROUPINFO("INDI_LL1", 6, AP_CustomControl_INDI, lambda_1, 0.3),
 
-    AP_GROUPINFO("INDI_DEBUG", 7, AP_CustomControl_INDI, PID_debugger, 0),
+    AP_GROUPINFO("INDI_LL2", 7, AP_CustomControl_INDI, lambda_2, 0.3),
+
+    AP_GROUPINFO("INDI_LL3", 8, AP_CustomControl_INDI, lambda_3, 0.3),
+
+    AP_GROUPINFO("INDI_DEBUG", 9, AP_CustomControl_INDI, PID_debugger, 0),
 
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
@@ -350,9 +354,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // niu.y = Ktt*error[1] - Kq*q; 
     niu.z = KVt*error[2];
 
-    du.x = invG.a.x*lambda*(niu.x - p_dot) + invG.a.y*lambda*(niu.y - q_dot) + invG.a.z*lambda*(niu.z - Vt_dot);
-    du.y = invG.b.x*lambda*(niu.x - p_dot) + invG.b.y*lambda*(niu.y - q_dot) + invG.b.z*lambda*(niu.z - Vt_dot);
-    du.z = invG.c.x*lambda*(niu.x - p_dot) + invG.c.y*lambda*(niu.y - q_dot) + invG.c.z*lambda*(niu.z - Vt_dot);
+    du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
+    du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
+    du.z = invG.c.x*lambda_3*(niu.x - p_dot) + invG.c.y*lambda_3*(niu.y - q_dot) + invG.c.z*lambda_3*(niu.z - Vt_dot);
 
     // test
     // u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
