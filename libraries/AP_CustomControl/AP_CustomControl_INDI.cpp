@@ -117,14 +117,14 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     xSOD_u.z = 0;
 
     // command filter
-    // _CF_A = 0.6667;
-    // _CF_B = 0.3333;
-    // _CF_C = 0.8333;
-    // _CF_D = 0.1667;
-    _CF_A = 0.9608;
-    _CF_B = 0.0392;
-    _CF_C = 0.9804;
-    _CF_D = 0.0196;
+    _CF_A = 0.6667;
+    _CF_B = 0.3333;
+    _CF_C = 0.8333;
+    _CF_D = 0.1667;
+    // _CF_A = 0.9608;
+    // _CF_B = 0.0392;
+    // _CF_C = 0.9804;
+    // _CF_D = 0.0196;
 
     _CFu_A = 0.9048;
     _CFu_B = 0.0952;
