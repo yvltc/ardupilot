@@ -366,10 +366,10 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
     // u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
 
-    // u.x = u_0.x + du.x;
-    // u.y = u_0.y + du.y;
-    u.x = du.x;
-    u.y = du.y;
+    u.x = u_0.x + du.x;
+    u.y = u_0.y + du.y;
+    // u.x = du.x;
+    // u.y = du.y;
 
     // snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target, pitch_target, arspd_target);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
@@ -386,8 +386,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
-    saturate(-0.95*ddmax, 0.95*ddmax, &u.x);
-    saturate(-0.95*ddmax, 0.95*ddmax, &u.y);
+    saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
+    saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
 
     if (is_gliding)
     {
@@ -417,7 +417,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // snprintf(buffer, sizeof(buffer), "xCF: %.6f %.6f %.6f", xCF.x, xCF.y, xCF.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // command filter
-    sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
+    // sspace(u, xCF, CF_A, CF_B, CF_C, CF_D, &u, &xCF);
 
     // snprintf(buffer, sizeof(buffer), "uCF: %.6f %.6f %.6f", u.x, u.y, u.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
