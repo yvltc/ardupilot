@@ -121,10 +121,10 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // _CF_B = 0.3333;
     // _CF_C = 0.8333;
     // _CF_D = 0.1667;
-    _CF_A = 0.9608;
-    _CF_B = 0.0392;
-    _CF_C = 0.9804;
-    _CF_D = 0.0194;
+    _CF_A = 0.9802;
+    _CF_B = 0.0198;
+    _CF_C = 0.9901;
+    _CF_D = 0.0099;
 
     _CFu_A = 0.9048;
     _CFu_B = 0.0952;
