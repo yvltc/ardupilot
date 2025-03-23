@@ -252,9 +252,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     is_gliding = _tecs.get_is_gliding();
     if (is_gliding)
     {
-        invG.a = {-864.9306,864.9306,0};
-        invG.b = {-103.2060,-104.6034,0};
-        invG.c = {0,0,1};
+        // invG.a = {-864.9306,864.9306,0};
+        // invG.b = {-103.2060,-104.6034,0};
+        // invG.c = {0,0,1};
+        invG.a = {788.1938,0,-8.0174};
+        invG.b = {0,-94.0491, -0.1493};
+        invG.c = {0,0.8085,8.1225};
     }
     else
     {
