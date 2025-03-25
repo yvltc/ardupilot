@@ -126,15 +126,15 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     _CF_C = 0.2857;
     _CF_D = 0.7143;
 
-    // _CFu_A = 0.9048;
-    // _CFu_B = 0.0952;
-    // _CFu_C = 0.9524;
-    // _CFu_D = 0.0476;
+    _CFu_A = 0.9048;
+    _CFu_B = 0.0952;
+    _CFu_C = 0.9524;
+    _CFu_D = 0.0476;
 
-    _CFu_A = 0.8182;
-    _CFu_B = 0.1818;
-    _CFu_C = 0.9091;
-    _CFu_D = 0.09091;
+    // _CFu_A = 0.8182;
+    // _CFu_B = 0.1818;
+    // _CFu_C = 0.9091;
+    // _CFu_D = 0.09091;
 
     // _CFu_A = 0.3333;
     // _CFu_B = 0.6667;
