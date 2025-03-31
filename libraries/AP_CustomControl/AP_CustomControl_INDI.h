@@ -83,6 +83,7 @@ protected:
     AP_Float KVt;
     AP_Float Kp;
     AP_Float Kq;
+    AP_Float KVtdot;
     AP_Float lambda_1;
     AP_Float lambda_2;
     AP_Float lambda_3;

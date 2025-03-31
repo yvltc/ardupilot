@@ -40,6 +40,8 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_DEBUG", 9, AP_CustomControl_INDI, PID_debugger, 0),
 
+    AP_GROUPINFO("INDI_KVTDOT", 10, AP_CustomControl_INDI, KVtdot, 0),
+
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
     AP_GROUPEND
@@ -369,7 +371,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
     // niu.x = Kff*error[0] - Kp*p;
     // niu.y = Ktt*error[1] - Kq*q; 
-    niu.z = KVt*error[2];
+    // niu.z = KVt*error[2];
+    niu.z = KVt*error[2] - KVtdot*Vt_dot;
 
     du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
