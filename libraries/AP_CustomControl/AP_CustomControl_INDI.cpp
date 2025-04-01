@@ -282,9 +282,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // invG.b = {-43.5021,-43.5021,-0.1034};
         // invG.c = {0.4251,0.4251,7.7224};
         // fwztrim.G
-        invG.a = {788.1938,0,-8.0174};
-        invG.b = {0,-94.0491, -0.1493};
-        invG.c = {0,0.8085,8.1225};
+        // invG.a = {788.1938,0,-8.0174};
+        // invG.b = {0,-94.0491, -0.1493};
+        // invG.c = {0,0.8085,8.1225};
+        invG.a = {754.4282,0,-6.7004};
+        invG.b = {0,-90.0205, -0.0326};
+        invG.c = {0,0.8305,6.8018};
     }
 
     invert_G = invG.invert();
