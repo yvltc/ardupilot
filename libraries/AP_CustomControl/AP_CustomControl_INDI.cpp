@@ -464,13 +464,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         ddmax = 45*M_PI/180;
         // char buffer[80];
         // com drag certo deve ser 1 no K_p da velocidade e -150 no K_i de pitch
-        Vector3f K_p = {1,-0.11,1};
+        // Vector3f K_p = {1,-0.11,1};
+        // Vector3f K_d = {-0.04,-0.3,0};
+        // Vector3f K_i = {-70,-150,0};
+        Vector3f K_p = {1,-0.11,10};
         Vector3f K_d = {-0.04,-0.3,0};
         Vector3f K_i = {-70,-150,0};
-        // Vector3f K_p = {1,-0.11,5};
-        // Vector3f K_d = {-0.04,-40,0};
-        // Vector3f K_i = {-70,-1000,-100};
-        // Vector3f K_ff = {0.345, 0.345, 0};
 
         // {p, i, d, ...}
         // AC_PID rate_pid{0.08, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Roll
