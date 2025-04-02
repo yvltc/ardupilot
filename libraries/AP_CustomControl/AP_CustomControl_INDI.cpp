@@ -328,7 +328,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // angular_rates = {-0.3086, -0.3094, 19.9523};
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
-    char buffer[80];  // Create a buffer to hold the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -389,8 +389,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     // snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target, pitch_target, arspd_target);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
@@ -447,8 +447,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_ardupilot.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
     u_ardupilot.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
     u_ardupilot.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
-    // snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x/100,  u_ardupilot.y/100, u_ardupilot.z);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x/100,  u_ardupilot.y/100, u_ardupilot.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     u.z = KVt*error[2];
     u_0.x = u.x;
