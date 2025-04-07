@@ -525,7 +525,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
-    AP::logger().Write("INDI", "TimeUS,RollTarget,PitchTarget,AirspeedTarget, DeltaAil, DeltaElv, DeltaThr", 
+    AP::logger().Write("INDI", "TimeUS,RollTarget,PitchTarget,AirspeedTarget,DeltaAil,DeltaElv,DeltaThr", 
                                 "sddndd-",
                                 "F000000",
                                 "Qffffff",
