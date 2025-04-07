@@ -525,9 +525,14 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
-    AP::logger().Write("INDI", "TimeUS,RollTrgt", "Qf",
+    AP::logger().Write("INDI", "TimeUS,RollTarget (°),PitchTarget (°),AirspeedTarget (m/s), DeltaAil (°), DeltaElv (°), DeltaThr", "Qffffff",
                                 AP_HAL::micros64(),
-                                roll_target);
+                                roll_target,
+                                pitch_target,
+                                arspd_target,
+                                du.x,
+                                du.y,
+                                du.z);
 }
 
 // reset controller to avoid build up on the ground
