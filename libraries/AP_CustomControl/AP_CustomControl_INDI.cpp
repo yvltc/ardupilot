@@ -319,7 +319,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     aux.z = 0;
 
     //debug
-    roll_target = 3000;
+    // roll_target = 3000;
     // pitch_target = -0.0015*18000/M_PI;
     // arspd_target = 20;
     // phi = -0.0087;
