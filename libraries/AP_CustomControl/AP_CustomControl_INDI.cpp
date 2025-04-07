@@ -536,14 +536,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     //                             du.x*180/M_PI,
     //                             du.y*180/M_PI,
     //                             du.z);
-    AP::logger().Write("INDI", "TimeUS,RollTarget,PitchTarget,AirspeedTarget,DeltaAil,DeltaElv,DeltaThr", "Qffffff",
+    AP::logger().Write("INDI", "TimeUS,RollTarget,PitchTarget,AirspeedTarget", "Qfff",
                                 AP_HAL::micros64(),
                                 roll_target,
                                 pitch_target,
-                                arspd_target,
-                                du.x*180/M_PI,
-                                du.y*180/M_PI,
-                                du.z);
+                                arspd_target);
 }
 
 // reset controller to avoid build up on the ground
