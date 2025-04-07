@@ -526,8 +526,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     
 
     AP::logger().Write("INDI", "TimeUS,RollTarget,PitchTarget,AirspeedTarget,DeltaAil,DeltaElv,DeltaThr", 
-                                "sddndd-",
-                                "FBB000-",
+                                //"sddndd-",
+                                //"FBB000-",
                                 "Qffffff",
                                 AP_HAL::micros64(),
                                 roll_target,
