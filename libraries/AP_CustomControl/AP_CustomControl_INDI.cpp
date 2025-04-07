@@ -6,6 +6,7 @@
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Math/AP_Math.h>
+#include <AP_Logger/AP_Logger.h>
 #include <iostream>
 
 // table of user settable parameters
@@ -328,7 +329,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // angular_rates = {-0.3086, -0.3094, 19.9523};
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
-    char buffer[80];  // Create a buffer to hold the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -387,8 +388,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // u.x = du.x;
     // u.y = du.y;
 
-    snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target, pitch_target, arspd_target);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "target: %.6f %.6f %.6f", roll_target, pitch_target, arspd_target);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "error: %.6f %.6f %.6f", error.x, error.y, error.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
@@ -524,6 +525,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
+    AP::logger().Write("INDI", "TimeUS,RollTrgt", "Qf",
+                                AP_HAL::micros64(),
+                                roll_target);
 }
 
 // reset controller to avoid build up on the ground
