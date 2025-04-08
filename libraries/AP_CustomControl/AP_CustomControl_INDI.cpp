@@ -45,13 +45,13 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_FLG_RLL", 11, AP_CustomControl_INDI, flag_roll, 0),
 
-    AP_GROUPINFO("INDI_FLG_PTCH", 12, AP_CustomControl_INDI, flag_pitch, 0),
+    AP_GROUPINFO("INDI_FLG_PTC", 12, AP_CustomControl_INDI, flag_pitch, 0),
 
     AP_GROUPINFO("INDI_FLG_VT", 13, AP_CustomControl_INDI, flag_Vt, 0),
 
     AP_GROUPINFO("INDI_REF_RLL", 14, AP_CustomControl_INDI, ref_roll, 30),
 
-    AP_GROUPINFO("INDI_REF_PTCH", 15, AP_CustomControl_INDI, ref_pitch, 5),
+    AP_GROUPINFO("INDI_REF_PTC", 15, AP_CustomControl_INDI, ref_pitch, 5),
 
     AP_GROUPINFO("INDI_REF_VT", 16, AP_CustomControl_INDI, ref_Vt, 25),
 
@@ -277,9 +277,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     // referências fixas para testes
     if (flag_roll == 1) {
-        roll_target = ref_roll;
+        roll_target = ref_roll*100;     // ref in deg, target in centidegrees
     } else if (flag_pitch == 1) {
-        pitch_target = ref_pitch;
+        pitch_target = ref_pitch;       // ref in deg, target in centidegrees
     } else if (flag_Vt == 1) {
         arspd_target = ref_Vt;
     }
