@@ -38,22 +38,22 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
     AP_GROUPINFO("INDI_LL2", 7, AP_CustomControl_INDI, lambda_2, 0.3),
 
     AP_GROUPINFO("INDI_LL3", 8, AP_CustomControl_INDI, lambda_3, 0.3),
+   
+    AP_GROUPINFO("INDI_KVTDOT", 9, AP_CustomControl_INDI, KVtdot, 0),
+    
+    AP_GROUPINFO("INDI_DEBUG", 10, AP_CustomControl_INDI, PID_debugger, 0),
 
-    AP_GROUPINFO("INDI_DEBUG", 9, AP_CustomControl_INDI, PID_debugger, 0),
+    AP_GROUPINFO("FLAG_ROLL", 11, AP_CustomControl_INDI, flag_roll, 0),
 
-    AP_GROUPINFO("INDI_KVTDOT", 10, AP_CustomControl_INDI, KVtdot, 0),
+    AP_GROUPINFO("FLAG_PITCH", 12, AP_CustomControl_INDI, flag_pitch, 0),
 
-    AP_GROUPINFO("INDI_FLAG_ROLL", 11, AP_CustomControl_INDI, flag_roll, 0),
+    AP_GROUPINFO("FLAG_VT", 13, AP_CustomControl_INDI, flag_Vt, 0),
 
-    AP_GROUPINFO("INDI_FLAG_PITCH", 12, AP_CustomControl_INDI, flag_pitch, 0),
+    AP_GROUPINFO("REF_ROLL", 14, AP_CustomControl_INDI, ref_roll, 30),
 
-    AP_GROUPINFO("INDI_FLAG_VT", 13, AP_CustomControl_INDI, flag_Vt, 0),
+    AP_GROUPINFO("REF_PITCH", 15, AP_CustomControl_INDI, ref_pitch, 5),
 
-    AP_GROUPINFO("INDI_REF_ROLL", 14, AP_CustomControl_INDI, ref_roll, 30),
-
-    AP_GROUPINFO("INDI_REF_PITCH", 15, AP_CustomControl_INDI, ref_pitch, 5),
-
-    AP_GROUPINFO("INDI_REF_VT", 16, AP_CustomControl_INDI, ref_Vt, 25),
+    AP_GROUPINFO("REF_VT", 16, AP_CustomControl_INDI, ref_Vt, 25),
 
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
@@ -278,9 +278,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // referências fixas para testes
     if (flag_roll == 1) {
         roll_target = ref_roll;
-    } else if (flag_pitch) {
+    } else if (flag_pitch == 1) {
         pitch_target = ref_pitch;
-    } else if (flag_Vt) {
+    } else if (flag_Vt == 1) {
         arspd_target = ref_Vt;
     }
 
