@@ -43,6 +43,18 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
 
     AP_GROUPINFO("INDI_KVTDOT", 10, AP_CustomControl_INDI, KVtdot, 0),
 
+    AP_GROUPINFO("INDI_FLAG_ROLL", 11, AP_CustomControl_INDI, flag_roll, 0),
+
+    AP_GROUPINFO("INDI_FLAG_PITCH", 12, AP_CustomControl_INDI, flag_pitch, 0),
+
+    AP_GROUPINFO("INDI_FLAG_VT", 13, AP_CustomControl_INDI, flag_Vt, 0),
+
+    AP_GROUPINFO("INDI_REF_ROLL", 14, AP_CustomControl_INDI, ref_roll, 30),
+
+    AP_GROUPINFO("INDI_REF_PITCH", 15, AP_CustomControl_INDI, ref_pitch, 5),
+
+    AP_GROUPINFO("INDI_REF_VT", 16, AP_CustomControl_INDI, ref_Vt, 25),
+
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
     AP_GROUPEND
@@ -263,6 +275,15 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     float arspd_target = _tecs.get_TAS_demand();
 
+    // referências fixas para testes
+    if (flag_roll == 1) {
+        roll_target = ref_roll;
+    } else if (flag_pitch) {
+        pitch_target = ref_pitch;
+    } else if (flag_Vt) {
+        arspd_target = ref_Vt;
+    }
+
     is_gliding = _tecs.get_is_gliding();
     if (is_gliding)
     {
@@ -362,6 +383,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // p_dot = -1.5921;
     // q_dot = -1.6886;
     // Vt_dot = 80.5147;
+
+    
 
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;

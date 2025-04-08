@@ -90,6 +90,14 @@ protected:
     // float Kp;
     // float Kq;
 
+    // test variables
+    AP_Int8 flag_roll;
+    AP_Int8 flag_pitch;
+    AP_Int8 flag_Vt;
+    AP_Float ref_roll;
+    AP_Float ref_pitch;
+    AP_Float ref_Vt;
+
     Matrix3f invG;
     
     bool invert_G;
