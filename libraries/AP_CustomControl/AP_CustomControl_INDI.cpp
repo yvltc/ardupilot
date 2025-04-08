@@ -43,17 +43,17 @@ const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {
     
     AP_GROUPINFO("INDI_DEBUG", 10, AP_CustomControl_INDI, PID_debugger, 0),
 
-    AP_GROUPINFO("FLAG_ROLL", 11, AP_CustomControl_INDI, flag_roll, 0),
+    AP_GROUPINFO("INDI_FLG_RLL", 11, AP_CustomControl_INDI, flag_roll, 0),
 
-    AP_GROUPINFO("FLAG_PITCH", 12, AP_CustomControl_INDI, flag_pitch, 0),
+    AP_GROUPINFO("INDI_FLG_PTCH", 12, AP_CustomControl_INDI, flag_pitch, 0),
 
-    AP_GROUPINFO("FLAG_VT", 13, AP_CustomControl_INDI, flag_Vt, 0),
+    AP_GROUPINFO("INDI_FLG_VT", 13, AP_CustomControl_INDI, flag_Vt, 0),
 
-    AP_GROUPINFO("REF_ROLL", 14, AP_CustomControl_INDI, ref_roll, 30),
+    AP_GROUPINFO("INDI_REF_RLL", 14, AP_CustomControl_INDI, ref_roll, 30),
 
-    AP_GROUPINFO("REF_PITCH", 15, AP_CustomControl_INDI, ref_pitch, 5),
+    AP_GROUPINFO("INDI_REF_PTCH", 15, AP_CustomControl_INDI, ref_pitch, 5),
 
-    AP_GROUPINFO("REF_VT", 16, AP_CustomControl_INDI, ref_Vt, 25),
+    AP_GROUPINFO("INDI_REF_VT", 16, AP_CustomControl_INDI, ref_Vt, 25),
 
     // AP_GROUPINFO("PARAM1", 1, AP_CustomControl_INDI, param1, 0.0f),
 
