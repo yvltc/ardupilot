@@ -279,7 +279,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     if (flag_roll == 1) {
         roll_target = ref_roll*100;     // ref in deg, target in centidegrees
     } else if (flag_pitch == 1) {
-        pitch_target = ref_pitch;       // ref in deg, target in centidegrees
+        pitch_target = ref_pitch*100;       // ref in deg, target in centidegrees
     } else if (flag_Vt == 1) {
         arspd_target = ref_Vt;
     }
