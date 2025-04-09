@@ -395,12 +395,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
 
-    niu.x = Kff*error[0] - Kp*angular_rates[0];
-    niu.y = Ktt*error[1] - Kq*angular_rates[1]; 
+    niu.x = Kff*error.x - Kp*angular_rates.x;
+    niu.y = Ktt*error.y - Kq*angular_rates.y; 
     // niu.x = Kff*error[0] - Kp*p;
     // niu.y = Ktt*error[1] - Kq*q; 
     // niu.z = KVt*error[2];
-    niu.z = KVt*error[2] - KVtdot*Vt_dot;
+    niu.z = KVt*error.z - KVtdot*Vt_dot;
 
     du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
@@ -422,12 +422,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "pqVt: %.6f %.6f %.6f", angular_rates.x, angular_rates.y, Vt);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
