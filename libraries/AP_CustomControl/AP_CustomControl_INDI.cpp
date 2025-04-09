@@ -262,6 +262,10 @@ float AP_CustomControl_INDI::get_Vt_out(void)
 {
     //gcs().send_text(MAV_SEVERITY_INFO, "Vt INDI custom controller working");
 
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "ArduPilot vs INDI: %.2f %.2f", SRV_Channels::get_output_scaled(SRV_Channel::k_throttle), u_0[3]*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
     return u_0[2]*100;
