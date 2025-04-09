@@ -79,7 +79,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // saturation limits
     ddmax = 30*M_PI/180;
     dtmax = 1;
-    dtmin = 0;
+    dtmin = 0.05;
 
     // SOD - each vector is a row
     // SOD_A.a = {0.846153846153846,0.003076923076923,0};
@@ -453,7 +453,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
         // saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
-        // saturate(dtmin, dtmax, &u.z);
+        saturate(dtmin, dtmax, &u.z);
 
         // snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
         // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
