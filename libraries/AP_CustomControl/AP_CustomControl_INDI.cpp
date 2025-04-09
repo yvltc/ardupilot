@@ -262,9 +262,9 @@ float AP_CustomControl_INDI::get_Vt_out(void)
 {
     //gcs().send_text(MAV_SEVERITY_INFO, "Vt INDI custom controller working");
 
-    char buffer[80];  // Create a buffer to hold the formatted message
-    snprintf(buffer, sizeof(buffer), "ArduPilot vs INDI: %.2f %.2f", SRV_Channels::get_output_scaled(SRV_Channel::k_throttle), u_0.z*100);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
+    // snprintf(buffer, sizeof(buffer), "ArduPilot vs INDI: %.2f %.2f", SRV_Channels::get_output_scaled(SRV_Channel::k_throttle), u_0.z*100);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
@@ -488,6 +488,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     snprintf(buffer, sizeof(buffer), "u post-sat: %.4f %.4f %.4f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprint(buffer, sizeof(buffer), "u.X vs u[X]: %.4f %.4f %.4f", u[0]*180/M_PI, u[1]*180/M_PI, u[2]*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);
 
     // PID
     if (PID_debugger == 1)
