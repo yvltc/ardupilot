@@ -79,7 +79,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // saturation limits
     ddmax = 30*M_PI/180;
     dtmax = 1;
-    dtmin = 0.05;
+    dtmin = 0.2;
 
     // SOD - each vector is a row
     // SOD_A.a = {0.846153846153846,0.003076923076923,0};
