@@ -488,7 +488,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
 
     snprintf(buffer, sizeof(buffer), "u post-sat: %.4f %.4f %.4f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    snprint(buffer, sizeof(buffer), "u.X vs u[X]: %.4f %.4f %.4f", u[0]*180/M_PI, u[1]*180/M_PI, u[2]*100);
+    snprintf(buffer, sizeof(buffer), "u.X vs u[X]: %.4f %.4f %.4f", u[0]*180/M_PI, u[1]*180/M_PI, u[2]*100);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);
 
     // PID
