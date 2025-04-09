@@ -262,9 +262,9 @@ float AP_CustomControl_INDI::get_Vt_out(void)
 {
     //gcs().send_text(MAV_SEVERITY_INFO, "Vt INDI custom controller working");
 
-    // char buffer[80];  // Create a buffer to hold the formatted message
-    // snprintf(buffer, sizeof(buffer), "ArduPilot vs INDI: %.2f %.2f", SRV_Channels::get_output_scaled(SRV_Channel::k_throttle), u_0.z*100);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
+    snprintf(buffer, sizeof(buffer), "ArduPilot vs INDI: %.2f %.2f", SRV_Channels::get_output_scaled(SRV_Channel::k_throttle), u_0.z*100);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // return what ArduPlane main controller outputted
     // return SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
@@ -357,7 +357,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // angular_rates = {-0.3086, -0.3094, 19.9523};
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
-    char buffer[80];  // Create a buffer to hold the formatted message
+    // char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -442,7 +442,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     else
     {
         // código de motorizado
-        u.z = u_0.z - du.z;
+        u.z = u_0.z + du.z;
 
         // snprintf(buffer, sizeof(buffer), "u_0: %.6f %.6f %.6f", u_0.x, u_0.y, u_0.z);
         // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
@@ -484,8 +484,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     u_0.y = u.y;
     u_0.z = u.z;
 
-    snprintf(buffer, sizeof(buffer), "u post-sat: %.4f %.4f %.4f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    // snprintf(buffer, sizeof(buffer), "u post-sat: %.4f %.4f %.4f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
+    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "u.X vs u[X]: %.4f %.4f %.4f", u[0]*180/M_PI, u[1]*180/M_PI, u[2]*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);
 
