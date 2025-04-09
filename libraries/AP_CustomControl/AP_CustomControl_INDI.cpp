@@ -391,8 +391,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // q_dot = -1.6886;
     // Vt_dot = 80.5147;
 
-    
-
     error.x = roll_target*M_PI/18000 - phi;     // target is in centidegrees, should be radians
     error.y = pitch_target*M_PI/18000 - theta;
     error.z = arspd_target - Vt;
@@ -428,8 +426,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
