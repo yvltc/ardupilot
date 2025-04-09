@@ -79,7 +79,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // saturation limits
     ddmax = 30*M_PI/180;
     dtmax = 1;
-    dtmin = 0.5;
+    dtmin = 0;
 
     // SOD - each vector is a row
     // SOD_A.a = {0.846153846153846,0.003076923076923,0};
@@ -442,7 +442,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     else
     {
         // código de motorizado
-        u.z = u_0.z + du.z;
+        u.z = 100*u_0.z + du.z;
 
         // snprintf(buffer, sizeof(buffer), "u_0: %.6f %.6f %.6f", u_0.x, u_0.y, u_0.z);
         // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
