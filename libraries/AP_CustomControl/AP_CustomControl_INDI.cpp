@@ -329,6 +329,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         use_TAS = _ahrs.airspeed_estimate(Vt);
     }
 
+    use_TAS = _ahrs.airspeed_estimate_true(Vt);
+
     printf("%f\n", Vt);
     // AHRS airspeed estimate true (true airspeed)
     // altitude desejada no TECS se quiser
