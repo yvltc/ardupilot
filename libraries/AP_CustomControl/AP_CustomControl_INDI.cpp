@@ -492,6 +492,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     if (PID_debugger == 1)
     {
+        printf("%f\n", Vt);
         ddmax = 45*M_PI/180;
         // char buffer[80];
         // com drag certo deve ser 1 no K_p da velocidade e -150 no K_i de pitch
