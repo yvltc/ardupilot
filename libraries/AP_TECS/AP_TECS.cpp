@@ -6,7 +6,6 @@
 #include <AP_Landing/AP_Landing.h>
 
 #include <iostream>
-#include <AP_AHRS/AP_AHRS.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -823,9 +822,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
             float error_i;
 
             float Vt_target = get_TAS_demand();
-            float Vt;
-            bool use_TAS = AP_AHRS::airspeed_estimate_true(Vt);
-            error = Vt_target-Vt;
+            error = Vt_target-_TAS_state;
 
             if (test_2 != 1)
             {
