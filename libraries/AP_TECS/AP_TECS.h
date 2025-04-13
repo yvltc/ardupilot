@@ -212,6 +212,7 @@ private:
     AP_Int8 test;
     float error_0;
     int test_2;
+    float error_i;
 
     enum {
         OPTION_GLIDER_ONLY=(1<<0),

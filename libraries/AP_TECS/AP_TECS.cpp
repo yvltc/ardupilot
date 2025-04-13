@@ -819,7 +819,6 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
             float error;
             float error_d;
-            float error_i;
 
             float Vt_target = get_TAS_demand();
             error = Vt_target-_TAS_state;
@@ -827,7 +826,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
             if (test_2 != 1)
             {
                 error_d = (error)/_DT;
-                error_i += 0.5*(error)*_DT;
+                error_i = 0.5*(error)*_DT;
                 test_2 = 1;
             }
             else
