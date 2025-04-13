@@ -5,6 +5,8 @@
 #include <AP_Logger/AP_Logger.h>
 #include <AP_Landing/AP_Landing.h>
 
+#include <iostream>
+
 extern const AP_HAL::HAL& hal;
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
@@ -833,6 +835,8 @@ void AP_TECS::_update_throttle_with_airspeed(void)
     } else {
         _thr_clip_status = clipStatus::NONE;
     }
+    
+    printf("%f\n", _throttle_dem);
 }
 
 float AP_TECS::_get_i_gain(void)
