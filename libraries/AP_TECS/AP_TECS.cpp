@@ -841,7 +841,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
             _throttle_dem = u_Kp + u_Kd + u_Ki; //+ u_Kff;
             // saturate(dtmin, dtmax, &u.z);
-            printf("%f\n", _TAS_state);
+            printf("TECS: %f\n", _TAS_state);
             error_0 = error;
         }
 
