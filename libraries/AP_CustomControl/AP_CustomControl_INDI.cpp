@@ -330,6 +330,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     }
 
     Vt = _tecs.get_TAS_demand();
+    printf("%f\n", Vt);
 
     // AHRS airspeed estimate true (true airspeed)
     // altitude desejada no TECS se quiser
