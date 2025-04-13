@@ -144,23 +144,21 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // _CF_D = 0.7143;
 
     // default
-    _CFu_A = 0.9048;
-    _CFu_B = 0.0952;
-    _CFu_C = 0.9524;
-    _CFu_D = 0.0476;
+    // _CFu_A = 0.9048;
+    // _CFu_B = 0.0952;
+    // _CFu_C = 0.9524;
+    // _CFu_D = 0.0476;
 
     // tau = 2s
     // _CFu_A = 0.9950;
     // _CFu_B = 0.0050;
     // _CFu_C = 0.9975;
-    // _CFu_D = 1;
     // _CFu_D = 0.0025;
-    // _CFu_C = 0;
 
-    // _CFu_A = 0.8182;
-    // _CFu_B = 0.1818;
-    // _CFu_C = 0.9091;
-    // _CFu_D = 0.09091;
+    _CFu_A = 0.8182;
+    _CFu_B = 0.1818;
+    _CFu_C = 0.9091;
+    _CFu_D = 0.09091;
 
     // _CFu_A = 0.3333;
     // _CFu_B = 0.6667;
@@ -494,7 +492,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // PID
     if (PID_debugger == 1)
     {
-        printf("INDI: %f %f\n", Vt, AP_HAL::micros64()/1000000.0f);
+        // printf("INDI: %f %f\n", Vt, AP_HAL::micros64()/1000000.0f);
         ddmax = 45*M_PI/180;
         // char buffer[80];
         // com drag certo deve ser 1 no K_p da velocidade e -150 no K_i de pitch
