@@ -809,7 +809,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
         if (test)
         {
-            float K_p = 1;
+            float K_p = 100;
             float K_d = 0;
             float K_i = 0;
 
@@ -828,7 +828,6 @@ void AP_TECS::_update_throttle_with_airspeed(void)
                 error_d = (error)/_DT;
                 error_i = 0.5*(error)*_DT;
                 test_2 = 1;
-                printf("Boas\n");
             }
             else
             {
