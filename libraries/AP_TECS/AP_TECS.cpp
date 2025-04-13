@@ -6,6 +6,7 @@
 #include <AP_Landing/AP_Landing.h>
 
 #include <iostream>
+#include <AP_AHRS/AP_AHRS.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -284,6 +285,9 @@ const AP_Param::GroupInfo AP_TECS::var_info[] = {
     // @Increment: 0.2
     // @User: Advanced
     AP_GROUPINFO("HDEM_TCONST", 33, AP_TECS, _hgt_dem_tconst, 3.0f),
+
+    // test
+    AP_GROUPINFO("TEST", 34, AP_TECS, test, 0),
 
     AP_GROUPEND
 };
@@ -804,6 +808,46 @@ void AP_TECS::_update_throttle_with_airspeed(void)
         // Sum the components.
         _throttle_dem = _throttle_dem + _integTHR_state;
 
+        if (test)
+        {
+            float K_p = 1;
+            float K_d = 0;
+            float K_i = 0;
+
+            float u_Kp;
+            float u_Kd;
+            float u_Ki;
+
+            float error;
+            float error_d;
+            float error_i;
+
+            float Vt_target = get_TAS_demand();
+            float Vt;
+            float use_TAS = AP_AHRS::airspeed_estimate_true(Vt);
+            error = Vt_target-Vt;
+
+            if (test_2 != 1)
+            {
+                error_d = (error)/_DT;
+                error_i += 0.5*(error)*_DT;
+                test_2 = 1;
+            }
+            else
+            {
+                error_d = (error - error_0)/_DT;
+                error_i += 0.5*(error + error_0)*_DT;
+            }
+
+            u_Kp = K_p*error;
+            u_Kd = K_d*error_d;
+            u_Ki = K_i*error_i;
+
+            _throttle_dem = u_Kp + u_Kd + u_Ki; //+ u_Kff;
+            // saturate(dtmin, dtmax, &u.z);
+            error_0 = error;
+        }
+
 #if HAL_LOGGING_ENABLED
         if (AP::logger().should_log(_log_bitmask)){
             AP::logger().WriteStreaming("TEC3","TimeUS,KED,PED,KEDD,PEDD,TEE,TEDE,FFT,Imin,Imax,I,Emin,Emax",
@@ -835,8 +879,6 @@ void AP_TECS::_update_throttle_with_airspeed(void)
     } else {
         _thr_clip_status = clipStatus::NONE;
     }
-    
-    printf("%f\n", _throttle_dem);
 }
 
 float AP_TECS::_get_i_gain(void)

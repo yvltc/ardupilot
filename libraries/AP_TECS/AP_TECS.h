@@ -208,6 +208,11 @@ private:
     AP_Float _flare_holdoff_hgt;
     AP_Float _hgt_dem_tconst;
 
+    // test
+    AP_Int8 test;
+    float error_0;
+    int test_2;
+
     enum {
         OPTION_GLIDER_ONLY=(1<<0),
         OPTION_DESCENT_SPEEDUP=(1<<1)
