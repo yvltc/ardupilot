@@ -824,7 +824,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
             float Vt_target = get_TAS_demand();
             float Vt;
-            float use_TAS = AP_AHRS::airspeed_estimate_true(Vt);
+            bool use_TAS = AP_AHRS::airspeed_estimate_true(Vt);
             error = Vt_target-Vt;
 
             if (test_2 != 1)
