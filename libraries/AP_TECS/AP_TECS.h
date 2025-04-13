@@ -61,6 +61,11 @@ public:
         return _throttle_dem * 100.0f;
     }
 
+    // test
+    float get_TAS_state(void) {
+        return _TAS_state;
+    }
+
     // demanded pitch angle in centi-degrees
     // should return between -9000 to +9000
     int32_t get_pitch_demand(void) {
