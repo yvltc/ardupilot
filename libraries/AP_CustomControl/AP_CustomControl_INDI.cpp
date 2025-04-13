@@ -498,9 +498,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         // Vector3f K_p = {1,-0.11,1};
         // Vector3f K_d = {-0.04,-0.3,0};
         // Vector3f K_i = {-70,-150,0};
-        Vector3f K_p = {1,-0.11,1};
-        Vector3f K_d = {-0.04,-0.3,0};
-        Vector3f K_i = {-70,-150,0};
+        Vector3f K_p = {1,-0.11,100};
+        Vector3f K_d = {-0.04,-0.3,2000};
+        Vector3f K_i = {-70,-150,10};
 
         // {p, i, d, ...}
         // AC_PID rate_pid{0.08, 0.15, 0, 0.345, 0.666, 3, 0, 12, 150, 1};      // Roll
