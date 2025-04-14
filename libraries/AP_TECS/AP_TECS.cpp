@@ -811,7 +811,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
         if (test)
         {
             float K_p = 0.1;
-            float K_d = 0;
+            float K_d = 1;
             float K_i = 0;
 
             float u_Kp;
