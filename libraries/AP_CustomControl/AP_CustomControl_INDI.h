@@ -108,6 +108,7 @@ protected:
 
     // PID
     Vector3f error_0;
+    Vector3f error_i;
     AP_Int8 PID_debugger;
 
 };

@@ -806,7 +806,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
         // Sum the components.
         _throttle_dem = _throttle_dem + _integTHR_state;
-        printf("TECS original: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
+        // printf("TECS original: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
 
         if (test)
         {
@@ -842,7 +842,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
             _throttle_dem = u_Kp + u_Kd + u_Ki; //+ u_Kff;
             // saturate(dtmin, dtmax, &u.z);
-            printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
+            // printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
             error_0 = error;
         }
 
