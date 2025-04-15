@@ -481,7 +481,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // u.z = KVt*error[2];
-    u.z = du.z;
     u_0.x = u.x;
     u_0.y = u.y;
     u_0.z = u.z;
