@@ -407,7 +407,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
     du.z = invG.c.x*lambda_3*(niu.x - p_dot) + invG.c.y*lambda_3*(niu.y - q_dot) + invG.c.z*lambda_3*(niu.z - Vt_dot);
 
-    snprintf(buffer, sizeof(buffer), "invG.c: %.6f %.6f %.6f", invG.c.x, invG.c.y, invG.c.z);
+    snprintf(buffer, sizeof(buffer), "invG.c: %.6f %.6f %.6f %f", invG.c.x, invG.c.y, invG.c.z, AP_HAL::micros64()/1000000.0f);
     gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // test
