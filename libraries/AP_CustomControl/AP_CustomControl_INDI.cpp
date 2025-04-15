@@ -358,7 +358,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // angular_rates = {-0.3086, -0.3094, 19.9523};
     // u_0 = {0.0767, -0.2121, 0.0572};
     // xCF = {0.0785, -0.2183, 0.0594};
-    // char buffer[80];  // Create a buffer to hold the formatted message
+    char buffer[80];  // Create a buffer to hold the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "xSODq: %.6f %.6f %.6f", xSOD_q.x, xSOD_q.y, xSOD_q.z);
@@ -406,6 +406,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
     du.z = invG.c.x*lambda_3*(niu.x - p_dot) + invG.c.y*lambda_3*(niu.y - q_dot) + invG.c.z*lambda_3*(niu.z - Vt_dot);
+
+    snprintf(buffer, sizeof(buffer), "invG.c: %.6f %.6f %.6f", invG.c.x, invG.c.y, invG.c.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
     // test
     // u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
