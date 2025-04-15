@@ -407,9 +407,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
     du.z = invG.c.x*lambda_3*(niu.x - p_dot) + invG.c.y*lambda_3*(niu.y - q_dot) + invG.c.z*lambda_3*(niu.z - Vt_dot);
 
-    snprintf(buffer, sizeof(buffer), "invG.c: %.6f %.6f %.6f %f", invG.c.x, invG.c.y, invG.c.z, AP_HAL::micros64()/1000000.0f);
-    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-
     // test
     // u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
     // u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
@@ -428,8 +425,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "pqVtdot: %.6f %.6f %.6f", p_dot, q_dot, Vt_dot);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
-    // snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
-    // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
+    snprintf(buffer, sizeof(buffer), "niu: %.6f %.6f %.6f", niu.x, niu.y, niu.z);
+    gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "du: %.6f %.6f %.6f", du.x, du.y, du.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
     // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
