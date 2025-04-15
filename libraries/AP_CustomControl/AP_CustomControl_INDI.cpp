@@ -144,16 +144,16 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // _CF_D = 0.7143;
 
     // default
-    _CFu_A = 0.9048;
-    _CFu_B = 0.0952;
-    _CFu_C = 0.9524;
-    _CFu_D = 0.0476;
+    // _CFu_A = 0.9048;
+    // _CFu_B = 0.0952;
+    // _CFu_C = 0.9524;
+    // _CFu_D = 0.0476;
 
     // tau = 2s
-    // _CFu_A = 0.9950;
-    // _CFu_B = 0.0050;
-    // _CFu_C = 0.9975;
-    // _CFu_D = 0.0025;
+    _CFu_A = 0.9950;
+    _CFu_B = 0.0050;
+    _CFu_C = 0.9975;
+    _CFu_D = 0.0025;
 
     // _CFu_A = 0.8182;
     // _CFu_B = 0.1818;
@@ -406,7 +406,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
     du.z = invG.c.x*lambda_3*(niu.x - p_dot) + invG.c.y*lambda_3*(niu.y - q_dot) + invG.c.z*lambda_3*(niu.z - Vt_dot);
-    du.z = invG.c.x*lambda_3*(niu.z - Vt_dot);
     
     // test
     // u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
