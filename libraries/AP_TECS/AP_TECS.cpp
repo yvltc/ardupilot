@@ -819,7 +819,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
             // float u_Kd;
             // float u_Ki;
 
-            // float error;
+            float error;
             // float error_d;
 
             float Vt_target = get_TAS_demand();
