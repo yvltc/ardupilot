@@ -851,14 +851,15 @@ void AP_TECS::_update_throttle_with_airspeed(void)
             float KVt = 6.2556;
             float niu = KVt*error;
             float Vt_dot; 
-            float du = invG*lambda*(niu-Vt_dot);
+            float du; 
             if (test_2 != 1)
             {
-                Vt_dot = 0;
+                du = invG*lambda*niu;
                 _throttle_dem = du;
                 test_2 = 1;
                 error_i = _TAS_state;
             } else {
+                du = invG*lambda*(niu-Vt_dot);
                 Vt_dot = (_TAS_state-error_i)/0.1;  // error_i é _TAS_state_0
                 _throttle_dem = error_0 + du;
                 error_i = _TAS_state;
