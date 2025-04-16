@@ -819,11 +819,11 @@ void AP_TECS::_update_throttle_with_airspeed(void)
             // float u_Kd;
             // float u_Ki;
 
-            // float error;
+            float error;
             // float error_d;
 
-            // float Vt_target = get_TAS_demand();
-            // error = Vt_target-_TAS_state;
+            float Vt_target = get_TAS_demand();
+            error = Vt_target-_TAS_state;
 
             // if (test_2 != 1)
             // {
@@ -843,14 +843,32 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
             // _throttle_dem = u_Kp + u_Kd + u_Ki; //+ u_Kff;
             // // saturate(dtmin, dtmax, &u.z);
-            printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
+            // printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
             // error_0 = error;
 
-            // invG = 0.1231;
-            // lambda = 0.3;
-            // niu = KVt*error;
-            // Vt_dot = (_TAS_state-TAS_state_0)
-            // du = invG*lambda*(niu-Vt_dot);
+            invG = 0.1231;
+            lambda = 0.3;
+            KVt = 6.2556;
+            niu = KVt*error;
+            Vt_dot = (_TAS_state-TAS_state_0)/0.1
+            du = invG*lambda*(niu-Vt_dot);
+            if (test_2 != 1)
+            {
+                _throttle_dem = du;
+                test_2 = 1;
+            } else {
+                _throttle_dem = error_0 + du;
+            }
+
+            if (_throttle_dem > 1)
+            { 
+                _throttle_dem = 1;
+            } else if (_throttle_dem < 0)
+            { 
+                _throttle_dem = 0;
+            }
+
+            error_0 = _throttle_dem; // chama-se error_0 mas grava u_0
         }
 
 #if HAL_LOGGING_ENABLED
