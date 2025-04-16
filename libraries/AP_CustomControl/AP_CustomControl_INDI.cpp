@@ -443,8 +443,9 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     else
     {
         // código de motorizado
-        u.z = 0*u_0.z + du.z;
+        u.z = u_0.z + du.z;
         // estabiliza só com du, mas no sítio errado
+        // du no início manda para zero
 
         snprintf(buffer, sizeof(buffer), "u_0: %.6f %.6f %.6f", u_0.x, u_0.y, u_0.z);
         gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
