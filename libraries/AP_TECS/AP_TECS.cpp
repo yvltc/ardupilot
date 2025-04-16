@@ -6,6 +6,7 @@
 #include <AP_Landing/AP_Landing.h>
 
 #include <iostream>
+#include <AP_Math/AP_Math.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -810,40 +811,46 @@ void AP_TECS::_update_throttle_with_airspeed(void)
 
         if (test)
         {
-            float K_p = 0.1;
-            float K_d = 0;
-            float K_i = 0.1;
+            // float K_p = 0.1;
+            // float K_d = 0;
+            // float K_i = 0.1;
 
-            float u_Kp;
-            float u_Kd;
-            float u_Ki;
+            // float u_Kp;
+            // float u_Kd;
+            // float u_Ki;
 
-            float error;
-            float error_d;
+            // float error;
+            // float error_d;
 
             float Vt_target = get_TAS_demand();
             error = Vt_target-_TAS_state;
 
-            if (test_2 != 1)
-            {
-                error_d = (error)/_DT;
-                error_i = 0.5*(error)*_DT;
-                test_2 = 1;
-            }
-            else
-            {
-                error_d = (error - error_0)/_DT;
-                error_i += 0.5*(error + error_0)*_DT;
-            }
+            // if (test_2 != 1)
+            // {
+            //     error_d = (error)/_DT;
+            //     error_i = 0.5*(error)*_DT;
+            //     test_2 = 1;
+            // }
+            // else
+            // {
+            //     error_d = (error - error_0)/_DT;
+            //     error_i += 0.5*(error + error_0)*_DT;
+            // }
 
-            u_Kp = K_p*error;
-            u_Kd = K_d*error_d;
-            u_Ki = K_i*error_i;
+            // u_Kp = K_p*error;
+            // u_Kd = K_d*error_d;
+            // u_Ki = K_i*error_i;
 
-            _throttle_dem = u_Kp + u_Kd + u_Ki; //+ u_Kff;
-            // saturate(dtmin, dtmax, &u.z);
-            // printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
-            error_0 = error;
+            // _throttle_dem = u_Kp + u_Kd + u_Ki; //+ u_Kff;
+            // // saturate(dtmin, dtmax, &u.z);
+            printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
+            // error_0 = error;
+
+            // invG = 0.1231;
+            // lambda = 0.3;
+            // niu = KVt*error;
+            // Vt_dot = (_TAS_state-TAS_state_0)
+            // du = invG*lambda*(niu-Vt_dot);
         }
 
 #if HAL_LOGGING_ENABLED
