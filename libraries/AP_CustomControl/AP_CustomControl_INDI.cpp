@@ -439,6 +439,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     {
         // código de planador
         u.z = 0;
+        printf("boas\n");
     }
     else
     {
