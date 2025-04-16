@@ -858,6 +858,7 @@ void AP_TECS::_update_throttle_with_airspeed(void)
                 _throttle_dem = du;
                 test_2 = 1;
                 error_i = _TAS_state;
+                Vt_dot = 0;
             } else {
                 du = invG*lambda*(niu-Vt_dot);
                 Vt_dot = (_TAS_state-error_i)/0.1;  // error_i é _TAS_state_0
