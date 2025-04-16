@@ -71,7 +71,7 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // initialise variables
     u_0.x = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
     u_0.y = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
-    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
     // u_0.x = -0.2041;
     // u_0.y = -0.2025;
     // u_0.z = 0.6428;
@@ -598,7 +598,7 @@ void AP_CustomControl_INDI::reset(void)
 
     u_0.x = -SRV_Channels::get_output_scaled(SRV_Channel::k_aileron)*M_PI/18000;
     u_0.y = -SRV_Channels::get_output_scaled(SRV_Channel::k_elevator)*M_PI/18000;
-    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle)/100;
+    u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
     // u_0.z = SRV_Channels::get_output_scaled(SRV_Channel::k_throttle);
     // printf("%f\n", u_0.z*100);
 }
