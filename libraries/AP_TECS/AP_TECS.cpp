@@ -846,12 +846,12 @@ void AP_TECS::_update_throttle_with_airspeed(void)
             // printf("TECS PID: %f %f\n", _throttle_dem, AP_HAL::micros64()/1000000.0f);
             // error_0 = error;
 
-            invG = 0.1231;
-            lambda = 0.3;
-            KVt = 6.2556;
-            niu = KVt*error;
-            Vt_dot = (_TAS_state-TAS_state_0)/0.1
-            du = invG*lambda*(niu-Vt_dot);
+            float invG = 0.1231;
+            float lambda = 0.3;
+            float KVt = 6.2556;
+            float niu = KVt*error;
+            float Vt_dot = (_TAS_state-TAS_state_0)/0.1
+            float du = invG*lambda*(niu-Vt_dot);
             if (test_2 != 1)
             {
                 _throttle_dem = du;
