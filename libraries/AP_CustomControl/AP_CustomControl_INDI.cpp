@@ -482,7 +482,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // snprintf(buffer, sizeof(buffer), "ArduPilot controller output, u_0[0] u_0[1] u_0[2]: %.2f %.2f %.2f", u_ardupilot.x/100,  u_ardupilot.y/100, u_ardupilot.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
-    u.z = KVt*error[2];
+    // u.z = KVt*error[2];
     u_0.x = u.x;
     u_0.y = u.y;
     u_0.z = u.z;
