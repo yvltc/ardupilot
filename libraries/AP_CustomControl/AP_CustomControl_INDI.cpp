@@ -562,14 +562,15 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
-    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt", 
-                                "sddn",
-                                "F000",
-                                "Qfff",
+    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z", 
+                                "sddn-",
+                                "F0000",
+                                "Qffff",
                                 AP_HAL::micros64(),
                                 roll_target/100,
                                 pitch_target/100,
-                                arspd_target);
+                                arspd_target,
+                                du.z);
     // AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,DeltaAil,DeltaElv,DeltaThr", "Qffffff",
     //                             AP_HAL::micros64(),
     //                             roll_target,
