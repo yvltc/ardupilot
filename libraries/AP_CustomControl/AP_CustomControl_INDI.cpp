@@ -459,7 +459,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         saturate(dtmin, dtmax, &u.z);
 
         // rate limiter
-        float max_delta = 0.02;
+        float max_delta = 0.01;
         saturate(u_0.z-max_delta, u_0.z+max_delta, &u.z);
 
         // snprintf(buffer, sizeof(buffer), "usat: %.6f %.6f %.6f", u.x, u.y, u.z);
