@@ -443,7 +443,6 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     else
     {
         // código de motorizado
-        du.z = 0;
         u.z = u_0.z + 0.1*du.z;
         // estabiliza só com du, mas no sítio errado
         // du no início manda para zero
