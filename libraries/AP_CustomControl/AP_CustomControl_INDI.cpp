@@ -400,8 +400,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     niu.y = Ktt*error.y - Kq*angular_rates.y; 
     // niu.x = Kff*error[0] - Kp*p;
     // niu.y = Ktt*error[1] - Kq*q; 
-    // niu.z = KVt*error[2];
-    niu.z = KVt*error.z - KVtdot*Vt_dot;
+    niu.z = KVt*error[2];
+    // niu.z = KVt*error.z - KVtdot*Vt_dot;
 
     du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
@@ -443,7 +443,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     else
     {
         // código de motorizado
-        u.z = u_0.z + du.z;
+        // u.z = u_0.z + du.z;
+        u.z = u_0.z ++ du.z + KVtdot*error.z;   // hybrid
         // estabiliza só com du, mas no sítio errado
         // du no início manda para zero
 
