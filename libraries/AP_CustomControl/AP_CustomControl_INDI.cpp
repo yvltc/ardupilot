@@ -120,31 +120,31 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // SODu_D.b = {0,0,0};
     // SODu_D.c = {0,0,0};
     // wn 100 rad/s
-    // SODu_A.a = {0.8402,0.0031,0};
-    // SODu_A.b = {-30.7692,-0.3846,0};
-    // SODu_A.c = {0,0,0};
-    // SODu_B.a = {30.7692,0,0};
-    // SODu_B.b = {-13846,0,0};
-    // SODu_B.c = {0,0,0};
-    // SODu_C.a = {0.9231,0.0015,0};
-    // SODu_C.b = {0,0,0};
-    // SODu_C.c = {0,0,0};
-    // SODu_D.a = {15.3846,0,0};
-    // SODu_D.b = {0,0,0};
-    // SODu_D.c = {0,0,0};
-
-    SODu_A.a = {0.8651,0.0033,0};
-    SODu_A.b = {-26.9775,-0.3339,0};
+    SODu_A.a = {0.8402,0.0031,0};
+    SODu_A.b = {-30.7692,-0.3846,0};
     SODu_A.c = {0,0,0};
-    SODu_B.a = {26.9775,0,0};
-    SODu_B.b = {-10804,0,0};
+    SODu_B.a = {30.7692,0,0};
+    SODu_B.b = {-13846,0,0};
     SODu_B.c = {0,0,0};
-    SODu_C.a = {0.9326,0.0017,0};
+    SODu_C.a = {0.9231,0.0015,0};
     SODu_C.b = {0,0,0};
     SODu_C.c = {0,0,0};
-    SODu_D.a = {13.4888,0,0};
+    SODu_D.a = {15.3846,0,0};
     SODu_D.b = {0,0,0};
     SODu_D.c = {0,0,0};
+
+    // SODu_A.a = {0.8651,0.0033,0};
+    // SODu_A.b = {-26.9775,-0.3339,0};
+    // SODu_A.c = {0,0,0};
+    // SODu_B.a = {26.9775,0,0};
+    // SODu_B.b = {-10804,0,0};
+    // SODu_B.c = {0,0,0};
+    // SODu_C.a = {0.9326,0.0017,0};
+    // SODu_C.b = {0,0,0};
+    // SODu_C.c = {0,0,0};
+    // SODu_D.a = {13.4888,0,0};
+    // SODu_D.b = {0,0,0};
+    // SODu_D.c = {0,0,0};
 
     // initial values for SOD state vectors
     xSOD_p.x = 0;
