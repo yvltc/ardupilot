@@ -444,6 +444,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // snprintf(buffer, sizeof(buffer), "u: %.6f %.6f %.6f", u.x*180/M_PI, u.y*180/M_PI, u.z*100);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
 
+    // diagramas de blocos tikz
+
     saturate(-0.9*ddmax, 0.9*ddmax, &u.x);
     saturate(-0.9*ddmax, 0.9*ddmax, &u.y);
 
@@ -455,7 +457,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     else
     {
         // código de motorizado
-        u.z = u_0.z + 0.1*du.z;
+        u.z = u_0.z + du.z;
         // estabiliza só com du, mas no sítio errado
         // du no início manda para zero
 
