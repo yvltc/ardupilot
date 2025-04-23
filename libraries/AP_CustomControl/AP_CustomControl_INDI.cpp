@@ -107,16 +107,28 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     SOD_D.b = {0,0,0};
     SOD_D.c = {0,0,0};
 
-    SODu_A.a = {0.9394,0.0048,0};
-    SODu_A.b = {-12.1212,-0.0303,0};
+    // SODu_A.a = {0.9394,0.0048,0};
+    // SODu_A.b = {-12.1212,-0.0303,0};
+    // SODu_A.c = {0,0,0};
+    // SODu_B.a = {12.1212,0,0};
+    // SODu_B.b = {-2575.8,0,0};
+    // SODu_B.c = {0,0,0};
+    // SODu_C.a = {0.9697,0.0024,0};
+    // SODu_C.b = {0,0,0};
+    // SODu_C.c = {0,0,0};
+    // SODu_D.a = {6.0606,0,0};
+    // SODu_D.b = {0,0,0};
+    // SODu_D.c = {0,0,0};
+    SODu_A.a = {0.8402,0.0031,0};
+    SODu_A.b = {-30.7692,-0.3846,0};
     SODu_A.c = {0,0,0};
-    SODu_B.a = {12.1212,0,0};
-    SODu_B.b = {-2575.8,0,0};
+    SODu_B.a = {30.7692,0,0};
+    SODu_B.b = {-13846,0,0};
     SODu_B.c = {0,0,0};
-    SODu_C.a = {0.9697,0.0024,0};
+    SODu_C.a = {0.9231,0.0015,0};
     SODu_C.b = {0,0,0};
     SODu_C.c = {0,0,0};
-    SODu_D.a = {6.0606,0,0};
+    SODu_D.a = {15.3846,0,0};
     SODu_D.b = {0,0,0};
     SODu_D.c = {0,0,0};
 
