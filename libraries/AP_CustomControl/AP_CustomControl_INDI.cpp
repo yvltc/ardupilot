@@ -119,7 +119,8 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // SODu_D.a = {6.0606,0,0};
     // SODu_D.b = {0,0,0};
     // SODu_D.c = {0,0,0};
-    // wn 100 rad/s
+
+    // wn 100 rad/s zeta 2
     // SODu_A.a = {0.8402,0.0031,0};
     // SODu_A.b = {-30.7692,-0.3846,0};
     // SODu_A.c = {0,0,0};
@@ -133,16 +134,30 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // SODu_D.b = {0,0,0};
     // SODu_D.c = {0,0,0};
 
-    SODu_A.a = {0.9200,0.0016,0};
-    SODu_A.b = {-16,-0.68,0};
+    // wn 100 rad/s zeta 5
+    // SODu_A.a = {0.9200,0.0016,0};
+    // SODu_A.b = {-16,-0.68,0};
+    // SODu_A.c = {0,0,0};
+    // SODu_B.a = {16,0,0};
+    // SODu_B.b = {-16800,0,0};
+    // SODu_B.c = {0,0,0};
+    // SODu_C.a = {0.9600,0.0008,0};
+    // SODu_C.b = {0,0,0};
+    // SODu_C.c = {0,0,0};
+    // SODu_D.a = {8,0,0};
+    // SODu_D.b = {0,0,0};
+    // SODu_D.c = {0,0,0};
+
+    SODu_A.a = {0.9556,0.00089,0};
+    SODu_A.b = {-8.8889,-0.8222,0};
     SODu_A.c = {0,0,0};
-    SODu_B.a = {16,0,0};
-    SODu_B.b = {-16800,0,0};
+    SODu_B.a = {8.8889,0,0};
+    SODu_B.b = {-18222,0,0};
     SODu_B.c = {0,0,0};
-    SODu_C.a = {0.9600,0.0008,0};
+    SODu_C.a = {0.9778,0.00044,0};
     SODu_C.b = {0,0,0};
     SODu_C.c = {0,0,0};
-    SODu_D.a = {8,0,0};
+    SODu_D.a = {4.4444,0,0};
     SODu_D.b = {0,0,0};
     SODu_D.c = {0,0,0};
 
