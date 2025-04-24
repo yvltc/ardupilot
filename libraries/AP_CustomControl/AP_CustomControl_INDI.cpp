@@ -432,6 +432,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
         Vt_dot = 0;
         Vt_0 = Vt;
         flag = 1;
+        printf("boas?\n");
     }
 
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
