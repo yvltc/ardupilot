@@ -418,21 +418,21 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(aux, xSOD_q, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_q);
     q_dot = SOD_out[0];
 
-    // aux.x = Vt;                     // Vt
-    // // sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
-    // sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
-    // Vt_dot = SOD_out[0];
+    aux.x = Vt;                     // Vt
+    // sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
+    sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
+    Vt_dot = SOD_out[0];
+    float Vt_dot_fd;
     if (flag)
     {
-        Vt_dot = (Vt-Vt_0)/_dt;
+        Vt_dot_fd = (Vt-Vt_0)/_dt;
         Vt_0 = Vt;
     }
     else
     {
-        Vt_dot = 0;
+        Vt_dot_fd = 0;
         Vt_0 = Vt;
         flag = 1;
-        printf("boas?\n");
     }
 
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
@@ -621,16 +621,17 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
-    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z,Vt_dot", 
-                                "sddn-o",
-                                "F00000",
-                                "Qfffff",
+    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z,Vt_dot,fd", 
+                                "sddn-oo",
+                                "F000000",
+                                "Qffffff",
                                 AP_HAL::micros64(),
                                 roll_target/100,
                                 pitch_target/100,
                                 arspd_target,
                                 du.z,
-                                Vt_dot);
+                                Vt_dot,
+                                Vt_dot_fd);
     // AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,DeltaAil,DeltaElv,DeltaThr", "Qffffff",
     //                             AP_HAL::micros64(),
     //                             roll_target,
