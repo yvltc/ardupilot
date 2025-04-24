@@ -227,6 +227,9 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // PID
     error_0 = {0,0,0};
     error_i = {0,0,0};
+
+    // diferenças finitas
+    flag = 0;
 }
 
 void AP_CustomControl_INDI::sspace(Vector3f u, Vector3f x, Matrix3f A, Matrix3f B, Matrix3f C, Matrix3f D, Vector3f *y, Vector3f *x_next)
@@ -415,10 +418,21 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(aux, xSOD_q, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_q);
     q_dot = SOD_out[0];
 
-    aux.x = Vt;                     // Vt
-    // sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
-    sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
-    Vt_dot = SOD_out[0];
+    // aux.x = Vt;                     // Vt
+    // // sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
+    // sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
+    // Vt_dot = SOD_out[0];
+    if (flag)
+    {
+        Vt_dot = (Vt-Vt_0)/_dt;
+        Vt_0 = Vt;
+    }
+    else
+    {
+        Vt_dot = 0;
+        Vt_0 = Vt;
+        flag = 1;
+    }
 
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message

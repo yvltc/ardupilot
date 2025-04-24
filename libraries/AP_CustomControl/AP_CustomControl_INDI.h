@@ -111,6 +111,10 @@ protected:
     Vector3f error_i;
     AP_Int8 PID_debugger;
 
+    // debug diferenças finitas
+    float Vt_0;
+    int flag;
+
 };
 
 #endif
