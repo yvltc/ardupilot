@@ -424,18 +424,18 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
     // sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
     Vt_dot = SOD_out[0];
-    float Vt_dot_fd;
-    if (flag)
-    {
-        Vt_dot_fd = (Vt-Vt_0)/_dt;
-        Vt_0 = Vt;
-    }
-    else
-    {
-        Vt_dot_fd = 0;
-        Vt_0 = Vt;
-        flag = 1;
-    }
+    // float Vt_dot_fd;
+    // if (flag)
+    // {
+    //     Vt_dot_fd = (Vt-Vt_0)/_dt;
+    //     Vt_0 = Vt;
+    // }
+    // else
+    // {
+    //     Vt_dot_fd = 0;
+    //     Vt_0 = Vt;
+    //     flag = 1;
+    // }
 
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
