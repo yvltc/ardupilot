@@ -148,16 +148,16 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // SODu_D.b = {0,0,0};
     // SODu_D.c = {0,0,0};
 
-    SODu_A.a = {0.9470,0.0022,0};
-    SODu_A.b = {-10.6003,-0.5673,0};
+    SODu_A.a = {0.9858,0.0071,0};
+    SODu_A.b = {-2.8369,0.4184,0};
     SODu_A.c = {0,0,0};
-    SODu_B.a = {10.6003,0,0};
-    SODu_B.b = {-7680,0,0};
+    SODu_B.a = {2.8369,0,0};
+    SODu_B.b = {-232.6241,0,0};
     SODu_B.c = {0,0,0};
-    SODu_C.a = {0.9735,0.0011,0};
+    SODu_C.a = {0.9929,0.0035,0};
     SODu_C.b = {0,0,0};
     SODu_C.c = {0,0,0};
-    SODu_D.a = {5.3002,0,0};
+    SODu_D.a = {1.4184,0,0};
     SODu_D.b = {0,0,0};
     SODu_D.c = {0,0,0};
 
