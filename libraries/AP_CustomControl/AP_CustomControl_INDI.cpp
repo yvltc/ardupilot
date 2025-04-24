@@ -416,7 +416,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     q_dot = SOD_out[0];
 
     aux.x = Vt;                     // Vt
-    sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
+    // sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
+    sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
     Vt_dot = SOD_out[0];
 
     // snprintf(buffer, sizeof(buffer), "xSODp: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
