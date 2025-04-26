@@ -168,10 +168,10 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     _CF_C = 0.833333333333333;
     _CF_D = 0.166666666666667;
 
-    _CF_A = _CF_A;
-    _CF_B = _CF_B;
-    _CF_C = _CF_C;
-    _CF_D = _CF_D;
+    _CFu_A = _CF_A;
+    _CFu_B = _CF_B;
+    _CFu_C = _CF_C;
+    _CFu_D = _CF_D;
 
     // default
     // _CFu_A = 0.904761904761905;
