@@ -175,10 +175,10 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
 
     // command filter
     // default
-    _CF_A = 0.6667;
-    _CF_B = 0.3333;
-    _CF_C = 0.8333;
-    _CF_D = 0.1667;
+    _CF_A = 0.666666666666667;
+    _CF_B = 0.333333333333333;
+    _CF_C = 0.833333333333333;
+    _CF_D = 0.166666666666667;
 
     // _CF_A = -0.4286;
     // _CF_B = 1.4286;
@@ -186,10 +186,10 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // _CF_D = 0.7143;
 
     // default
-    _CFu_A = 0.9048;
-    _CFu_B = 0.0952;
-    _CFu_C = 0.9524;
-    _CFu_D = 0.0476;
+    _CFu_A = 0.904761904761905;
+    _CFu_B = 0.095238095238095;
+    _CFu_C = 0.952380952380952;
+    _CFu_D = 0.047619047619048;
 
     // tau = 2s
     // _CFu_A = 0.9950;
@@ -425,18 +425,18 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
     // sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
     Vt_dot = SOD_out[0];
-    float Vt_dot_fd;
-    if (flag)
-    {
-        Vt_dot_fd = (Vt-Vt_0)/_dt;
-        Vt_0 = Vt;
-    }
-    else
-    {
-        Vt_dot_fd = 0;
-        Vt_0 = Vt;
-        flag = 1;
-    }
+    // float Vt_dot_fd;
+    // if (flag)
+    // {
+    //     Vt_dot_fd = (Vt-Vt_0)/_dt;
+    //     Vt_0 = Vt;
+    // }
+    // else
+    // {
+    //     Vt_dot_fd = 0;
+    //     Vt_0 = Vt;
+    //     flag = 1;
+    // }
 
     // snprintf(buffer, sizeof(buffer), "xSOD_next_p: %.6f %.6f %.6f", xSOD_p.x, xSOD_p.y, xSOD_p.z);
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
@@ -624,17 +624,15 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
-    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z,Vt_dot,fd", 
-                                "sddn-oo",
-                                "F000000",
-                                "Qffffff",
+    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z", 
+                                "sddn-",
+                                "F0000",
+                                "Qffff",
                                 AP_HAL::micros64(),
                                 roll_target/100,
                                 pitch_target/100,
                                 arspd_target,
-                                du.z,
-                                Vt_dot,
-                                Vt_dot_fd);
+                                du.z);
     // AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z,p,p_dot", 
     //                             "sddn-EL",
     //                             "F000000",
