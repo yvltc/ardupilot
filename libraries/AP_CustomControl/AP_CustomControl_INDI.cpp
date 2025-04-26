@@ -82,28 +82,16 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     dtmin = 0;
 
     // SOD - each vector is a row
-    // SOD_A.a = {0.846153846153846,0.003076923076923,0};
-    // SOD_A.b = {-30.769230769230770,-0.384615384615385,0};
-    // SOD_A.c = {0,0,0};
-    // SOD_B.a = {30.769230769230680,0,0};
-    // SOD_B.b = {-1.384615384615385e+04,0,0};
-    // SOD_B.c = {0,0,0};
-    // SOD_C.a = {0.923076923076923,0.001538461538462,0};
-    // SOD_C.b = {0,0,0};
-    // SOD_C.c = {0,0,0};
-    // SOD_D.a = {15.384615384615340,0,0};
-    // SOD_D.b = {0,0,0};
-    // SOD_D.c = {0,0,0};
-    SOD_A.a = {0.9723,0.0062,0};
-    SOD_A.b = {-5.5470,0.2327,0};
+    SOD_A.a = {0.972265023112481,0.006163328197227,0};
+    SOD_A.b = {-5.546995377503851,0.232665639445301,0};
     SOD_A.c = {0,0,0};
-    SOD_B.a = {5.5470,0,0};
-    SOD_B.b = {-690.9009,0,0};
+    SOD_B.a = {5.546995377503851,0,0};
+    SOD_B.b = {-690.6009244992297,0,0};
     SOD_B.c = {0,0,0};
-    SOD_C.a = {0.9861,0.0031,0};
+    SOD_C.a = {0.986132511556241,0.003081664098613,0};
     SOD_C.b = {0,0,0};
     SOD_C.c = {0,0,0};
-    SOD_D.a = {2.7735,0,0};
+    SOD_D.a = {2.773497688751926,0,0};
     SOD_D.b = {0,0,0};
     SOD_D.c = {0,0,0};
 
@@ -412,18 +400,18 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     // gcs().send_text(MAV_SEVERITY_INFO, "%s", buffer);  // Send the formatted message
  
     aux.x = angular_rates[0];       // p
-    // sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
-    sspace(aux, xSOD_p, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_p);
+    sspace(aux, xSOD_p, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_p);
+    // sspace(aux, xSOD_p, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_p);
     p_dot = SOD_out[0];
 
     aux.x = angular_rates[1];       // q
-    // sspace(aux, xSOD_q, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_q);
-    sspace(aux, xSOD_q, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_q);
+    sspace(aux, xSOD_q, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_q);
+    // sspace(aux, xSOD_q, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_q);
     q_dot = SOD_out[0];
 
     aux.x = Vt;                     // Vt
-    sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
-    // sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
+    // sspace(aux, xSOD_u, SODu_A, SODu_B, SODu_C, SODu_D, &SOD_out, &xSOD_u);
+    sspace(aux, xSOD_u, SOD_A, SOD_B, SOD_C, SOD_D, &SOD_out, &xSOD_u);
     Vt_dot = SOD_out[0];
     // float Vt_dot_fd;
     // if (flag)
