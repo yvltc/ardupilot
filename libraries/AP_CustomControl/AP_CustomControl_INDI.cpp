@@ -121,16 +121,17 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // SODu_D.c = {0,0,0};
 
     // wn 100 rad/s zeta 2
-    SODu_A.a = {0.8402,0.0031,0};
-    SODu_A.b = {-30.7692,-0.3846,0};
+    // mais precisão?
+    SODu_A.a = {0.846153846153846,0.003076923076923,0};
+    SODu_A.b = {-30.769230769230770,-0.384615384615385,0};
     SODu_A.c = {0,0,0};
-    SODu_B.a = {30.7692,0,0};
-    SODu_B.b = {-13846,0,0};
+    SODu_B.a = {30.769230769230770,0,0};
+    SODu_B.b = {−13846.15384615385,0,0};
     SODu_B.c = {0,0,0};
-    SODu_C.a = {0.9231,0.0015,0};
+    SODu_C.a = {0.923076923076923,0.001538461538462,0};
     SODu_C.b = {0,0,0};
     SODu_C.c = {0,0,0};
-    SODu_D.a = {15.3846,0,0};
+    SODu_D.a = {15.384615384615340,0,0};
     SODu_D.b = {0,0,0};
     SODu_D.c = {0,0,0};
 
