@@ -19,8 +19,6 @@
 #include "Plane.h"
 #include <utility>
 
-#include <iostream>
-
 /*****************************************
 * Throttle slew limit
 *****************************************/

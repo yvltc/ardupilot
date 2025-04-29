@@ -7,7 +7,7 @@
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Math/AP_Math.h>
 #include <AP_Logger/AP_Logger.h>
-#include <iostream>
+// #include <iostream>
 
 // table of user settable parameters
 const AP_Param::GroupInfo AP_CustomControl_INDI::var_info[] = {

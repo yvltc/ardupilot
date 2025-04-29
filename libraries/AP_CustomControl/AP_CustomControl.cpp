@@ -12,7 +12,7 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 
-#include <iostream>
+// #include <iostream>
 
 // table of user settable parameters
 const AP_Param::GroupInfo AP_CustomControl::var_info[] = {
