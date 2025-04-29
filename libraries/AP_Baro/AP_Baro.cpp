@@ -21,7 +21,6 @@
 
 #include <utility>
 #include <stdio.h>
-#include <iostream>
 
 #include <GCS_MAVLink/GCS.h>
 #include <AP_Common/AP_Common.h>
@@ -315,7 +314,7 @@ void AP_Baro::calibrate(bool save)
         do {
             update();
             if (AP_HAL::millis() - tstart > 550) {
-                AP_BoardConfig::config_error("%d", AP_HAL::millis()-tstart);
+                // AP_BoardConfig::config_error("%d", AP_HAL::millis()-tstart);
                 AP_BoardConfig::config_error("Baro: unable to calibrate");
             }
             hal.scheduler->delay(10);
