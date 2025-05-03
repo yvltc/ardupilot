@@ -599,6 +599,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (custom_dynamics)
     {
+        printf("%d\n",AP_HAL::micros64());
         // AP::logger().Write("FWZ", "TimeUS,F,M,F_SITL,M_SITL", 
         //                         "sNtNt",
         //                         "F0000",
@@ -608,12 +609,12 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         //                         rot_accel,
         //                         force_sitl,
         //                         rot_accel_sitl);
-        AP::logger().Write("TEST", "TimeUS,M",
-            "st", // units: seconds, meters
-            "F0", // mult: 1e-6, 1e-2
-            "Qf", // format: uint64_t, float
-            AP_HAL::micros64(),
-            rot_accel);
+        // AP::logger().Write("TEST", "TimeUS,M",
+        //     "st", // units: seconds, meters
+        //     "F0", // mult: 1e-6, 1e-2
+        //     "Qf", // format: uint64_t, float
+        //     AP_HAL::micros64(),
+        //     rot_accel);
     }
 }
     
