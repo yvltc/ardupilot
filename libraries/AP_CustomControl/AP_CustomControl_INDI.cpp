@@ -353,6 +353,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float phi = _ahrs.get_roll();       // radians
     float theta = _ahrs.get_pitch();
     float Vt;
+    float TAS_AHRS;
 
     bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
 
@@ -612,7 +613,7 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     error_0 = {error.x, error.y, error.z};
     
 
-    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z", 
+    AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,TAS,TAS_AHRS", 
                                 "sddn-",
                                 "F0000",
                                 "Qffff",
@@ -620,7 +621,8 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
                                 roll_target/100,
                                 pitch_target/100,
                                 arspd_target,
-                                du.z);
+                                Vt,
+                                TAS_AHRS);
     // AP::logger().Write("INDI", "TimeUS,RollTrgt,PitchTrgt,ArspdTrgt,du_z,p,p_dot", 
     //                             "sddn-EL",
     //                             "F000000",
