@@ -598,7 +598,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
 
     if (custom_dynamics)
     {
-        AP::logger().Write("FWZ_SIM", "TimeUS,F,M,F_SITL,M_SITL", 
+        AP::logger().Write("FWZ", "TimeUS,F,M,F_SITL,M_SITL", 
                                 "sNtNt",
                                 "F0000",
                                 "Qffff",
