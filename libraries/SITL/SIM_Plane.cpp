@@ -611,7 +611,7 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
                                 force_sitl.x,
                                 force_sitl.y,
                                 force_sitl.z);
-        AP::logger().Write("FWZF", "TimeUS,Mx,My,Mz,Mx_SITL,My_SITL,Mz_SITL", 
+        AP::logger().Write("FWZM", "TimeUS,Mx,My,Mz,Mx_SITL,My_SITL,Mz_SITL", 
                                 "stttttt",
                                 "F000000",
                                 "Qffffff",
