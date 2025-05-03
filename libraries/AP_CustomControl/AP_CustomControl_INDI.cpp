@@ -355,11 +355,11 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     float Vt;
     float TAS_AHRS;
 
-    bool use_TAS = _ahrs.airspeed_estimate_true(Vt);
+    bool use_TAS = _ahrs.airspeed_estimate_true(TAS_AHRS);
 
     if (!use_TAS)
     {
-        use_TAS = _ahrs.airspeed_estimate(Vt);
+        use_TAS = _ahrs.airspeed_estimate(TAS_AHRS);
     }
 
     Vt = _tecs.get_TAS_state();
