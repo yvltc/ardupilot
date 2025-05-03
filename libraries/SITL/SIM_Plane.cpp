@@ -23,6 +23,7 @@
 #include <cmath>
 #include <stdio.h>
 #include <AP_Filesystem/AP_Filesystem_config.h>
+#include <AP_Logger/AP_Logger.h>
 
 using namespace SITL;
 
@@ -533,14 +534,16 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
     }
 
     Vector3f force;
+    Vector3f force_sitl;
+    Vector3f rot_accel_sitl;
 
     if (custom_dynamics) {
         //printf("Custom dynamics working");
-        // force = getForce(aileron, elevator, rudder);
+        force_sitl = getForce(aileron, elevator, rudder);
         // printf("Force SITL: %f %f %f\n", force.x, force.y, force.z);
         force = CustomDynamics_getForce(elevator-aileron, elevator+aileron);        // aerodynamic force
         // printf("Force custom: %f %f %f\n", force.x, force.y, force.z);
-        // rot_accel = getTorque(aileron, elevator, rudder, thrust, force);
+        rot_accel_sitl = getTorque(aileron, elevator, rudder, thrust, force_sitl);
         // printf("rot_accel SITL: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
         rot_accel = CustomDynamics_getTorque(aileron, elevator, force);
         // printf("rot_accel custom: %f %f %f\n", rot_accel.x, rot_accel.y, rot_accel.z);
@@ -591,6 +594,19 @@ void Plane::calculate_forces(const struct sitl_input &input, Vector3f &rot_accel
         // add some ground friction
         Vector3f vel_body = dcm.transposed() * velocity_ef;
         accel_body.x -= vel_body.x * 0.3f;
+    }
+
+    if (custom_dynamics)
+    {
+        AP::logger().Write("FWZ_SIM", "TimeUS,F,M,F_SITL,M_SITL", 
+                                "sNtNt",
+                                "F0000",
+                                "Qffff",
+                                AP_HAL::micros64(),
+                                force,
+                                rot_accel,
+                                force_sitl,
+                                rot_accel_sitl);
     }
 }
     
