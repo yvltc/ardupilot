@@ -56,7 +56,7 @@ Plane::Plane(const char *frame_str) :
     }
     if (strstr(frame_str, "-elevon")) {
         elevons = true;
-        custom_dynamics = true;
+        // custom_dynamics = true;
     } else if (strstr(frame_str, "-vtail")) {
         vtail = true;
     } else if (strstr(frame_str, "-dspoilers")) {
