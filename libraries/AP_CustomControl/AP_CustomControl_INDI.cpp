@@ -162,16 +162,16 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     xSOD_u.z = 0;
 
     // command filter
-    // default
+    // default - tau = 0.025
     _CF_A = 0.666666666666667;
     _CF_B = 0.333333333333333;
     _CF_C = 0.833333333333333;
     _CF_D = 0.166666666666667;
 
-    _CFu_A = _CF_A;
-    _CFu_B = _CF_B;
-    _CFu_C = _CF_C;
-    _CFu_D = _CF_D;
+    // _CFu_A = _CF_A;
+    // _CFu_B = _CF_B;
+    // _CFu_C = _CF_C;
+    // _CFu_D = _CF_D;
 
     // default
     // _CFu_A = 0.904761904761905;
@@ -179,11 +179,11 @@ AP_CustomControl_INDI::AP_CustomControl_INDI(AP_CustomControl& frontend, AP_Pitc
     // _CFu_C = 0.952380952380952;
     // _CFu_D = 0.047619047619048;
 
-    // tau = 2s
-    // _CFu_A = 0.9950;
-    // _CFu_B = 0.0050;
-    // _CFu_C = 0.9975;
-    // _CFu_D = 0.0025;
+    // tau = 0.25s
+    _CFu_A = 0.960784313725490;
+    _CFu_B = 0.039215686274510;
+    _CFu_C = 0.980392156862745;
+    _CFu_D = 0.019607843137255;
 
     // _CFu_A = 0.8182;
     // _CFu_B = 0.1818;
