@@ -453,12 +453,12 @@ void AP_CustomControl_INDI::update(float roll_target, float pitch_target)
     niu.z = KVt*error[2];
     // niu.z = KVt*error.z - KVtdot*Vt_dot;
 
-    if (is_gliding)
-    {
-        invG.a.z = 0;
-        invG.b.z = 0;
-        invG.c.z = 0;
-    }
+    // if (is_gliding)
+    // {
+    //     invG.a.z = 0;
+    //     invG.b.z = 0;
+    //     invG.c.z = 0;
+    // }
 
     du.x = invG.a.x*lambda_1*(niu.x - p_dot) + invG.a.y*lambda_1*(niu.y - q_dot) + invG.a.z*lambda_1*(niu.z - Vt_dot);
     du.y = invG.b.x*lambda_2*(niu.x - p_dot) + invG.b.y*lambda_2*(niu.y - q_dot) + invG.b.z*lambda_2*(niu.z - Vt_dot);
